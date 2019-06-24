@@ -1,11 +1,26 @@
 import {JetView} from "webix-jet";
-import {data} from "models/records";
+import DataTable from "./activities/datatable";
 
 export default class DataView extends JetView{
 	config(){
-		return { view:"datatable", autoConfig:true, css:"webix_shadow_medium" };
+		return {
+			rows: [
+				{
+					view: "button",
+					label: "Add",
+					type:"icon",
+					icon: "wxi-plus-square",
+					css: "webix_primary bg_color",
+					align: "right",
+					inputWidth: 200,
+					click: () => {
+					}
+				},
+				DataTable
+			]
+		};
 	}
-	init(view){
-		view.parse(data);
+	
+	init(){
 	}
 }

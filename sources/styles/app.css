@@ -112,3 +112,12 @@
 .addition_info {
     margin-left: 20px;
 }
+
+.style_icon {
+    padding: 5px 30px;
+    cursor: pointer;
+}
+
+.style_icon:hover {
+    color: red;
+}
