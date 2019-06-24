@@ -4,7 +4,7 @@ import {contacts} from "../../models/contactsdata";
 export default class ContactsView extends JetView{
 	config(){
 		return {
-			view:"list", width:250, select:true, css: "persons_list",
+			view:"list", localId: "list", width:250, select:true, css: "persons_list",
 			type:{
 				template:obj => `
                 <image class="userphoto" src="${obj.Photo}" />
@@ -14,10 +14,22 @@ export default class ContactsView extends JetView{
                 </div>
                 `,
 				height:66
+			},
+			on: {
+				onAfterSelect: (id) => {
+					this.show(`../contacts?id=${id}`);
+				}
 			}
 		};
 	}
 	init(view) {
 		view.sync(contacts);
+
+		contacts.waitData.then(() => {
+			let list = this.$$("list");
+			let id = this.getParam("id");
+			if (!id || !contacts.exists(id)) { id = contacts.getFirstId(); }
+			if (id) { list.select(id); }
+		});
 	}
 }
