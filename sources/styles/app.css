@@ -56,3 +56,36 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+
+.persons_list .webix_list_item, .persons_list .webix_list_item.webix_selected {
+    padding: 8px 12px;
+}
+
+.userphoto {
+    display: inline-block;
+    border-radius: 25px;
+    width: 48px;
+    height: 48px;
+    float: left;
+}
+
+.text {
+    padding: 4px 4px 4px 16px;
+    display: inline-block;
+}
+
+.username {
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    color: #313131;
+    font-weight: 500;
+    line-height: 20px;
+    display: block;
+}
+
+.userjob {
+    color: #475466;
+    display: block;
+    letter-spacing: 0.2px;
+    line-height: 20px;
+}
