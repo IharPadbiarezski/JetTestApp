@@ -61,7 +61,7 @@
     padding: 8px 12px;
 }
 
-.userphoto {
+.contactphoto {
     display: inline-block;
     border-radius: 25px;
     width: 48px;
@@ -74,7 +74,7 @@
     display: inline-block;
 }
 
-.username {
+.contactname {
     font-size: 14px;
     letter-spacing: 0.2px;
     color: #313131;
@@ -83,9 +83,32 @@
     display: block;
 }
 
-.userjob {
+.contactjob {
     color: #475466;
     display: block;
     letter-spacing: 0.2px;
     line-height: 20px;
+}
+
+.bg_color {
+        background: #fff;
+}
+
+.contacts-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.userphoto {
+    width: 300px;
+    height: 300px;
+}
+
+.main_info {
+    text-align: center;
+}
+
+.addition_info {
+    margin-left: 20px;
 }
