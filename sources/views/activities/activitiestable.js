@@ -45,15 +45,13 @@ export default class ActivitiesDataTable extends JetView{
 					},
 					{
 						id: "",
-						template: "<span class='webix_icon wxi-pencil style_icon'></span>",
-						css: "editbtn",
-						width: 100
+						template: "{common.editIcon()}",
+						width: 60
 					},
 					{
 						id: "",
-						template: "<span class='webix_icon wxi-trash style_icon'></span>",
-						css: "delbtn",
-						width: 100
+						template: "{common.trashIcon()}",
+						width: 60
 					},
 				],
 				// scheme:{
@@ -66,16 +64,20 @@ export default class ActivitiesDataTable extends JetView{
 					}
 				},
 				onClick: {
-					delbtn: (e, id) => {
+					"wxi-trash":(e, id) => {
 						webix.confirm({
-							text: "Are you sure you want to deltete activity? Deleting cannot be undone..."
-						}).then(() => {
-							activities.remove(id);
+							text:"The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?",
+							ok:"Yes", cancel:"Cancel",
+							callback: res => {
+								if (res)
+									this.app.callEvent("activities:delete",[id.row]);
+							}
 						});
 						return false;
 					},
-					editbtn: () => {
-						this.form.showForm();
+					"wxi-pencil":(e, id) => {
+						const item = this.getRoot().getItem(id);
+						this.app.callEvent("form:fill", [item]);
 						return false;
 					}
 				}

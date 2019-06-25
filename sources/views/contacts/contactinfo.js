@@ -14,7 +14,7 @@ export default class ContactInfo extends JetView{
                             <div class="contacts-container">
                                 <div class="main_info">
                                     <h2 class="username">${obj.FirstName} ${obj.LastName}</h2>
-                                    <image class="userphoto" src="https://ru.webix.com/demos/doctor-pure-webix/data/photos/cyril_1.jpg" />
+                                    <image class="userphoto" src=${obj.Photo} />
                                     <p class="status">${this.status}</p>
                                 </div>
                                 <div class="addition_info">

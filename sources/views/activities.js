@@ -34,8 +34,10 @@ export default class DataView extends JetView{
 	init () {
 		this.form = this.ui(ActivityForm);
 
-		this.on(this.app,"activities:save", values => {
-			values.id ? activities.updateItem(values.id,values) : activities.add(values);
+		this.on(this.app, "activities:save", values => {
+			values.id ? activities.updateItem(values.id, values) : activities.add(values);
 		});
+
+		this.on(this.app,"activities:delete", id => activities.remove(id));
 	}
 }

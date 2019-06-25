@@ -8,6 +8,7 @@ export default class ActivityForm extends JetView {
 			view:"window", head:false, position:"center",
 			modal:true, body:{
 				view: "form",
+				localId: "activityform",
 				width:600,
 				elements: [
 					{ view:"template", template:"Add (*edit) activity", type:"header", css: "activities_header_align"},
@@ -64,6 +65,7 @@ export default class ActivityForm extends JetView {
 						{
 							view: "button",
 							value: "Add (*save)",
+							type: "form",
 							css: "webix_primary",
 							click: () => {
 								if (this.form.validate()) {
@@ -83,7 +85,7 @@ export default class ActivityForm extends JetView {
 					{}
 				],
 				rules: {
-					$all: webix.rules.isNotEmpty
+					Details: webix.rules.isNotEmpty
 				}
 			}
 		};
@@ -96,11 +98,6 @@ export default class ActivityForm extends JetView {
 			view.show();
 			this.form.setValues(values);
 		});
-	}
-
-	addContact() {
-		let form = this.$$("form");
-		form.validate();
 	}
 
 	showForm(){
