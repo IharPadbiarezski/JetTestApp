@@ -2,6 +2,7 @@ import {JetView} from "webix-jet";
 import {activities} from "../../models/activitiesdata";
 import {activitytypes} from "../../models/activitytypesdata";
 import {contacts} from "../../models/contactsdata";
+import ActivityForm from "../activities/activityform";
 
 export default class ActivitiesDataTable extends JetView{
 	config(){
@@ -25,7 +26,7 @@ export default class ActivitiesDataTable extends JetView{
 				localId: "activities",
 				select: true,
 				columns: [
-					{ id:"ch1", header:"", template:"{common.checkbox()}"},
+					{ id:"checkbox", header:"", template:"{common.checkbox()}", sort: "string"},
 					{
 						id: "TypeID",
 						header: [ "Activity type", { content: "selectFilter" } ],
@@ -72,6 +73,10 @@ export default class ActivitiesDataTable extends JetView{
 							activities.remove(id);
 						});
 						return false;
+					},
+					editbtn: () => {
+						this.form.showForm();
+						return false;
 					}
 				}
 			};
@@ -80,6 +85,7 @@ export default class ActivitiesDataTable extends JetView{
 	
 	init(view){
 		view.sync(activities);
+		this.form = this.ui(ActivityForm);
 	}
 
 	urlChange() {
