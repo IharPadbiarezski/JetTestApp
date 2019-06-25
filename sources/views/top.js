@@ -6,7 +6,7 @@ import {menudata} from "../models/menu";
 export default class TopView extends JetView{
 	config(){
 		let header = {
-			type:"header", template: this.getUrlString(), css:"webix_header app_header"
+			type:"header", id: "header_app", template: obj => obj.value, css:"webix_header app_header"
 		};
 
 		let menu = {
@@ -36,5 +36,12 @@ export default class TopView extends JetView{
 		this.use(plugins.Menu, "top:menu");
 	}
 	urlChange() {
+		let urlTabName = this.getUrl()[1].page;
+		this.page = this.capitalize(urlTabName);
+		this.$$("header_app").setValues({value: `${this.page}`});
+	}
+
+	capitalize(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 }
