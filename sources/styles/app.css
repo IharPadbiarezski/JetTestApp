@@ -121,3 +121,7 @@
 .style_icon:hover {
     color: red;
 }
+
+.activities_header_align {
+    text-align: center;
+}

@@ -18,16 +18,18 @@ export default class DataTable extends JetView{
 					{
 						id: "TypeID",
 						header: [ "Activity type", { content: "selectFilter" } ],
-						collection: activitytypes,
+						collection: {body: {
+							data: activitytypes, template: "#Value#"}},
 						fillspace: true,
 						sort: "string"
 					},
-					{ id: "DueDate", header: [ "Due date", { content: "dateFilter" } ], fillspace: true, sort: "date" },
+					{  map:"(date)#createdDate#", id: "DueDate", header: [ "Due date", { content: "dateFilter" } ], fillspace: true, sort: "date"},
 					{ id: "Details", header: [ "Details", { content: "textFilter" } ], fillspace: true, sort: "string" },
 					{
 						id: "ContactID",
 						header: [ "Contact", { content: "selectFilter" } ],
-						collection: contacts,
+						collection: {body: {
+							data: contacts, template: "#FirstName# #LastName"}},
 						sort: "string"
 					},
 					{
@@ -49,11 +51,5 @@ export default class DataTable extends JetView{
 	
 	init(view){
 		view.sync(activities);
-		webix.promise.all([
-			contacts.waitData,
-			activities.waitData,
-			activitytypes.waitData
-		]).then(() => {
-		});
 	}
 }

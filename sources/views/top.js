@@ -36,6 +36,5 @@ export default class TopView extends JetView{
 		this.use(plugins.Menu, "top:menu");
 	}
 	urlChange() {
-		
 	}
 }
