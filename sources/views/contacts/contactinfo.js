@@ -10,12 +10,11 @@ export default class ContactInfo extends JetView{
 				{
 					view: "template",
 					localId: "template",
-					template:(obj) => {
-						return `
+					template:(obj) =>  `
                             <div class="contacts-container">
                                 <div class="main_info">
                                     <h2 class="username">${obj.FirstName} ${obj.LastName}</h2>
-                                    <image class="userphoto" src="${obj.Photo}" />
+                                    <image class="userphoto" src="https://ru.webix.com/demos/doctor-pure-webix/data/photos/cyril_1.jpg" />
                                     <p class="status">${this.status}</p>
                                 </div>
                                 <div class="addition_info">
@@ -27,7 +26,7 @@ export default class ContactInfo extends JetView{
                                     <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address}</p>
                                 </div>
                             </div>
-                    `;}
+                    `
 				},
 
 				{css: "bg_color",

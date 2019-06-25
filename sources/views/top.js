@@ -36,9 +36,9 @@ export default class TopView extends JetView{
 		this.use(plugins.Menu, "top:menu");
 	}
 	urlChange() {
-		let urlTabName = this.getUrl()[1].page;
-		this.page = this.capitalize(urlTabName);
-		this.$$("header_app").setValues({value: `${this.page}`});
+		const urlTabName = this.getUrl()[1].page;
+		const page = this.capitalize(urlTabName);
+		this.$$("header_app").setValues({value: `${page}`});
 	}
 
 	capitalize(string) {

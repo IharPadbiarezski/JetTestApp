@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import DataTable from "./activities/datatable";
+import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityForm from "./activities/activityform";
 
 export default class DataView extends JetView{
@@ -17,8 +17,8 @@ export default class DataView extends JetView{
 					click: () => {
 					}
 				},
-				DataTable,
-				ActivityForm
+				ActivitiesDataTable,
+				// ActivityForm
 			]
 		};
 	}
