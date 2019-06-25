@@ -22,6 +22,7 @@ export default class ActivitiesDataTable extends JetView{
 
 			return {
 				view:"datatable",
+				localId: "activities",
 				select: true,
 				columns: [
 					{ id:"ch1", header:"", template:"{common.checkbox()}"},
@@ -52,11 +53,26 @@ export default class ActivitiesDataTable extends JetView{
 						template: "<span class='webix_icon wxi-trash style_icon'></span>",
 						css: "delbtn",
 						width: 100
-					}
+					},
 				],
-				scheme:{
-					name:"Unknown",
-					age:16
+				// scheme:{
+				// 	name:"Unknown",
+				// 	age:16
+				// },
+				on: {
+					onAfterSelect: (id) => {
+						this.show(`../activities?id=${id}`);
+					}
+				},
+				onClick: {
+					delbtn: (e, id) => {
+						webix.confirm({
+							text: "Are you sure you want to deltete activity? Deleting cannot be undone..."
+						}).then(() => {
+							activities.remove(id);
+						});
+						return false;
+					}
 				}
 			};
 		});
@@ -64,5 +80,17 @@ export default class ActivitiesDataTable extends JetView{
 	
 	init(view){
 		view.sync(activities);
+	}
+
+	urlChange() {
+		webix.promise.all([
+			activities.waitData,
+			activitytypes.waitData,
+			contacts.waitData
+		]).then(() => {
+			let activitiesTable = this.$$("activities");
+			let id = this.getParam("id");
+			if (id && activities.exists(id)) { activitiesTable.select(id); }
+		});
 	}
 }
