@@ -19,19 +19,14 @@ export default class ActivityForm extends JetView {
 						view: "combo",
 						name: "TypeID",
 						label: "Type",
-						options: {
-							body: {
-								data: activitytypes, template: "#Value#"
-							}
-						},
+						options: activitytypes,
 						invalidMessage: "Please select a type"
 					},
 					{
 						view: "combo",
 						name: "ContactID",
 						label: "Contact",
-						options: {body: {
-							data: contacts, template: "#FirstName# #LastName#"}},
+						options: contacts,
 						invalidMessage: "Please select a contact"
 					},
 					{
