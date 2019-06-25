@@ -14,7 +14,6 @@ export default class DataView extends JetView{
 						{
 							view: "button",
 							label: "Add",
-							// localId:"button:add",
 							type:"icon",
 							icon: "wxi-plus-square",
 							css: "webix_primary bg_color",
