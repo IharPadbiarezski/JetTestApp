@@ -34,7 +34,7 @@ export default class ActivitiesDataTable extends JetView{
 						fillspace: true,
 						sort: "string"
 					},
-					{ format:webix.i18n.longDateFormatStr, id: "DueDate", header: [ "Due date", { content: "dateFilter" } ], fillspace: true, sort: "date"},
+					{ format:webix.i18n.longDateFormatStr, id: "DueDate", header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date"},
 					{ id: "Details", header: [ "Details", { content: "textFilter" } ], fillspace: true, sort: "string" },
 					{
 						id: "ContactID",
@@ -73,12 +73,10 @@ export default class ActivitiesDataTable extends JetView{
 									this.app.callEvent("activities:delete",[id.row]);
 							}
 						});
-						return false;
 					},
 					"wxi-pencil":(e, id) => {
 						const item = this.getRoot().getItem(id);
 						this.app.callEvent("form:fill", [item]);
-						return false;
 					}
 				}
 			};
