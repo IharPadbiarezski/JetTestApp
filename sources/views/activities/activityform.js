@@ -2,7 +2,7 @@ import {JetView} from "webix-jet";
 import {contacts} from "../../models/contactsdata";
 import {activitytypes} from "../../models/activitytypesdata";
 
-export default class ActivityForm extends JetView {
+export default class ActivityWindow extends JetView {
 	config() {
 		return {
 			view:"window", head:false, position:"center",
@@ -33,18 +33,16 @@ export default class ActivityForm extends JetView {
 						cols: [
 							{
 								view:"datepicker",
-								name: "DueDate",
-								format:"%d %m %Y",
-								label: "Date", 
-								timepicker: true,
+								name: "ConvDueDate",
+								label: "Date",
 								invalidMessage: "Please select a date"
 							},
 							{
 								view:"datepicker",
-								name: "DueTime",
-								timepicker:true,
+								name: "ConvDueTime",
 								format:"%H:%i",
 								label: "Time",
+								type: "time",
 								invalidMessage: "Please select any time"
 							}
 						]

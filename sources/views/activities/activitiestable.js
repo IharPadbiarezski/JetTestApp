@@ -18,7 +18,7 @@ export default class ActivitiesDataTable extends JetView{
 					fillspace: true,
 					sort: "string"
 				},
-				{ id: "DueDate", header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date"},
+				{ id: "ConvDueDate", header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date", format:webix.i18n.longDateFormatStr},
 				{ id: "Details", header: [ "Details", { content: "textFilter" } ], fillspace: true, sort: "string" },
 				{
 					id: "ContactID",

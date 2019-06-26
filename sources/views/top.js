@@ -14,6 +14,12 @@ export default class TopView extends JetView{
 			css:"app_menu",
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
+			on: {
+				onAfterSelect: (id) => {
+					const values = this.$$("top:menu").getItem(id);
+					this.$$("header_app").setValues({value: values.value});
+				}
+			},
 			data:menudata
 		};
 
@@ -34,14 +40,5 @@ export default class TopView extends JetView{
 	}
 	init(){
 		this.use(plugins.Menu, "top:menu");
-	}
-	urlChange() {
-		const urlTabName = this.getUrl()[1].page;
-		const page = this.capitalize(urlTabName);
-		this.$$("header_app").setValues({value: `${page}`});
-	}
-
-	capitalize(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 }

@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 import {activities} from "../models/activitiesdata";
 import ActivitiesDataTable from "./activities/activitiestable";
-import ActivityForm from "./activities/activityform";
+import ActivityWindow from "./activities/activityform";
 
 export default class DataView extends JetView{
 	config(){
@@ -31,7 +31,7 @@ export default class DataView extends JetView{
 	}
 
 	init () {
-		this.form = this.ui(ActivityForm);
+		this.form = this.ui(ActivityWindow);
 
 		this.on(this.app, "activities:save", values => {
 			values.id ? activities.updateItem(values.id, values) : activities.add(values);

@@ -7,7 +7,7 @@ export default class ContactsView extends JetView{
 			view:"list", localId: "list", width:250, select:true, css: "persons_list",
 			type:{
 				template:obj => `
-                <image class="contactphoto" src="${obj.Photo}" />
+                <image class="contactphoto" src="${obj.Photo ? obj.Photo : "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
                 <div class="text">
                     <span class="contactname">${obj.FirstName} ${obj.LastName}</span>
                     <span class="contactjob">${obj.Job}</span>
