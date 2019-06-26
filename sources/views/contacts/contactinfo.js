@@ -64,7 +64,7 @@ export default class ContactInfo extends JetView{
 			const id = this.getParam("id");
 			const values = contacts.getItem(id);
 			this.status = statuses.getItem(values.StatusID).Value;
-			let template = this.$$("template");
+			const template = this.$$("template");
 			if (values) { template.setValues(values); }
 		});
 	}

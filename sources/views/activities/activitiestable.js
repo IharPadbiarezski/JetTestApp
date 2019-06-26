@@ -10,7 +10,7 @@ export default class ActivitiesDataTable extends JetView{
 			localId: "activities",
 			select: true,
 			columns: [
-				{ id:"State", header:"", template:"{common.checkbox()}", width: 40},
+				{ id:"State", header:"", template:"{common.checkbox()}", width: 40, sort: "string"},
 				{
 					id: "TypeID",
 					header: [ "Activity type", { content: "selectFilter" } ],
@@ -18,8 +18,19 @@ export default class ActivitiesDataTable extends JetView{
 					fillspace: true,
 					sort: "string"
 				},
-				{ id: "ConvDueDate", header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date", format:webix.i18n.longDateFormatStr},
-				{ id: "Details", header: [ "Details", { content: "textFilter" } ], fillspace: true, sort: "string" },
+				{ 
+					id: "ConvDueDate",
+					header: [ "Due date", { content:"datepickerFilter" } ],
+					fillspace: true,
+					sort: "date",
+					format:webix.i18n.longDateFormatStr
+				},
+				{ 
+					id: "Details",
+					header: [ "Details", { content: "textFilter" } ],
+					fillspace: true,
+					sort: "string"
+				},
 				{
 					id: "ContactID",
 					header: [ "Contact", { content: "selectFilter" } ],
@@ -72,8 +83,8 @@ export default class ActivitiesDataTable extends JetView{
 			activitytypes.waitData,
 			contacts.waitData
 		]).then(() => {
-			let activitiesTable = this.$$("activities");
-			let id = this.getParam("id");
+			const activitiesTable = this.$$("activities");
+			const id = this.getParam("id");
 			if (id && activities.exists(id)) { activitiesTable.select(id); }
 		});
 	}
