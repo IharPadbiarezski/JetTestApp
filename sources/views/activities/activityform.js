@@ -11,7 +11,7 @@ export default class ActivityWindow extends JetView {
 				localId: "activityform",
 				width:600,
 				elements: [
-					{ view:"template", template:"Add (*edit) activity", type:"header", css: "activities_header_align"},
+					{ view:"template", id: "activity:header", template: obj => obj.value, type:"header", css: "activities_header_align"},
 					{
 						view: "textarea",	name: "Details", label: "Details", invalidMessage: "Please entry your name"
 					},
@@ -56,7 +56,7 @@ export default class ActivityWindow extends JetView {
 						{gravity: 2},
 						{
 							view: "button",
-							value: "Add (*save)",
+							localId: "activity_form:button",
 							type: "form",
 							css: "webix_primary",
 							click: () => {
@@ -87,13 +87,15 @@ export default class ActivityWindow extends JetView {
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", values => {
-			view.show();
+			this.showForm({}, "Edit");
 			this.form.setValues(values);
 		});
 	}
 
-	showForm(){
+	showForm(data, type){
 		this.getRoot().show();
+		this.$$("activity:header").setValues({value: `${type} activity`});
+		this.$$("activity_form:button").setValue(type);
 	}
 
 	hideForm(){

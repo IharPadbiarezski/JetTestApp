@@ -14,13 +14,16 @@ export default class DataView extends JetView{
 						{
 							view: "button",
 							label: "Add",
+							localId: "add:button",
 							type:"icon",
+							value: "Add",
 							icon: "wxi-plus-square",
 							css: "webix_primary bg_color",
 							align: "right",
 							inputWidth: 200,
 							click: () => {
-								this.form.showForm();
+								const value = this.$$("add:button").getValue();
+								this.form.showForm({}, value);
 							}
 						}
 					]
