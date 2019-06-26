@@ -34,8 +34,8 @@ export default class ActivityForm extends JetView {
 							{
 								view:"datepicker",
 								name: "DueDate",
-								value: new Date(),
-								format:"%d %M %Y",
+								// value: new Date(),
+								format:"%d %m %Y",
 								label: "Date", 
 								timepicker: true,
 								invalidMessage: "Please select a date"
@@ -44,7 +44,7 @@ export default class ActivityForm extends JetView {
 								view:"datepicker",
 								timepicker:true,
 								format:"%H:%i",
-								value: new Date(), 
+								// value: new Date(), 
 								label: "Time",
 								invalidMessage: "Please select time"
 							}
@@ -52,7 +52,7 @@ export default class ActivityForm extends JetView {
 					},
 					{
 						view:"checkbox",
-						name: "checkbox",
+						name: "State",
 						labelRight:"Completed"
 					},
 					{cols: [
@@ -64,6 +64,7 @@ export default class ActivityForm extends JetView {
 							css: "webix_primary",
 							click: () => {
 								if (this.form.validate()) {
+									console.log(this.form.getValues())
 									this.app.callEvent("activities:save", [this.form.getValues()]);
 									this.hideForm();
 								}
