@@ -42,11 +42,11 @@ export default class ActivityForm extends JetView {
 							},
 							{
 								view:"datepicker",
+								name: "DueTime",
 								timepicker:true,
 								format:"%H:%i",
-								// value: new Date(), 
 								label: "Time",
-								invalidMessage: "Please select time"
+								invalidMessage: "Please select any time"
 							}
 						]
 					},
@@ -81,7 +81,7 @@ export default class ActivityForm extends JetView {
 					{}
 				],
 				rules: {
-					Details: webix.rules.isNotEmpty
+					$all: webix.rules.isNotEmpty
 				}
 			}
 		};

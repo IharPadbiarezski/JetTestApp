@@ -11,7 +11,7 @@ export default class ActivitiesDataTable extends JetView{
 			localId: "activities",
 			select: true,
 			columns: [
-				{ id:"State", header:"", template:"{common.checkbox()}", sort: "string"},
+				{ id:"State", header:"", template:"{common.checkbox()}", sort: "int"},
 				{
 					id: "TypeID",
 					header: [ "Activity type", { content: "selectFilter" } ],
@@ -68,7 +68,6 @@ export default class ActivitiesDataTable extends JetView{
 	
 	init(view){
 		view.sync(activities);
-		this.form = this.ui(ActivityForm);
 	}
 
 	urlChange() {
