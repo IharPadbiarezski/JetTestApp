@@ -87,7 +87,8 @@ export default class ActivityWindow extends JetView {
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", values => {
-			this.showForm({}, "Edit");
+
+			this.showForm({}, "Save");
 			this.form.setValues(values);
 		});
 	}

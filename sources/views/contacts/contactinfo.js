@@ -56,11 +56,6 @@ export default class ContactInfo extends JetView{
 		};
 	}
     
-
-
-	init(){
-	}
-    
 	urlChange() {
 		webix.promise.all([
 			contacts.waitData,
