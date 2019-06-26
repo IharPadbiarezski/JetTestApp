@@ -16,5 +16,11 @@ export default class MyApp extends JetApp{
 }
 
 if (!BUILD_AS_MODULE){
-	webix.ready(() => new MyApp().render() );
+	webix.ready(() => {
+		let app = new MyApp();
+		app.render();
+		app.attachEvent("app:error:resolve", () => {
+			webix.delay(() => app.show("/some"));
+		});
+	});
 }

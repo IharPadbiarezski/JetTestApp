@@ -2,7 +2,6 @@ import {JetView} from "webix-jet";
 import {activities} from "../../models/activitiesdata";
 import {activitytypes} from "../../models/activitytypesdata";
 import {contacts} from "../../models/contactsdata";
-import ActivityForm from "../activities/activityform";
 
 export default class ActivitiesDataTable extends JetView{
 	config(){
