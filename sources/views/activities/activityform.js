@@ -34,7 +34,6 @@ export default class ActivityForm extends JetView {
 							{
 								view:"datepicker",
 								name: "DueDate",
-								// value: new Date(),
 								format:"%d %m %Y",
 								label: "Date", 
 								timepicker: true,
@@ -64,7 +63,6 @@ export default class ActivityForm extends JetView {
 							css: "webix_primary",
 							click: () => {
 								if (this.form.validate()) {
-									console.log(this.form.getValues())
 									this.app.callEvent("activities:save", [this.form.getValues()]);
 									this.hideForm();
 								}

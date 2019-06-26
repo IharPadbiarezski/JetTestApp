@@ -10,7 +10,7 @@ export default class ContactInfo extends JetView{
 				{
 					view: "template",
 					localId: "template",
-					template:(obj) =>  `
+					template: obj =>  `
                             <div class="contacts-container">
                                 <div class="main_info">
                                     <h2 class="username">${obj.FirstName} ${obj.LastName}</h2>

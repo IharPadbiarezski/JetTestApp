@@ -10,7 +10,7 @@ export default class ActivitiesDataTable extends JetView{
 			localId: "activities",
 			select: true,
 			columns: [
-				{ id:"State", header:"", template:"{common.checkbox()}", sort: "int"},
+				{ id:"State", header:"", template:"{common.checkbox()}", width: 40},
 				{
 					id: "TypeID",
 					header: [ "Activity type", { content: "selectFilter" } ],
@@ -18,10 +18,7 @@ export default class ActivitiesDataTable extends JetView{
 					fillspace: true,
 					sort: "string"
 				},
-				{ 
-					//format:webix.i18n.longDateFormatStr, 
-					// map:"(date)#DueDate#" 
-					map:"(date)#DueDate#", id: "DueDate", format:webix.i18n.longDateFormatStr, header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date"},
+				{ id: "DueDate", header: [ "Due date", { content:"datepickerFilter" } ], fillspace: true, sort: "date"},
 				{ id: "Details", header: [ "Details", { content: "textFilter" } ], fillspace: true, sort: "string" },
 				{
 					id: "ContactID",
