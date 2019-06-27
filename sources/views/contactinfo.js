@@ -38,6 +38,7 @@ export default class ContactInfo extends JetView{
 						icon: "wxi-trash",
 						css: "webix_primary",
 						click: () => {
+							this.deleteRow();
 						}
 					},
 					{
@@ -71,5 +72,17 @@ export default class ContactInfo extends JetView{
 			this.status = statuses.getItem(values.StatusID).Value;
 			if (values) { template.setValues(values); }
 		});
+	}
+
+	deleteRow() {
+		const id  = webix.$$("contacts:list").getSelectedId();
+		if(id){
+			webix.confirm({
+				text: "The contact will be deleted.<br/> Are you sure?"
+			}).then(() => {
+				contacts.remove(id);
+				webix.message({type: "success", text: "The contact is deleted!"});
+			});
+		}
 	}
 }

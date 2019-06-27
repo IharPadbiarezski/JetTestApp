@@ -45,6 +45,7 @@ export default class ContactsView extends JetView{
 			},
 			on: {
 				onAfterSelect: (id) => {
+					this.getParentView().show("contactinfo", {target:"right"});
 					this.show(`../contacts?id=${id}`);
 				}
 			}

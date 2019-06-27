@@ -76,7 +76,12 @@ export default class ContactForm extends JetView {
 					label:"Phone",
 					placeholder:"Phone"
 				},
-                
+				{
+					view:"datepicker",
+					name: "Birthday",
+					label: "Birthday",
+					invalidMessage: "Please select a date"
+				}
 			]
 		};
 
@@ -87,6 +92,15 @@ export default class ContactForm extends JetView {
 			cols:[
 				{},
 				{
+					view:"button", value:"Cancel", autowidth:true,
+					click:() => {
+						// this.$$("form").clear();
+						this.contactList.select(this.contactList.getFirstId());
+						this.getParentView().show("contactinfo", {target:"right"});
+					},
+					tooltip:"Click to close the form"
+				},
+				{
 					view:"button", value:"Save (*add)", type:"form", autowidth:true,
 					tooltip:"Save changes",
 					click:() => {
@@ -96,15 +110,6 @@ export default class ContactForm extends JetView {
 						this.getParentView().show("contactinfo", {target:"right"});
 						// }
 					}
-				},
-				{
-					view:"button", value:"Cancel", autowidth:true,
-					click:() => {
-						// this.$$("form").clear();
-						this.contactList.select(this.contactList.getFirstId());
-						this.getParentView().show("contactinfo", {target:"right"});
-					},
-					tooltip:"Click to close the form"
 				}
 			],
 			rules: {
@@ -117,7 +122,7 @@ export default class ContactForm extends JetView {
 			borderless: true,
 			localId: "photo",
 			template: obj =>  `
-                    <image class="userphoto" src="${obj.Photo ? obj.Photo : "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
+                    <image class="userphotoform" src="${obj.Photo ? obj.Photo : "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
                 `
 		};
         
@@ -188,7 +193,7 @@ export default class ContactForm extends JetView {
 		this.contactList = webix.$$("contacts:list");
 	}
 
-	urlChange() {
+	editContact() {
 		// let form = this.$$("form");
 		// const id = this.getParentView().getSelected();
 		// webix.promise.all([
@@ -206,5 +211,18 @@ export default class ContactForm extends JetView {
 		contacts.add(values);
 		this.newID = values.id;
 		webix.message({type: "success", text: "The contact is added!"});
+
+		// const id = this.getParam("id");
+		// if (contacts.exists(id)) {
+		// 	if (this.$$("form").validate()) {
+		// 		contacts.updateItem(id, values);
+		// 		webix.message({type: "success", text: "The contact is updated!"});
+		// 	}
+		// }
+		// else {
+		// 	webix.message({type: "debug", text: "Sorry, you cann't update a non-existen contact. Please, choose another contact"});
+		// 	form.clear();
+		// 	form.clearValidation();
+		// }
 	}
 }

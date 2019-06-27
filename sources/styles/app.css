@@ -125,3 +125,8 @@
 .activities_header_align {
     text-align: center;
 }
+
+.userphotoform {
+    width: 200px;
+    height: 200px;
+}
