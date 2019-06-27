@@ -1,16 +1,21 @@
 import {JetView} from "webix-jet";
 import ContactsList from "./contacts/contactslist";
-import ContactInfo from "./contacts/contactinfo";
-import ContactForm from "./contacts/contactform";
 
 export default class ContactsView extends JetView {
 	config() {
 		return {
 			cols: [
 				ContactsList,
-				// ContactInfo,
-				ContactForm
+				{ $subview: true, name: "right" }
 			]
 		};
+	}
+	
+	init() {
+		this.show("contactinfo", {target:"right"});
+	}
+
+	getSelected(){
+		return this.getRoot().queryView({view:"list"}).getSelectedId();
 	}
 }

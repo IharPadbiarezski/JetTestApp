@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
-import {contacts} from "../../models/contactsdata";
-import {statuses} from "../../models/statusesdata";
+import {statuses} from "../models/statusesdata";
 
 export default class ContactForm extends JetView {
 	config() {
@@ -78,7 +77,7 @@ export default class ContactForm extends JetView {
 				},
                 
 			]
-		}
+		};
 
 		
         
@@ -91,7 +90,6 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					// click:() => {
 					// 	if (this.$$("form").validate()){
-					// 		webix.message("Saved (not really)!", "success");
 					// 	}
 					// }
 				},
@@ -99,6 +97,7 @@ export default class ContactForm extends JetView {
 					view:"button", value:"Cancel", autowidth:true,
 					click:() => {
 						// this.$$("form").clear();
+						this.getParentView().show("contactinfo", {target:"right"});
 					},
 					tooltip:"Click to close the form"
 				}

@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
-import {contacts} from "../../models/contactsdata";
-import {statuses} from "../../models/statusesdata";
+import {contacts} from "../models/contactsdata";
+import {statuses} from "../models/statusesdata";
 
 
 export default class ContactInfo extends JetView{
@@ -9,7 +9,7 @@ export default class ContactInfo extends JetView{
 			cols: [
 				{
 					view: "template",
-					localId: "template",
+					id: "contact:template",
 					template: obj =>  `
                             <div class="contacts-container">
                                 <div class="main_info">
@@ -55,16 +55,20 @@ export default class ContactInfo extends JetView{
 			]
 		};
 	}
+
+	init() {
+		
+	}
     
 	urlChange() {
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData
 		]).then(() => {
-			const id = this.getParam("id");
+			const id = this.getParentView().getSelected();
 			const values = contacts.getItem(id);
 			this.status = statuses.getItem(values.StatusID).Value;
-			const template = this.$$("template");
+			const template = this.$$("contact:template");
 			if (values) { template.setValues(values); }
 		});
 	}
