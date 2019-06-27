@@ -61,14 +61,14 @@ export default class ContactInfo extends JetView{
 	}
     
 	urlChange() {
+		const id = this.getParentView().getSelected();
+		const template = this.$$("contact:template");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData
 		]).then(() => {
-			const id = this.getParentView().getSelected();
 			const values = contacts.getItem(id);
 			this.status = statuses.getItem(values.StatusID).Value;
-			const template = this.$$("contact:template");
 			if (values) { template.setValues(values); }
 		});
 	}

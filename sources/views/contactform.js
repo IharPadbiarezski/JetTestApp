@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {statuses} from "../models/statusesdata";
+import {contacts} from "../models/contactsdata";
 
 export default class ContactForm extends JetView {
 	config() {
@@ -144,7 +145,7 @@ export default class ContactForm extends JetView {
 				{
 					view: "form",
 					localId: "form",
-					borderless:true,
+					
 					rows: [
 						{   margin:10,
 							cols: [
@@ -174,5 +175,17 @@ export default class ContactForm extends JetView {
 				}
 			]
 		};
+	}
+
+	urlChange() {
+		let form = this.$$("form");
+		const id = this.getParentView().getSelected();
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData
+		]).then(() => {
+			const values = contacts.getItem(id);
+			if (values) { form.setValues(values); }
+		});
 	}
 }
