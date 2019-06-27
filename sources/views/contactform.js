@@ -156,11 +156,10 @@ export default class ContactForm extends JetView {
 					width: 200,
 					tooltip:"Save changes",
 					click:() => {
-						if (this.form.validate()){
+						// if (this.form.validate()){
 							this.addContact();
-							this.contactList.select(this.newID);
 							this.getParentView().show("contactinfo", {target:"right"});
-						}
+						// }
 					}
 				}
 			],
@@ -245,9 +244,11 @@ export default class ContactForm extends JetView {
 		this.newID = values.id;
 		if (contacts.exists(this.newID)) {
 			contacts.updateItem(this.newID, values);
+			this.contactList.select(this.newID);
 		}
 		else {
 			contacts.add(values);
+			this.contactList.select(contacts.getLastId());
 		}
 	}
 
