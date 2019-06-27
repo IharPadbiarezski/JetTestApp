@@ -15,12 +15,10 @@ export default class ContactsView extends JetView{
 			css: "webix_primary",
 			align: "center",
 			inputWidth: 200,
-			click: () => {
-				// const value = this.$$("add_button").getValue();
-				// this.form.showForm({}, value);
-		
-				this.list.unselect(); 
-				this.getParentView().show("contactform", {target:"right"});
+			click: () => {		
+				this.list.unselect();
+				this.show("../contacts");
+				this.getParentView().showForm({}, "Add new", "Add");
 			}
 		};
 

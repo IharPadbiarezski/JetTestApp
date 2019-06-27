@@ -11,46 +11,60 @@ export default class ContactForm extends JetView {
 				{
 					view:"text", name:"FirstName",
 					label:"First name",
+					labelWidth: 90,
 					placeholder:"First name",
-					invalidMessage:"A name is required"
+					invalidMessage:"A first name is required"
 				},
 				{
 					view:"text", name:"LastName",
 					label:"Last name",
-					placeholder:"Last name"
+					labelWidth: 90,
+					placeholder:"Last name",
+					invalidMessage:"A last name is required"
 				},
 				{
 					view:"datepicker",
 					name: "StartDate",
 					label: "Joining date",
+					labelWidth: 90,
 					invalidMessage: "Please select a date"
 				},
 				{
 					view: "combo",
 					name: "StatusID",
 					label: "Status",
+					labelWidth: 90,
 					options: statuses,
 					invalidMessage: "Please select a status"
 				},
 				{
-					view:"text", name:"Job",
+					view:"text",
+					name:"Job",
 					label:"Job",
-					placeholder:"Job position"
+					labelWidth: 90,
+					placeholder:"Job position",
+					invalidMessage:"A job position is required"
 				},
 				{
 					view:"text", name:"Company",
 					label:"Company",
-					placeholder:"Company"
+					labelWidth: 90,
+					placeholder:"Company",
+					invalidMessage:"A company is required"
 				},
 				{
 					view:"text", name:"Website",
 					label:"Website",
-					placeholder:"Website"
+					labelWidth: 90,
+					placeholder:"Website",
+					invalidMessage:"A website is required"
 				},
 				{
 					view:"text", name:"Address",
 					label:"Address",
-					placeholder:"Address"
+					labelWidth: 90,
+					placeholder:"Address",
+					invalidMessage:"An address is required"
 				}
 			]
 		};
@@ -62,59 +76,34 @@ export default class ContactForm extends JetView {
 					view:"text",
 					name:"Email",
 					label:"Email",
+					labelWidth: 90,
 					placeholder:"Email",
+					invalidMessage:"Ivalid Email"
 				},
 				{
 					view:"text",
 					name:"Skype",
 					label:"Skype",
-					placeholder:"Skype"
+					labelWidth: 90,
+					placeholder:"Skype",
+					invalidMessage:"A skype is required"
 				},
 				{
 					view:"text",
 					name:"Phone",
 					label:"Phone",
-					placeholder:"Phone"
+					labelWidth: 90,
+					placeholder:"Phone",
+					invalidMessage:"A phone is required"
 				},
 				{
 					view:"datepicker",
 					name: "Birthday",
 					label: "Birthday",
+					labelWidth: 90,
 					invalidMessage: "Please select a date"
 				}
 			]
-		};
-
-		
-        
-		const buttons = {
-			margin:10,
-			cols:[
-				{},
-				{
-					view:"button", value:"Cancel", autowidth:true,
-					click:() => {
-						// this.$$("form").clear();
-						this.contactList.select(this.contactList.getFirstId());
-						this.getParentView().show("contactinfo", {target:"right"});
-					},
-					tooltip:"Click to close the form"
-				},
-				{
-					view:"button", value:"Save (*add)", type:"form", autowidth:true,
-					tooltip:"Save changes",
-					click:() => {
-						// if (this.$$("form").validate()){
-						this.addContact();
-						this.contactList.select(this.newID);
-						this.getParentView().show("contactinfo", {target:"right"});
-						// }
-					}
-				}
-			],
-			rules: {
-				$all: webix.rules.isNotEmpty
-			}
 		};
 
 		const contact_photo = {
@@ -131,11 +120,14 @@ export default class ContactForm extends JetView {
 			rows:[
 				{},
 				{
-					view:"button", value:"Change photo", type:"form", autowidth:true,
+					view:"button",
+					value:"Change photo",
+					type:"form",
 					tooltip:"Click to change the photo",
 				},
 				{
-					view:"button", value:"Delete photo", autowidth:true,
+					view:"button",
+					value:"Delete photo",
 					click:() => {
 					},
 					tooltip:"Click to delete the photo"
@@ -143,21 +135,62 @@ export default class ContactForm extends JetView {
 			]
 		};
 
-
+		
+		const buttons = {
+			margin:10,
+			cols:[
+				{},
+				{
+					view:"button",
+					value:"Cancel",
+					width: 200,
+					click:() => {
+						this.closeForm();
+					},
+					tooltip:"Click to close the form"
+				},
+				{
+					view:"button",
+					id: "save:contactform",
+					type:"form",
+					width: 200,
+					tooltip:"Save changes",
+					click:() => {
+						if (this.form.validate()){
+							this.addContact();
+							this.contactList.select(this.newID);
+							this.getParentView().show("contactinfo", {target:"right"});
+						}
+					}
+				}
+			],
+			rules: {
+				FirstName: webix.rules.isNotEmpty,
+				LastName: webix.rules.isNotEmpty,
+				StartDay: webix.rules.isNotEmpty,
+				StatusID: webix.rules.isNotEmpty,
+				Job: webix.rules.isNotEmpty,
+				Company: webix.rules.isNotEmpty,
+				Website: webix.rules.isNotEmpty,
+				Address: webix.rules.isNotEmpty,
+				Email: webix.rules.isEmail,
+				Phone: webix.rules.isNotEmpty,
+				Birthday: webix.rules.isNotEmpty
+			}
+		};
 
 		return {
 			rows: [
 				{
 					type:"header",
 					localId: "header_contactform",
-					template: "Edit (*add new) Contact",
-					// template: obj => obj.value,
+					id: "header:contactform",
+					template: obj => obj.value,
 					css:"webix_header"
 				},
 				{
 					view: "form",
 					localId: "form",
-					
 					rows: [
 						{   margin:10,
 							cols: [
@@ -191,38 +224,40 @@ export default class ContactForm extends JetView {
 
 	init() {
 		this.contactList = webix.$$("contacts:list");
+		this.form = this.$$("form");
 	}
 
-	editContact() {
-		// let form = this.$$("form");
-		// const id = this.getParentView().getSelected();
-		// webix.promise.all([
-		// 	contacts.waitData,
-		// 	statuses.waitData
-		// ]).then(() => {
-		// 	const values = contacts.getItem(id);
-		// 	if (values) { form.setValues(values); }
-		// });
+	urlChange() {
+		const id = this.getParentView().getSelected();
+		if (id) {
+			webix.promise.all([
+				contacts.waitData,
+				statuses.waitData
+			]).then(() => {
+				const values = contacts.getItem(id);
+				if (values) { this.form.setValues(values); }
+			});
+		}
 	}
 
 	addContact() {
-		const form = this.$$("form");
-		const values = form.getValues();
-		contacts.add(values);
+		const values = this.form.getValues();
 		this.newID = values.id;
-		webix.message({type: "success", text: "The contact is added!"});
+		if (contacts.exists(this.newID)) {
+			contacts.updateItem(this.newID, values);
+		}
+		else {
+			contacts.add(values);
+		}
+	}
 
-		// const id = this.getParam("id");
-		// if (contacts.exists(id)) {
-		// 	if (this.$$("form").validate()) {
-		// 		contacts.updateItem(id, values);
-		// 		webix.message({type: "success", text: "The contact is updated!"});
-		// 	}
-		// }
-		// else {
-		// 	webix.message({type: "debug", text: "Sorry, you cann't update a non-existen contact. Please, choose another contact"});
-		// 	form.clear();
-		// 	form.clearValidation();
-		// }
+	closeForm() {
+		const id = this.getParentView().getSelected();
+		if (id) {
+			this.contactList.select(id);
+		} else {
+			this.contactList.select(this.contactList.getFirstId());
+		}
+		this.getParentView().show("contactinfo", {target:"right"});
 	}
 }

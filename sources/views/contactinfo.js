@@ -48,6 +48,7 @@ export default class ContactInfo extends JetView{
 						icon:"mdi mdi-calendar-edit",
 						css: "webix_primary",
 						click: () => {
+							this.getParentView().showForm({}, "Edit", "Save");
 						}
 					},
 					{}
@@ -81,7 +82,6 @@ export default class ContactInfo extends JetView{
 				text: "The contact will be deleted.<br/> Are you sure?"
 			}).then(() => {
 				contacts.remove(id);
-				webix.message({type: "success", text: "The contact is deleted!"});
 			});
 		}
 	}
