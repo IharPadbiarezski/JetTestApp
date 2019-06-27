@@ -53,7 +53,7 @@ export default class ContactsView extends JetView{
 			css:"bg_color",
 			rows: [
 				contact_list,
-				{gravity: 0.2},
+				{gravity: 0.05},
 				add_button
 			]
 		};

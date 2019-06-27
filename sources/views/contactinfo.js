@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
+import {activities} from "../models/activitiesdata";
 
 
 export default class ContactInfo extends JetView{
@@ -82,6 +83,8 @@ export default class ContactInfo extends JetView{
 				text: "The contact will be deleted.<br/> Are you sure?"
 			}).then(() => {
 				contacts.remove(id);
+				let firstId = contacts.getFirstId();
+				this.getRoot().getParentView().queryView("list").select(firstId);
 			});
 		}
 	}
