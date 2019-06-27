@@ -89,20 +89,27 @@ export default class ContactForm extends JetView {
 				{
 					view:"button", value:"Save (*add)", type:"form", autowidth:true,
 					tooltip:"Save changes",
-					// click:() => {
-					// 	if (this.$$("form").validate()){
-					// 	}
-					// }
+					click:() => {
+						// if (this.$$("form").validate()){
+						this.addContact();
+						this.contactList.select(this.newID);
+						this.getParentView().show("contactinfo", {target:"right"});
+						// }
+					}
 				},
 				{
 					view:"button", value:"Cancel", autowidth:true,
 					click:() => {
 						// this.$$("form").clear();
+						this.contactList.select(this.contactList.getFirstId());
 						this.getParentView().show("contactinfo", {target:"right"});
 					},
 					tooltip:"Click to close the form"
 				}
-			]
+			],
+			rules: {
+				$all: webix.rules.isNotEmpty
+			}
 		};
 
 		const contact_photo = {
@@ -177,15 +184,27 @@ export default class ContactForm extends JetView {
 		};
 	}
 
+	init() {
+		this.contactList = webix.$$("contacts:list");
+	}
+
 	urlChange() {
-		let form = this.$$("form");
-		const id = this.getParentView().getSelected();
-		webix.promise.all([
-			contacts.waitData,
-			statuses.waitData
-		]).then(() => {
-			const values = contacts.getItem(id);
-			if (values) { form.setValues(values); }
-		});
+		// let form = this.$$("form");
+		// const id = this.getParentView().getSelected();
+		// webix.promise.all([
+		// 	contacts.waitData,
+		// 	statuses.waitData
+		// ]).then(() => {
+		// 	const values = contacts.getItem(id);
+		// 	if (values) { form.setValues(values); }
+		// });
+	}
+
+	addContact() {
+		const form = this.$$("form");
+		const values = form.getValues();
+		contacts.add(values);
+		this.newID = values.id;
+		webix.message({type: "success", text: "The contact is added!"});
 	}
 }
