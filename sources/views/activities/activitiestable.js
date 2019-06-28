@@ -85,7 +85,10 @@ export default class ActivitiesDataTable extends JetView{
 		]).then(() => {
 			const activitiesTable = this.$$("activities");
 			const id = this.getParam("id");
-			if (id && activities.exists(id)) { activitiesTable.select(id); }
+			const selectedId = activitiesTable.getSelectedId().id;
+			if (id && activities.exists(id) && id !== selectedId) {
+				activitiesTable.select(id);
+			}
 		});
 	}
 }
