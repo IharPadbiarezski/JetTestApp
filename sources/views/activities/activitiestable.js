@@ -57,13 +57,12 @@ export default class ActivitiesDataTable extends JetView{
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
-						text:"The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?",
-						ok:"Yes", cancel:"Cancel",
-						callback: res => {
-							if (res)
-								this.app.callEvent("activities:delete",[id.row]);
-						}
+						text: "The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?"
+					}).then( res => {
+						if (res)
+							this.app.callEvent("activities:delete",[id.row]);
 					});
+					return false;
 				},
 				"wxi-pencil":(e, id) => {
 					const item = this.getRoot().getItem(id);
