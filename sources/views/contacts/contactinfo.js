@@ -63,7 +63,8 @@ export default class ContactInfo extends JetView{
 		]).then(() => {
 			const id = this.getParam("id");
 			const values = contacts.getItem(id);
-			this.status = statuses.getItem(values.StatusID).Value;
+			const status = webix.copy(statuses.getItem(values.StatusID));
+			this.status = status.Value;
 			const template = this.$$("template");
 			if (values) { template.setValues(values); }
 		});
