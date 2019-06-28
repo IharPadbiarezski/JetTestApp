@@ -6,10 +6,10 @@ export const activities = new webix.DataCollection({
 	scheme:{
 		$init: (obj) => {
 			if (!obj.ConvDueDate) {
-				obj.ConvDueDate = new Date(dateFormat(obj.DueDate));
+				obj.ConvDueDate = dateFormat(obj.DueDate);
 			}
 			if (!obj.ConvDueTime) {
-				obj.ConvDueTime = new Date(obj.ConvDueDate);
+				obj.ConvDueTime = obj.ConvDueDate;
 			}
 		},
 		$save: (obj) => {
