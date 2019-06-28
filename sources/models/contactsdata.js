@@ -13,7 +13,6 @@ export const contacts = new webix.DataCollection({
 			obj.Birthday =`${strFormatDate(obj.Birthday)}`;
 		}
 		
-		
 	},
 	url: "http://localhost:8096/api/v1/contacts/",
 	save: "rest->http://localhost:8096/api/v1/contacts/"
