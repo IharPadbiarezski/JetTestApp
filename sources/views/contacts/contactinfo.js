@@ -15,7 +15,7 @@ export default class ContactInfo extends JetView{
                                 <div class="main_info">
                                     <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
                                     <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                                    <p class="status">${this.status || "-"}</p>
+                                    <p class="status">${obj.status || "-"}</p>
                                 </div>
                                 <div class="addition_info">
                                     <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email || "-"}</p>
@@ -62,9 +62,8 @@ export default class ContactInfo extends JetView{
 			statuses.waitData
 		]).then(() => {
 			const id = this.getParam("id");
-			const values = contacts.getItem(id);
-			const status = webix.copy(statuses.getItem(values.StatusID));
-			this.status = status.Value;
+			let values = webix.copy(contacts.getItem(id));
+			values.status = statuses.getItem(values.StatusID).Value;
 			const template = this.$$("template");
 			if (values) { template.setValues(values); }
 		});
