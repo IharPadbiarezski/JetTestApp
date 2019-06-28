@@ -20,7 +20,7 @@ export default class ActivitiesDataTable extends JetView{
 				},
 				{ 
 					id: "ConvDueDate",
-					header: [ "Due date", { content:"datepickerFilter" } ],
+					header: [ "Due date", { content:"datepickerFilter", inputConfig:{ format:webix.i18n.longDateFormatStr } } ],
 					fillspace: true,
 					sort: "date",
 					format:webix.i18n.longDateFormatStr
