@@ -58,10 +58,6 @@ export default class ContactInfo extends JetView{
 			]
 		};
 	}
-
-	init() {
-		
-	}
     
 	urlChange() {
 		const id = this.getParentView().getSelected();
@@ -78,13 +74,17 @@ export default class ContactInfo extends JetView{
 
 	deleteRow() {
 		const id  = webix.$$("contacts:list").getSelectedId();
-		if(id){
+		if(id && contacts.exists(id)){
 			webix.confirm({
 				text: "The contact will be deleted.<br/> Are you sure?"
 			}).then(() => {
 				contacts.remove(id);
 				let firstId = contacts.getFirstId();
 				this.getRoot().getParentView().queryView("list").select(firstId);
+				const connectedActivities = activities.find( obj => obj.ContactID == id );
+				connectedActivities.forEach((activity) => {
+					activities.remove(activity.id);
+				});
 			});
 		}
 	}
