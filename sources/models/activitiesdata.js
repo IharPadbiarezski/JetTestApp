@@ -5,12 +5,8 @@ const strFormatTime = webix.Date.dateToStr("%H:%i");
 export const activities = new webix.DataCollection({
 	scheme:{
 		$init: (obj) => {
-			if (!obj.ConvDueDate) {
-				obj.ConvDueDate = dateFormat(obj.DueDate);
-			}
-			if (!obj.ConvDueTime) {
-				obj.ConvDueTime = obj.ConvDueDate;
-			}
+			obj.ConvDueDate = dateFormat(obj.DueDate);
+			obj.ConvDueTime = obj.ConvDueDate;
 		},
 		$save: (obj) => {
 			obj.DueDate =`${strFormatDate(obj.ConvDueDate)} ${strFormatTime(obj.ConvDueTime)}`;
