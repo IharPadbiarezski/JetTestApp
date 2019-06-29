@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import ActivitiesDataTable from "./activities/activitiestable";
+import CommonActivitiesTable from "./commonactivitytable";
 import ActivityWindow from "./activities/activityform";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
@@ -37,7 +37,7 @@ export default class ContactInfo extends JetView{
 			options: [
 				{
 					value: "Activities",
-					id: "activities:datatable"
+					id: "common:activities"
 				},
 				{
 					value: "Files",
@@ -50,7 +50,7 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				ActivitiesDataTable,
+				CommonActivitiesTable,
 				{id: "contact:files", template: "Upload files"}
 			]
 		};
@@ -104,7 +104,7 @@ export default class ContactInfo extends JetView{
 		grid.hideColumn("ContactID");
 	}
     
-	urlChange() {
+	urlChange(view) {
 		const template = this.$$("contact:template");
 		webix.promise.all([
 			contacts.waitData,
@@ -112,8 +112,14 @@ export default class ContactInfo extends JetView{
 		]).then(() => {
 			const id = this.getParentView().getSelected();
 			let values = webix.copy(contacts.getItem(id));
+			const grid = view.queryView({view:"datatable"});
 			values.status = statuses.getItem(values.StatusID).Value;
 			if (values) { template.setValues(values); }
+			if (id && contacts.exists(id)) {
+				grid.sync(activities, function () {
+					this.filter( data => data.ContactID.toString() === id );
+				});
+			}
 		});
 	}
 
