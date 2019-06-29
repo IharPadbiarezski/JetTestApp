@@ -33,21 +33,12 @@ export default class ContactsView extends JetView{
 			css: "persons_list",
 			type:{
 				template:obj => `
-<<<<<<< HEAD
-							<image class="contactphoto" src="${obj.Photo ? obj.Photo : "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-							<div class="text">
-								<span class="contactname">${obj.FirstName} ${obj.LastName}</span>
-								<span class="contactjob">${obj.Job}</span>
-							</div>
-							`,
-=======
                 <image class="contactphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
                 <div class="text">
                     <span class="contactname">${obj.FirstName || "-"} ${obj.LastName || "-"}</span>
                     <span class="contactjob">${obj.Job || "-"}</span>
                 </div>
                 `,
->>>>>>> origin/master
 				height:66
 			},
 			on: {
