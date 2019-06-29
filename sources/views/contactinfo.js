@@ -23,7 +23,7 @@ export default class ContactInfo extends JetView{
                                     <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
                                     <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
                                     <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
-                                    <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.Company || "-"}</p>
+                                    <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.InfoBirthday || "-"}</p>
                                     <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
                                 </div>
                             </div>
@@ -60,13 +60,12 @@ export default class ContactInfo extends JetView{
 	}
     
 	urlChange() {
-		const id = this.getParentView().getSelected();
 		const template = this.$$("contact:template");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData
 		]).then(() => {
-			// const id = this.getParam("id");
+			const id = this.getParentView().getSelected();
 			let values = webix.copy(contacts.getItem(id));
 			values.status = statuses.getItem(values.StatusID).Value;
 
