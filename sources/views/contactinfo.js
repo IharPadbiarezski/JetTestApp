@@ -58,7 +58,7 @@ export default class ContactInfo extends JetView{
 		const buttons = {
 			
 			width: 200,
-			css: "bg_color",
+			css: "contact_buttons_bg",
 			margin: 10,
 			padding: 10,
 			rows: [{
