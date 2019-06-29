@@ -5,8 +5,8 @@ export const contacts = new webix.DataCollection({
 	scheme:{
 		$init: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
-			obj.StartDate = new Date(dateFormat(obj.StartDate));
-			obj.Birthday = new Date(dateFormat(obj.Birthday));
+			obj.StartDate = dateFormat(obj.StartDate);
+			obj.Birthday = dateFormat(obj.Birthday);
 		},
 		$save: (obj) => {
 			obj.StartDate =`${strFormatDate(obj.StartDate)}`;
