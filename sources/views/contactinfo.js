@@ -1,4 +1,6 @@
 import {JetView} from "webix-jet";
+import ActivitiesDataTable from "./activities/activitiestable";
+import ActivityWindow from "./activities/activityform";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
@@ -6,55 +8,93 @@ import {activities} from "../models/activitiesdata";
 
 export default class ContactInfo extends JetView{
 	config(){
-		return { 
-			cols: [
-				{
-					view: "template",
-					id: "contact:template",
-					template: obj =>  `
-                            <div class="contacts-container">
-                                <div class="main_info">
-                                    <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
-                                    <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                                    <p class="status">${obj.status || "-"}</p>
-                                </div>
-                                <div class="addition_info">
-                                    <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email || "-"}</p>
-                                    <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
-                                    <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
-                                    <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
-                                    <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.InfoBirthday || "-"}</p>
-                                    <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
-                                </div>
-                            </div>
-                    `
-				},
+		const contactTemplate = {
+			view: "template",
+			id: "contact:template",
+			template: obj =>  `
+                <div class="contacts-container">
+                    <div class="main_info">
+                        <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
+                        <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
+                        <p class="status">${obj.status || "-"}</p>
+                    </div>
+                    <div class="addition_info">
+                        <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email || "-"}</p>
+                        <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
+                        <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
+                        <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
+                        <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.InfoBirthday || "-"}</p>
+                        <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
+                    </div>
+                </div>
+            `
+		};
 
-				{css: "bg_color",
-					gravity: 0.4,
-					rows: [{
-						view: "button",
-						label: "Delete",
-						type:"icon",
-						icon: "wxi-trash",
-						css: "webix_primary",
-						click: () => {
-							this.deleteRow();
-						}
-					},
-					{
-						view: "button",
-						label: "Edit",
-						type:"icon",
-						icon:"mdi mdi-calendar-edit",
-						css: "webix_primary",
-						click: () => {
-							this.getParentView().showForm({}, "Edit", "Save");
-						}
-					},
-					{}
-					]
+		const contactTabbar = {
+			view: "tabbar",
+			multiview: true,
+			id: "tabbar",
+			options: [
+				{
+					value: "Activities",
+					id: "contact:activities"
+				},
+				{
+					value: "Files",
+					id: "contact:files"
 				}
+			],
+			height: 50
+		};
+
+		const contactTabbarElements = {
+			animate: false,
+			cells: [
+				{id: "contact:activities", $subview: ActivitiesDataTable},
+				{id: "contact:files", template: "Upload files"}
+			]
+		};
+
+		const buttons = {
+			
+			width: 200,
+			css: "bg_color",
+			margin: 10,
+			padding: 10,
+			rows: [{
+				view: "button",
+				label: "Delete",
+				type:"icon",
+				icon: "wxi-trash",
+				css: "webix_primary",
+				click: () => {
+					this.deleteRow();
+				}
+			},
+			{
+				view: "button",
+				label: "Edit",
+				type:"icon",
+				icon:"mdi mdi-calendar-edit",
+				css: "webix_primary",
+				click: () => {
+					this.getParentView().showForm({}, "Edit", "Save");
+				}
+			},
+			{}
+			]
+		};
+
+		return { 	
+			rows: [
+				{ cols:
+							[
+								contactTemplate,
+								buttons
+							]
+				},
+				contactTabbar,
+				contactTabbarElements
 			]
 		};
 	}
@@ -68,7 +108,6 @@ export default class ContactInfo extends JetView{
 			const id = this.getParentView().getSelected();
 			let values = webix.copy(contacts.getItem(id));
 			values.status = statuses.getItem(values.StatusID).Value;
-
 			if (values) { template.setValues(values); }
 		});
 	}
