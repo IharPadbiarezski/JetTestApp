@@ -33,11 +33,11 @@ export default class ContactInfo extends JetView{
 		const contactTabbar = {
 			view: "tabbar",
 			multiview: true,
-			id: "tabbar",
+			localID: "tabbar",
 			options: [
 				{
 					value: "Activities",
-					id: "contact:activities"
+					id: "activities:datatable"
 				},
 				{
 					value: "Files",
@@ -50,7 +50,7 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				{id: "contact:activities", $subview: ActivitiesDataTable, name: "buttom"},
+				ActivitiesDataTable,
 				{id: "contact:files", template: "Upload files"}
 			]
 		};
