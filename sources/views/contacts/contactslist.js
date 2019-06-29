@@ -64,12 +64,14 @@ export default class ContactsView extends JetView{
 
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
-			if (!id || !contacts.exists(id)) { id = contacts.getFirstId(); }
-<<<<<<< HEAD
-			if (id) { this.list.select(id); }
-=======
-			if (id && id !== list.getSelectedId()) { list.select(id);}
->>>>>>> origin/master
+			
+			if (!id || !contacts.exists(id)) { 
+				id = contacts.getFirstId(); 
+			}
+			
+			if (id && id !== this.list.getSelectedId()) { 
+				this.list.select(id);
+			}
 		});
 	}
 }
