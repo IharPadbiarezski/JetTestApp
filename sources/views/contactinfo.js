@@ -14,17 +14,17 @@ export default class ContactInfo extends JetView{
 					template: obj =>  `
                             <div class="contacts-container">
                                 <div class="main_info">
-                                    <h2 class="username">${obj.FirstName} ${obj.LastName}</h2>
-                                    <image class="userphoto" src="${obj.Photo ? obj.Photo : "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                                    <p class="status">${this.status}</p>
+                                    <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
+                                    <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
+                                    <p class="status">${obj.status || "-"}</p>
                                 </div>
                                 <div class="addition_info">
-                                    <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email}</p>
-                                    <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype}</p>
-                                    <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job}</p>
-                                    <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company}</p>
-                                    <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.Company}</p>
-                                    <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address}</p>
+                                    <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email || "-"}</p>
+                                    <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
+                                    <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
+                                    <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
+                                    <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.Company || "-"}</p>
+                                    <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
                                 </div>
                             </div>
                     `
@@ -66,8 +66,10 @@ export default class ContactInfo extends JetView{
 			contacts.waitData,
 			statuses.waitData
 		]).then(() => {
-			const values = contacts.getItem(id);
-			this.status = statuses.getItem(values.StatusID).Value;
+			// const id = this.getParam("id");
+			let values = webix.copy(contacts.getItem(id));
+			values.status = statuses.getItem(values.StatusID).Value;
+
 			if (values) { template.setValues(values); }
 		});
 	}
