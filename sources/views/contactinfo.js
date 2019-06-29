@@ -50,7 +50,7 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				{id: "contact:activities", $subview: ActivitiesDataTable},
+				{id: "contact:activities", $subview: ActivitiesDataTable, name: "buttom"},
 				{id: "contact:files", template: "Upload files"}
 			]
 		};
@@ -97,6 +97,11 @@ export default class ContactInfo extends JetView{
 				contactTabbarElements
 			]
 		};
+	}
+
+	ready(view) {
+		const grid = view.queryView({view:"datatable"});
+		grid.hideColumn("ContactID");
 	}
     
 	urlChange() {

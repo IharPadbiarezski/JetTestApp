@@ -8,6 +8,7 @@ export default class ActivitiesDataTable extends JetView{
 		return {
 			view:"datatable",
 			localId: "activities",
+			id: "activities:datatable",
 			select: true,
 			columns: [
 				{ id:"State", header:"", template:"{common.checkbox()}", width: 40, sort: "string"},
