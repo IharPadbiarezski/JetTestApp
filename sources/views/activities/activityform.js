@@ -13,7 +13,7 @@ export default class ActivityWindow extends JetView {
 				elements: [
 					{
 						view:"template",
-						id: "activity:header",
+						localId: "activity:header",
 						template: obj => obj.value,
 						type:"header",
 						css: "activities_header_align"
@@ -35,6 +35,7 @@ export default class ActivityWindow extends JetView {
 						view: "combo",
 						name: "ContactID",
 						label: "Contact",
+						localId: "activityForm:combo",
 						options: contacts,
 						invalidMessage: "Please select a contact"
 					},

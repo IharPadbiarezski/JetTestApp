@@ -98,7 +98,7 @@ export default class ContactForm extends JetView {
 				},
 				{
 					view:"datepicker",
-					name: "Birthday",
+					name: "InfoBirthday",
 					label: "Birthday",
 					labelWidth: 90,
 					invalidMessage: "Please select a date"
@@ -190,6 +190,7 @@ export default class ContactForm extends JetView {
 				{
 					view: "form",
 					localId: "form",
+					id: "contact:form",
 					rows: [
 						{   margin:10,
 							cols: [

@@ -6,12 +6,15 @@ export const contacts = new webix.DataCollection({
 		$init: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
 			obj.StartDate = dateFormat(obj.StartDate);
-			obj.InfoBirthday = obj.Birthday;
-			obj.Birthday = dateFormat(obj.Birthday);	
+			// console.log(obj.Birthday);
+			if (!obj.InfoBirthday) {
+				obj.InfoBirthday = dateFormat(obj.Birthday);
+			}
 		},
 		$save: (obj) => {
-			obj.StartDate =`${strFormatDate(obj.StartDate)}`;
-			obj.Birthday =`${strFormatDate(obj.Birthday)}`;
+			obj.StartDate = strFormatDate(obj.StartDate);
+			obj.Birthday = strFormatDate(obj.InfoBirthday);
+			console.log(obj.Birthday);
 		}
 		
 	},

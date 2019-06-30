@@ -4,6 +4,7 @@ import ActivityWindow from "./activities/activityform";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
+import FilesDataTable from "./filestable";
 
 
 export default class ContactInfo extends JetView{
@@ -23,7 +24,7 @@ export default class ContactInfo extends JetView{
                         <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
                         <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
                         <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
-                        <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.InfoBirthday || "-"}</p>
+                        <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.Birthday || "-"}</p>
                         <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
                     </div>
                 </div>
@@ -51,7 +52,7 @@ export default class ContactInfo extends JetView{
 			animate: false,
 			cells: [
 				ActivitiesDataTable,
-				{id: "contact:files", template: "Upload files"}
+				FilesDataTable
 			]
 		};
 
@@ -85,26 +86,26 @@ export default class ContactInfo extends JetView{
 			]
 		};
 
-		const addActivityBtn = {	
-			view:"toolbar", css:"subbar", padding:0,
-			elements:[
-				{},
-				{
-					view: "button",
-					label: "Add",
-					localId: "addButton",
-					type:"icon",
-					value: "Add activity",
-					icon: "wxi-plus",
-					css: "webix_primary bg_color",
-					align: "right",
-					inputWidth: 200,
-					click: () => {
-						this.form.showForm({}, "Add", "Add");
-					}
-				}
-			]
-		};
+		// const addActivityBtn = {	
+		// 	view:"toolbar", css:"subbar", padding:0,
+		// 	elements:[
+		// 		{},
+		// 		{
+		// 			view: "button",
+		// 			label: "Add",
+		// 			localId: "addButton",
+		// 			type:"icon",
+		// 			value: "Add activity",
+		// 			icon: "wxi-plus",
+		// 			css: "webix_primary bg_color",
+		// 			align: "right",
+		// 			inputWidth: 200,
+		// 			click: () => {
+		// 				this.form.showForm({}, "Add", "Add");
+		// 			}
+		// 		}
+		// 	]
+		// };
 
 		return { 	
 			rows: [
@@ -115,8 +116,8 @@ export default class ContactInfo extends JetView{
 							]
 				},
 				contactTabbar,
-				contactTabbarElements,
-				addActivityBtn
+				contactTabbarElements
+				// addActivityBtn
 			]
 		};
 	}
@@ -153,6 +154,8 @@ export default class ContactInfo extends JetView{
 					this.filter( data => data.ContactID.toString() === id );
 				});
 			}
+			let val = this.form.getRoot().queryView("combo");
+			console.log(val)
 		});
 	}
 

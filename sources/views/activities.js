@@ -7,27 +7,27 @@ export default class DataView extends JetView{
 	config(){
 		return {
 			rows: [
-				{	
-					view:"toolbar", css:"subbar", padding:0,
-					elements:[
-						{},
-						{
-							view: "button",
-							label: "Add",
-							localId: "addButton",
-							type:"icon",
-							value: "Add",
-							icon: "wxi-plus-square",
-							css: "webix_primary",
-							align: "right",
-							inputWidth: 200,
-							click: () => {
-								const value = this.$$("addButton").getValue();
-								this.form.showForm({}, value, value);
-							}
-						}
-					]
-				},
+				// {	
+				// 	view:"toolbar", css:"subbar", padding:0,
+				// 	elements:[
+				// 		{},
+				// 		{
+				// 			view: "button",
+				// 			label: "Add",
+				// 			localId: "addButton",
+				// 			type:"icon",
+				// 			value: "Add",
+				// 			icon: "wxi-plus-square",
+				// 			css: "webix_primary",
+				// 			align: "right",
+				// 			inputWidth: 200,
+				// 			click: () => {
+				// 				const value = this.$$("addButton").getValue();
+				// 				this.form.showForm({}, value, value);
+				// 			}
+				// 		}
+				// 	]
+				// },
 				{ $subview:ActivitiesDataTable }
 			]
 		};
