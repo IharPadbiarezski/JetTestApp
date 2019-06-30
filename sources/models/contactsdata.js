@@ -6,7 +6,6 @@ export const contacts = new webix.DataCollection({
 		$init: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
 			obj.StartDate = dateFormat(obj.StartDate);
-			// console.log(obj.Birthday);
 			if (!obj.InfoBirthday) {
 				obj.InfoBirthday = dateFormat(obj.Birthday);
 			}
@@ -15,7 +14,6 @@ export const contacts = new webix.DataCollection({
 			obj.StartDate = strFormatDate(obj.StartDate);
 			obj.Birthday = strFormatDate(obj.InfoBirthday);
 		}
-		
 	},
 	url: "http://localhost:8096/api/v1/contacts/",
 	save: "rest->http://localhost:8096/api/v1/contacts/"
