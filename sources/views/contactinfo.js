@@ -38,7 +38,7 @@ export default class ContactInfo extends JetView{
 			options: [
 				{
 					value: "Activities",
-					id: "activities:datatable"
+					id: "activities:datatable:view"
 				},
 				{
 					value: "Files",

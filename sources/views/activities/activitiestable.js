@@ -6,6 +6,7 @@ import ActivityWindow from "./activityform";
 export default class ActivitiesDataTable extends JetView{
 	config(){
 		return {
+			id: "activities:datatable:view",
 			rows: [
 				{	
 					view:"toolbar", css:"subbar", padding:0,
