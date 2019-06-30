@@ -14,16 +14,16 @@ export default class DataView extends JetView{
 						{
 							view: "button",
 							label: "Add",
-							localId: "add:button",
+							localId: "addButton",
 							type:"icon",
 							value: "Add",
 							icon: "wxi-plus-square",
-							css: "webix_primary bg_color",
+							css: "webix_primary",
 							align: "right",
 							inputWidth: 200,
 							click: () => {
-								const value = this.$$("add:button").getValue();
-								this.form.showForm({}, value);
+								const value = this.$$("addButton").getValue();
+								this.form.showForm({}, value, value);
 							}
 						}
 					]
@@ -33,7 +33,16 @@ export default class DataView extends JetView{
 		};
 	}
 
-	init () {
+	ready(view) {
+		this.table = webix.$$("activities:datatable");
+		this.table.attachEvent("onAfterSelect", (id) => { 
+			this.show(`../activities?id=${id}`);
+		});
+		const grid = view.queryView({view:"datatable"});
+		grid.sync(activities);
+	}
+
+	init() {
 		this.form = this.ui(ActivityWindow);
 
 		this.on(this.app, "activities:save", values => {
@@ -41,5 +50,22 @@ export default class DataView extends JetView{
 		});
 
 		this.on(this.app,"activities:delete", id => activities.remove(id));
+	}
+
+	destroy(){
+		this.table.detachEvent("onAfterSelect");
+	}
+
+	urlChange() {
+		webix.promise.all([
+			activities.waitData,
+		]).then(() => {
+			const activitiesTable = this.$$("activities:datatable");
+			const id = this.getParam("id");
+			const selectedId = activitiesTable.getSelectedId().id;
+			if (id && activities.exists(id) && id !== selectedId) {
+				activitiesTable.select(id);
+			}
+		});
 	}
 }

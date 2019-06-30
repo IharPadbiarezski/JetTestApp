@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import CommonActivitiesTable from "./commonactivitytable";
+import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityWindow from "./activities/activityform";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
@@ -37,7 +37,7 @@ export default class ContactInfo extends JetView{
 			options: [
 				{
 					value: "Activities",
-					id: "common:activities"
+					id: "activities:datatable"
 				},
 				{
 					value: "Files",
@@ -50,7 +50,7 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				CommonActivitiesTable,
+				ActivitiesDataTable,
 				{id: "contact:files", template: "Upload files"}
 			]
 		};
@@ -85,6 +85,27 @@ export default class ContactInfo extends JetView{
 			]
 		};
 
+		const addActivityBtn = {	
+			view:"toolbar", css:"subbar", padding:0,
+			elements:[
+				{},
+				{
+					view: "button",
+					label: "Add",
+					localId: "addButton",
+					type:"icon",
+					value: "Add activity",
+					icon: "wxi-plus",
+					css: "webix_primary bg_color",
+					align: "right",
+					inputWidth: 200,
+					click: () => {
+						this.form.showForm({}, "Add", "Add");
+					}
+				}
+			]
+		};
+
 		return { 	
 			rows: [
 				{ cols:
@@ -94,7 +115,8 @@ export default class ContactInfo extends JetView{
 							]
 				},
 				contactTabbar,
-				contactTabbarElements
+				contactTabbarElements,
+				addActivityBtn
 			]
 		};
 	}
@@ -103,12 +125,23 @@ export default class ContactInfo extends JetView{
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
 	}
+
+	init() {
+		this.form = this.ui(ActivityWindow);
+
+		this.on(this.app, "activities:save", values => {
+			values.id ? activities.updateItem(values.id, values) : activities.add(values);
+		});
+
+		this.on(this.app,"activities:delete", id => activities.remove(id));
+	}
     
 	urlChange(view) {
 		const template = this.$$("contact:template");
 		webix.promise.all([
 			contacts.waitData,
-			statuses.waitData
+			statuses.waitData,
+			activities.waitData
 		]).then(() => {
 			const id = this.getParentView().getSelected();
 			let values = webix.copy(contacts.getItem(id));
@@ -132,7 +165,7 @@ export default class ContactInfo extends JetView{
 				contacts.remove(id);
 				let firstId = contacts.getFirstId();
 				this.getRoot().getParentView().queryView("list").select(firstId);
-				const connectedActivities = activities.find( obj => obj.ContactID == id );
+				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
 				connectedActivities.forEach((activity) => {
 					activities.remove(activity.id);
 				});

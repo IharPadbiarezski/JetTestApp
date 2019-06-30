@@ -1,5 +1,4 @@
 import {JetView} from "webix-jet";
-import {activities} from "../../models/activitiesdata";
 import {activitytypes} from "../../models/activitytypesdata";
 import {contacts} from "../../models/contactsdata";
 
@@ -50,11 +49,11 @@ export default class ActivitiesDataTable extends JetView{
 					width: 60
 				},
 			],
-			on: {
-				onAfterSelect: (id) => {
-					this.show(`../activities?id=${id}`);
-				}
-			},
+			// on: {
+			// 	onAfterSelect: (id) => {
+			// 		this.show(`../activities?id=${id}`);
+			// 	}
+			// },
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
@@ -73,22 +72,22 @@ export default class ActivitiesDataTable extends JetView{
 		};
 	}
 	
-	init(view){
-		view.sync(activities);
-	}
+	// init(view){
+	// 	view.sync(activities);
+	// }
 
-	urlChange() {
-		webix.promise.all([
-			activities.waitData,
-			activitytypes.waitData,
-			contacts.waitData
-		]).then(() => {
-			const activitiesTable = this.$$("activities");
-			const id = this.getParam("id");
-			const selectedId = activitiesTable.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				activitiesTable.select(id);
-			}
-		});
-	}
+	// urlChange() {
+	// 	webix.promise.all([
+	// 		activities.waitData,
+	// 		activitytypes.waitData,
+	// 		contacts.waitData
+	// 	]).then(() => {
+	// 		const activitiesTable = this.$$("activities");
+	// 		const id = this.getParam("id");
+	// 		const selectedId = activitiesTable.getSelectedId().id;
+	// 		if (id && activities.exists(id) && id !== selectedId) {
+	// 			activitiesTable.select(id);
+	// 		}
+	// 	});
+	// }
 }
