@@ -14,7 +14,6 @@ export const contacts = new webix.DataCollection({
 		$save: (obj) => {
 			obj.StartDate = strFormatDate(obj.StartDate);
 			obj.Birthday = strFormatDate(obj.InfoBirthday);
-			console.log(obj.Birthday);
 		}
 		
 	},

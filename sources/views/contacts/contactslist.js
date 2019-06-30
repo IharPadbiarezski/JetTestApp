@@ -18,7 +18,10 @@ export default class ContactsView extends JetView{
 			click: () => {		
 				this.list.unselect();
 				this.show("../contacts");
-				webix.$$("contact:form").clear();
+				const form = webix.$$("contact:form");
+				if (form) {
+					form.clear();
+				}
 				this.getParentView().showForm({}, "Add new", "Add");
 			}
 		};
