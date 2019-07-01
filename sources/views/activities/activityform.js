@@ -74,6 +74,7 @@ export default class ActivityWindow extends JetView {
 								if (this.form.validate()) {
 									this.app.callEvent("activities:save", [this.form.getValues()]);
 									this.hideForm();
+									this.setEnable();
 								}
 							}
 						},
@@ -82,6 +83,7 @@ export default class ActivityWindow extends JetView {
 							value: "Cancel",
 							click: () => {
 								this.hideForm();
+								this.setEnable();
 							}
 						}
 					]},
@@ -101,6 +103,13 @@ export default class ActivityWindow extends JetView {
 			this.showForm({}, "Edit", "Save");
 			this.form.setValues(values);
 		});
+	}
+
+	setEnable() {
+		const comboContact = webix.$$("comboContact:activity");
+		if (!comboContact.isEnabled()) {
+			comboContact.enable();
+		}
 	}
 
 	showForm(data, headerType, buttonType){

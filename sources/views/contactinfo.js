@@ -1,6 +1,4 @@
 import {JetView} from "webix-jet";
-import ActivitiesDataTable from "./activities/activitiestable";
-import ActivityWindow from "./activities/activityform";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";

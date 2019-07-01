@@ -107,25 +107,59 @@ export default class ContactForm extends JetView {
 		};
 
 		const contact_photo = {
-			view: "template",
-			borderless: true,
-			localId: "photo",
-			template: obj =>  `
-                    <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                `
+			// view: "template",
+			// borderless: true,
+			// localId: "photo",
+			// template: obj =>  `
+			//         <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
+			//     `
+			
+			view:"window",
+			id:"tmpWin", 
+			position:"center",
+			head:"Preview", 
+			close:true,
+			body:{ 
+				id:"tmp", 
+				view:"template",
+				template:"<img src='#src#' class='fit_parent'></img>",
+				width:500,
+				autoheight:true
+			}
+			
 		};
         
 		const photo_buttons = {
 			margin:10,
 			rows:[
 				{},
-				{
-					view:"button",
+				// {
+				// 	view:"button",
+				// 	value:"Change photo",
+				// 	type:"form",
+				// 	tooltip:"Click to change the photo",
+				// 	click: () => {
+				// 		// this.$$("uploadAPI").fileDialog({ id });
+				// 	}
+				// },
+				{ 
+					view:"uploader", 
 					value:"Change photo",
-					type:"form",
-					tooltip:"Click to change the photo",
-					click: () => {
-						// this.$$("uploadAPI").fileDialog({ id });
+					accept:"image/jpeg, image/png",       
+					autosend:false, 
+					multiple:false,
+					on:{        
+						onBeforeFileAdd: function(upload){        
+							var file = upload.file;
+							var reader = new FileReader();  
+							reader.onload = function(event) {
+								// console.log(event.target.result);
+								webix.$$("tmpWin").getBody().setValues({src:event.target.result});
+								webix.$$("tmpWin").show();
+							};           
+							reader.readAsDataURL(file);
+							return false;
+						}
 					}
 				},
 				{
