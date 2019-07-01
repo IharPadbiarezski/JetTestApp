@@ -150,11 +150,12 @@ export default class ContactForm extends JetView {
 					autosend:false, 
 					multiple:false,
 					on:{        
-						onBeforeFileAdd: function(upload){        
+						onBeforeFileAdd: (upload) => {        
 							var file = upload.file;
 							var reader = new FileReader();  
-							reader.onload = function(event) {
-								webix.$$("photo:contact").setValues({Photo:event.target.result});
+							reader.onload = (event) => {
+								this.photo = event.target.result;
+								webix.$$("photo:contact").setValues({Photo: this.photo});
 							};           
 							reader.readAsDataURL(file);
 							return false;
@@ -166,10 +167,12 @@ export default class ContactForm extends JetView {
 					value:"Delete photo",
 					tooltip:"Click to delete the photo",
 					click: () => {
-						// const id = this.getParentView().getSelected();
-						// if (id && contacts.exists(id)) {
-						// 	const values = contacts.getItem(id);
-						// 	values.Photo = "";
+						const id = this.getParentView().getSelected();
+						if (id && contacts.exists(id)) {
+							this.photo = "";
+							webix.$$("photo:contact").setValues({Photo: this.photo});
+
+						}
 					}
 				}
 			]
@@ -308,13 +311,16 @@ export default class ContactForm extends JetView {
 
 	addContact() {
 		const values = this.form.getValues();
+		// I have work On It
 		this.newID = values.id;
 		if (contacts.exists(this.newID)) {
+			values.Photo = this.photo;
 			contacts.updateItem(this.newID, values);
 			this.contactList.select(this.newID);
 		}
 		else {
 			contacts.add(values);
+			values.Photo = this.photo;
 			this.contactList.select(contacts.getLastId());
 		}
 	}

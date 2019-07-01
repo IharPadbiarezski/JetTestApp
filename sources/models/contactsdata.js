@@ -12,9 +12,14 @@ export const contacts = new webix.DataCollection({
 			} if (!obj.Birthday) {
 				obj.Birthday = strFormatDateInfo(obj.InfoBirthday);
 			}
+			console.log(obj.Photo)
+			if(!obj.Photo) {
+				obj.Photo = obj.Photo;
+			}
 		},
 		$update: (obj) => {
 			obj.Birthday = strFormatDateInfo(obj.InfoBirthday);
+			obj.Photo = obj.Photo;
 		},
 		$save: (obj) => {
 			obj.StartDate = strFormatDate(obj.StartDate);
