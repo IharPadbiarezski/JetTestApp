@@ -54,14 +54,21 @@ export default class FilesDataTable extends JetView{
 					// 	}
 					// }
 				},
-				{
-					view:"uploader",
-					id: "uploader_1",
-					value:"Upload file",
-					icon: "wxi-plus",
-					// link:"datatable",
-					upload: files
-					// datatype:"json"
+				{ cols: [
+					{},
+					{
+						view:"uploader",
+						id: "uploader_1",
+						type:"iconButton",
+						icon:"mdi mdi-upload",
+						label:"Upload file",
+						width: 200,
+						// link:"datatable",
+						upload: files
+						// datatype:"json"
+					},
+					{}
+				]
 				}
 			]
 		};

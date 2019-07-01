@@ -107,25 +107,26 @@ export default class ContactForm extends JetView {
 		};
 
 		const contact_photo = {
-			// view: "template",
-			// borderless: true,
-			// localId: "photo",
-			// template: obj =>  `
-			//         <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-			//     `
+			view: "template",
+			borderless: true,
+			localId: "photo",
+			id: "photo:contact",
+			template: obj =>  `
+			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
+			    `
 			
-			view:"window",
-			id:"tmpWin", 
-			position:"center",
-			head:"Preview", 
-			close:true,
-			body:{ 
-				id:"tmp", 
-				view:"template",
-				template:"<img src='#src#' class='fit_parent'></img>",
-				width:500,
-				autoheight:true
-			}
+			// view:"window",
+			// id:"tmpWin", 
+			// position:"center",
+			// head:"Preview", 
+			// close:true,
+			// body:{ 
+			// 	id:"tmp", 
+			// 	view:"template",
+			// 	template:"<img src='#src#' class='fit_parent'></img>",
+			// 	width:500,
+			// 	autoheight:true
+			// }
 			
 		};
         
@@ -153,9 +154,7 @@ export default class ContactForm extends JetView {
 							var file = upload.file;
 							var reader = new FileReader();  
 							reader.onload = function(event) {
-								// console.log(event.target.result);
-								webix.$$("tmpWin").getBody().setValues({src:event.target.result});
-								webix.$$("tmpWin").show();
+								webix.$$("photo:contact").setValues({Photo:event.target.result});
 							};           
 							reader.readAsDataURL(file);
 							return false;
@@ -165,14 +164,13 @@ export default class ContactForm extends JetView {
 				{
 					view:"button",
 					value:"Delete photo",
+					tooltip:"Click to delete the photo",
 					click: () => {
-						const id = this.getParentView().getSelected();
-						if (id && contacts.exists(id)) {
-							const values = contacts.getItem(id);
-							values.Photo = "";
-						}
-					},
-					tooltip:"Click to delete the photo"
+						// const id = this.getParentView().getSelected();
+						// if (id && contacts.exists(id)) {
+						// 	const values = contacts.getItem(id);
+						// 	values.Photo = "";
+					}
 				}
 			]
 		};
