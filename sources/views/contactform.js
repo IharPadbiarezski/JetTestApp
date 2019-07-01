@@ -265,9 +265,9 @@ export default class ContactForm extends JetView {
 		}
 	}
 
+
 	addContact() {
 		const values = this.form.getValues();
-		// I have work On It
 		const id = values.id;
 		this.newID = contacts.getLastId();
 		if (contacts.exists(id)) {
