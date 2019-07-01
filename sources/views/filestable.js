@@ -1,57 +1,74 @@
 import {JetView} from "webix-jet";
 // import {activitytypes} from "../../models/activitytypesdata";
-// import {contacts} from "../../models/contactsdata";
+import {files} from "../models/files";
 
 export default class FilesDataTable extends JetView{
 	config(){
 		return {
-			view:"datatable",
-			localId: "datatable",
 			id: "contact:files",
-			select: true,
-			columns: [
-				{ 
-					id: "Name",
-					header: "Name",
-					fillspace: true,
-					sort: "string"
-				},
-				{ 
-					id: "ChangeDate",
-					header: "Change date",
-					fillspace: true,
-					sort: "date",
-					format:webix.i18n.longDateFormatStr
-				},
-				{ 
-					id: "Size",
-					header: "Size",
-					fillspace: true,
-					sort: "string"
+			rows: [
+				// {
+				// 	view:"list",  id:"mylist", type:"uploader",
+				// 	autoheight:true, borderless:true	
+				//   },
+				{
+					view:"datatable",
+					localId: "datatable",
+					type:"uploader",
+					select: true,
+					columns: [
+						{ 
+							id: "name",
+							header: "Name",
+							fillspace: true,
+							sort: "string"
+						},
+						{ 
+							id: "ChangeDate",
+							header: "Change date",
+							fillspace: true,
+							sort: "date",
+							format:webix.i18n.longDateFormatStr
+						},
+						{ 
+							id: "size",
+							header: "Size",
+							fillspace: true,
+							sort: "string"
+						},
+						// {
+						// 	id: "",
+						// 	template: (obj) => obj.cancel,
+						// 	width: 60
+						// },
+					],
+					// onClick: {
+					// 	"wxi-trash":(e, id) => {
+					// 		webix.confirm({
+					// 			text: "The file will be deleted. Deleting cannot be undone... <br/> Are you sure?"
+					// 		}).then( res => {
+					// 			if (res)
+					// 				this.app.callEvent("activities:delete",[id.row]);
+					// 		});
+					// 		return false;
+					// 	}
+					// }
 				},
 				{
-					id: "",
-					template: "{common.trashIcon()}",
-					width: 60
-				},
-			],
-			onClick: {
-				"wxi-trash":(e, id) => {
-					webix.confirm({
-						text: "The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?"
-					}).then( res => {
-						if (res)
-							this.app.callEvent("activities:delete",[id.row]);
-					});
-					return false;
+					view:"uploader",
+					id: "uploader_1",
+					value:"Upload file",
+					icon: "wxi-plus",
+					// link:"datatable",
+					upload: files
+					// datatype:"json"
 				}
-			}
+			]
 		};
 	}
 	
-	init(view){
-        // view.sync(activities);
-        view.parse([{"Name": "New File", "ChangeData": "12-12-2020 11:00", "Size": "12kb"}, {"Name": "New File2", "ChangeData": "12-12-2010 11:00", "Size": "16kb"}])
+	init(){
+		// this.$$("datatable").sync(files)
 	}
 
 	// urlChange() {

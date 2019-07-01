@@ -9,6 +9,7 @@ import FilesDataTable from "./filestable";
 
 export default class ContactInfo extends JetView{
 	config(){
+
 		const contactTemplate = {
 			view: "template",
 			id: "contact:template",

@@ -74,11 +74,6 @@ export default class ActivitiesDataTable extends JetView{
 							width: 60
 						},
 					],
-					// on: {
-					// 	onAfterSelect: (id) => {
-					// 		this.show(`../activities?id=${id}`);
-					// 	}
-					// },
 					onClick: {
 						"wxi-trash":(e, id) => {
 							webix.confirm({
@@ -90,7 +85,7 @@ export default class ActivitiesDataTable extends JetView{
 							return false;
 						},
 						"wxi-pencil":(e, id) => {
-							const item = this.getRoot().getItem(id);
+							const item = this.getRoot().queryView("datatable").getItem(id);
 							this.app.callEvent("form:fill", [item]);
 						}
 					}
@@ -99,26 +94,4 @@ export default class ActivitiesDataTable extends JetView{
 			]
 		};	
 	}
-	
-	init() {
-		this.form = this.ui(ActivityWindow);
-	}
-	// init(view){
-	// 	view.sync(activities);
-	// }
-
-	// urlChange() {
-	// 	webix.promise.all([
-	// 		activities.waitData,
-	// 		activitytypes.waitData,
-	// 		contacts.waitData
-	// 	]).then(() => {
-	// 		const activitiesTable = this.$$("activities");
-	// 		const id = this.getParam("id");
-	// 		const selectedId = activitiesTable.getSelectedId().id;
-	// 		if (id && activities.exists(id) && id !== selectedId) {
-	// 			activitiesTable.select(id);
-	// 		}
-	// 	});
-	// }
 }

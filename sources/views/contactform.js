@@ -124,6 +124,9 @@ export default class ContactForm extends JetView {
 					value:"Change photo",
 					type:"form",
 					tooltip:"Click to change the photo",
+					click: (id) => {
+						this.$$("uploadAPI").fileDialog({ id });
+					}
 				},
 				{
 					view:"button",
@@ -133,6 +136,32 @@ export default class ContactForm extends JetView {
 					tooltip:"Click to delete the photo"
 				}
 			]
+		};
+
+		let uploadAPI = {
+			localId:"uploadAPI",
+			view:"uploader",
+			upload:"//docs.webix.com/samples/server/upload",
+			on:{
+				onBeforeFileAdd:function(item){
+					var type = item.type.toLowerCase();
+					if (type != "jpg" && type != "png"){
+						webix.message("Only PNG or JPG images are supported");
+						return false;
+					}
+				},
+				onFileUpload:function(item){
+					var id = item.context.rowid;
+					var row = $$("people").getItem(id);
+		
+					row.photo = item.sname;
+					$$("people").updateItem(id, row);
+				},
+				onFileUploadError:function(item){
+					webix.alert("Error during file upload");
+				}
+			},
+			apiOnly:true
 		};
 
 		
@@ -157,8 +186,8 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					click:() => {
 						// if (this.form.validate()){
-							this.addContact();
-							this.getParentView().show("contactinfo", {target:"right"});
+						this.addContact();
+						this.getParentView().show("contactinfo", {target:"right"});
 						// }
 					}
 				}

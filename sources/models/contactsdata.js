@@ -1,5 +1,6 @@
 const dateFormat = webix.Date.strToDate("%d-%m-%Y");
 const strFormatDate = webix.Date.dateToStr("%Y-%m-%d %H:%i");
+const strFormatDateInfo = webix.Date.dateToStr("%d-%m-%Y");
 
 export const contacts = new webix.DataCollection({
 	scheme:{
@@ -8,7 +9,12 @@ export const contacts = new webix.DataCollection({
 			obj.StartDate = dateFormat(obj.StartDate);
 			if (!obj.InfoBirthday) {
 				obj.InfoBirthday = dateFormat(obj.Birthday);
+			} if (!obj.Birthday) {
+				obj.Birthday = strFormatDateInfo(obj.InfoBirthday);
 			}
+		},
+		$update: (obj) => {
+			obj.Birthday = strFormatDateInfo(obj.InfoBirthday);
 		},
 		$save: (obj) => {
 			obj.StartDate = strFormatDate(obj.StartDate);
