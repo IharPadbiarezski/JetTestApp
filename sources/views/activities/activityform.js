@@ -35,7 +35,8 @@ export default class ActivityWindow extends JetView {
 						view: "combo",
 						name: "ContactID",
 						label: "Contact",
-						localId: "activityForm:combo",
+						localId: "formCombo",
+						id: "comboContact:activity",
 						options: contacts,
 						invalidMessage: "Please select a contact"
 					},
@@ -113,4 +114,11 @@ export default class ActivityWindow extends JetView {
 		this.form.clear();
 		this.form.clearValidation();
 	}
+
+	// urlChange() {
+	// 	let url = this.getUrlString();
+	// 						if (url.includes("contacts")) {
+	// 							this.$$("formCombo").setValue(2);
+	// 						}
+	// }
 }

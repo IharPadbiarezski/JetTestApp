@@ -5,6 +5,7 @@ import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
 import FilesDataTable from "./filestable";
+import ContactActivitiesTable from "./contactactivitiestable";
 
 
 export default class ContactInfo extends JetView{
@@ -39,7 +40,7 @@ export default class ContactInfo extends JetView{
 			options: [
 				{
 					value: "Activities",
-					id: "activities:datatable:view"
+					id: "contact:activities"
 				},
 				{
 					value: "Files",
@@ -52,7 +53,7 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				ActivitiesDataTable,
+				ContactActivitiesTable,
 				FilesDataTable
 			]
 		};
@@ -87,27 +88,6 @@ export default class ContactInfo extends JetView{
 			]
 		};
 
-		// const addActivityBtn = {	
-		// 	view:"toolbar", css:"subbar", padding:0,
-		// 	elements:[
-		// 		{},
-		// 		{
-		// 			view: "button",
-		// 			label: "Add",
-		// 			localId: "addButton",
-		// 			type:"icon",
-		// 			value: "Add activity",
-		// 			icon: "wxi-plus",
-		// 			css: "webix_primary bg_color",
-		// 			align: "right",
-		// 			inputWidth: 200,
-		// 			click: () => {
-		// 				this.form.showForm({}, "Add", "Add");
-		// 			}
-		// 		}
-		// 	]
-		// };
-
 		return { 	
 			rows: [
 				{ cols:
@@ -118,7 +98,6 @@ export default class ContactInfo extends JetView{
 				},
 				contactTabbar,
 				contactTabbarElements
-				// addActivityBtn
 			]
 		};
 	}
@@ -128,15 +107,15 @@ export default class ContactInfo extends JetView{
 		grid.hideColumn("ContactID");
 	}
 
-	init() {
-		this.form = this.ui(ActivityWindow);
+	// init() {
+	// 	this.form = this.ui(ActivityWindow);
 
-		this.on(this.app, "activities:save", values => {
-			values.id ? activities.updateItem(values.id, values) : activities.add(values);
-		});
+	// 	this.on(this.app, "activities:save", values => {
+	// 		values.id ? activities.updateItem(values.id, values) : activities.add(values);
+	// 	});
 
-		this.on(this.app,"activities:delete", id => activities.remove(id));
-	}
+	// 	this.on(this.app,"activities:delete", id => activities.remove(id));
+	// }
     
 	urlChange(view) {
 		const template = this.$$("contact:template");
@@ -155,8 +134,6 @@ export default class ContactInfo extends JetView{
 					this.filter( data => data.ContactID.toString() === id );
 				});
 			}
-			let val = this.form.getRoot().queryView("combo");
-			console.log(val)
 		});
 	}
 

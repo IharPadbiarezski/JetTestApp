@@ -3,10 +3,12 @@ import {activities} from "../models/activitiesdata";
 import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityWindow from "./activities/activityform";
 
-export default class DataView extends JetView{
+export default class ContactActivitiesTable extends JetView{
 	config(){
 		return {
+			id: "contact:activities",
 			rows: [
+				{ $subview:ActivitiesDataTable },
 				{	
 					view:"toolbar", css:"subbar", padding:0,
 					elements:[
@@ -17,29 +19,24 @@ export default class DataView extends JetView{
 							localId: "addButton",
 							type:"icon",
 							value: "Add",
-							icon: "wxi-plus-square",
+							icon: "wxi-plus",
 							css: "webix_primary",
 							align: "right",
 							inputWidth: 200,
 							click: () => {
 								const value = this.$$("addButton").getValue();
 								this.form.showForm({}, value, value);
+								const id = webix.$$("contacts:list").getSelectedId();
+								const comboContact = webix.$$("comboContact:activity");
+								comboContact.setValue(id);
+								comboContact.disable();
+
 							}
 						}
 					]
 				},
-				{ $subview:ActivitiesDataTable }
 			]
 		};
-	}
-
-	ready(view) {
-		this.table = webix.$$("activities:datatable");
-		this.table.attachEvent("onAfterSelect", (id) => { 
-			this.show(`../activities?id=${id}`);
-		});
-		const grid = view.queryView({view:"datatable"});
-		grid.sync(activities);
 	}
 
 	init() {
@@ -50,22 +47,5 @@ export default class DataView extends JetView{
 		});
 
 		this.on(this.app,"activities:delete", id => activities.remove(id));
-	}
-
-	destroy(){
-		this.table.detachEvent("onAfterSelect");
-	}
-
-	urlChange() {
-		webix.promise.all([
-			activities.waitData,
-		]).then(() => {
-			const activitiesTable = this.$$("activities:datatable");
-			const id = this.getParam("id");
-			const selectedId = activitiesTable.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				activitiesTable.select(id);
-			}
-		});
 	}
 }
