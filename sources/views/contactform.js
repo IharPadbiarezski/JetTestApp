@@ -124,14 +124,19 @@ export default class ContactForm extends JetView {
 					value:"Change photo",
 					type:"form",
 					tooltip:"Click to change the photo",
-					click: (id) => {
-						this.$$("uploadAPI").fileDialog({ id });
+					click: () => {
+						// this.$$("uploadAPI").fileDialog({ id });
 					}
 				},
 				{
 					view:"button",
 					value:"Delete photo",
-					click:() => {
+					click: () => {
+						const id = this.getParentView().getSelected();
+						if (id && contacts.exists(id)) {
+							const values = contacts.getItem(id);
+							values.Photo = "";
+						}
 					},
 					tooltip:"Click to delete the photo"
 				}
