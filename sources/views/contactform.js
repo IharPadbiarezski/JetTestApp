@@ -108,6 +108,7 @@ export default class ContactForm extends JetView {
 
 		const contact_photo = {
 			view: "template",
+			name: "Photo",
 			borderless: true,
 			localId: "photo",
 			id: "photo:contact",
@@ -144,7 +145,7 @@ export default class ContactForm extends JetView {
 				// 	}
 				// },
 				{ 
-					view:"uploader", 
+					view:"uploader",
 					value:"Change photo",
 					accept:"image/jpeg, image/png",       
 					autosend:false, 
@@ -304,7 +305,11 @@ export default class ContactForm extends JetView {
 				statuses.waitData
 			]).then(() => {
 				const values = contacts.getItem(id);
-				if (values) { this.form.setValues(values); }
+				const photo = webix.$$("photo:contact");
+				if (values) {
+					this.form.setValues(values);
+					photo.setValues({Photo: values.Photo});
+				}
 			});
 		}
 	}
@@ -312,11 +317,12 @@ export default class ContactForm extends JetView {
 	addContact() {
 		const values = this.form.getValues();
 		// I have work On It
-		this.newID = values.id;
-		if (contacts.exists(this.newID)) {
+		const id = values.id;
+		this.newID = contacts.getLastId();
+		if (contacts.exists(id)) {
 			values.Photo = this.photo;
-			contacts.updateItem(this.newID, values);
-			this.contactList.select(this.newID);
+			contacts.updateItem(id, values);
+			this.contactList.select(id);
 		}
 		else {
 			contacts.add(values);
