@@ -16,8 +16,6 @@ export default class ContactsView extends JetView {
 	}
 
 	showForm(data, nameHead, nameButton) {
-		
-		
 		this.show("contactform", {target:"right"});
 		let promise = new Promise((resolve) => {
 			let stopInterval = setInterval(() => {
@@ -31,9 +29,5 @@ export default class ContactsView extends JetView {
 			webix.$$("header:contactform").setValues({value: `${nameHead} contact`});
 			webix.$$("save:contactform").setValue(nameButton);}
 		);
-	}
-
-	getSelected(){
-		return this.getRoot().queryView({view:"list"}).getSelectedId();
 	}
 }

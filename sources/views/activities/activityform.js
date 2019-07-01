@@ -123,11 +123,4 @@ export default class ActivityWindow extends JetView {
 		this.form.clear();
 		this.form.clearValidation();
 	}
-
-	// urlChange() {
-	// 	let url = this.getUrlString();
-	// 						if (url.includes("contacts")) {
-	// 							this.$$("formCombo").setValue(2);
-	// 						}
-	// }
 }

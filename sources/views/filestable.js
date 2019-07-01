@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-// import {activitytypes} from "../../models/activitytypesdata";
+import {contacts} from "../models/contactsdata";
 import {files} from "../models/files";
 
 export default class FilesDataTable extends JetView{
@@ -7,14 +7,9 @@ export default class FilesDataTable extends JetView{
 		return {
 			id: "contact:files",
 			rows: [
-				// {
-				// 	view:"list",  id:"mylist", type:"uploader",
-				// 	autoheight:true, borderless:true	
-				//   },
 				{
 					view:"datatable",
 					localId: "datatable",
-					type:"uploader",
 					select: true,
 					columns: [
 						{ 
@@ -34,38 +29,36 @@ export default class FilesDataTable extends JetView{
 							id: "size",
 							header: "Size",
 							fillspace: true,
-							sort: "string"
+							sort: "int"
 						},
-						// {
-						// 	id: "",
-						// 	template: (obj) => obj.cancel,
-						// 	width: 60
-						// },
+						{
+							id: "",
+							template: "{common.trashIcon()}",
+							width: 60
+						}
+					
 					],
-					// onClick: {
-					// 	"wxi-trash":(e, id) => {
-					// 		webix.confirm({
-					// 			text: "The file will be deleted. Deleting cannot be undone... <br/> Are you sure?"
-					// 		}).then( res => {
-					// 			if (res)
-					// 				this.app.callEvent("activities:delete",[id.row]);
-					// 		});
-					// 		return false;
-					// 	}
-					// }
+					onClick: {
+						"wxi-trash":(e, id) => {
+							webix.confirm({
+								text: "The file will be deleted. Deleting cannot be undone... <br/> Are you sure?"
+							}).then(() => {
+								if (id)
+									files.remove(id);
+							});
+							return false;
+						}
+					}
 				},
 				{ cols: [
 					{},
 					{
 						view:"uploader",
-						id: "uploader_1",
+						id: "uploader",
 						type:"iconButton",
 						icon:"mdi mdi-upload",
 						label:"Upload file",
-						width: 200,
-						// link:"datatable",
-						upload: files
-						// datatype:"json"
+						width: 200
 					},
 					{}
 				]
@@ -74,22 +67,16 @@ export default class FilesDataTable extends JetView{
 		};
 	}
 	
-	init(){
-		// this.$$("datatable").sync(files)
+	init(view){
+		view.queryView("datatable").sync(files);			
 	}
+	
+	urlChange() {
 
-	// urlChange() {
-	// 	webix.promise.all([
-	// 		activities.waitData,
-	// 		activitytypes.waitData,
-	// 		contacts.waitData
-	// 	]).then(() => {
-	// 		const activitiesTable = this.$$("activities");
-	// 		const id = this.getParam("id");
-	// 		const selectedId = activitiesTable.getSelectedId().id;
-	// 		if (id && activities.exists(id) && id !== selectedId) {
-	// 			activitiesTable.select(id);
-	// 		}
-	// 	});
-	// }
+		contacts.waitData.then(() => {
+			const id = this.getParam("id", true);
+			files.data.filter(file => file.ContactID == id);
+		});
+	
+	}
 }

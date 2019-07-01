@@ -104,39 +104,26 @@ export default class ContactInfo extends JetView{
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
 	}
-
-	// init() {
-	// 	this.form = this.ui(ActivityWindow);
-
-	// 	this.on(this.app, "activities:save", values => {
-	// 		values.id ? activities.updateItem(values.id, values) : activities.add(values);
-	// 	});
-
-	// 	this.on(this.app,"activities:delete", id => activities.remove(id));
-	// }
     
-	urlChange(view) {
+	urlChange() {
 		const template = this.$$("contact:template");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData,
 			activities.waitData
 		]).then(() => {
-			const id = this.getParentView().getSelected();
+			const id = this.getParam("id", true);
 			let values = webix.copy(contacts.getItem(id));
-			const grid = view.queryView({view:"datatable"});
 			values.status = statuses.getItem(values.StatusID).Value;
 			if (values) { template.setValues(values); }
 			if (id && contacts.exists(id)) {
-				grid.sync(activities, function () {
-					this.filter( data => data.ContactID.toString() === id );
-				});
+				activities.data.filter( obj => obj.ContactID.toString() === id );
 			}
 		});
 	}
 
 	deleteRow() {
-		const id  = webix.$$("contacts:list").getSelectedId();
+		const id = this.getParam("id", true);
 		if(id && contacts.exists(id)){
 			webix.confirm({
 				text: "The contact will be deleted.<br/> Are you sure?"

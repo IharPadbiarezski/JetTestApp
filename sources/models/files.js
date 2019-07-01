@@ -1,2 +1,1 @@
-export const files = new webix.DataCollection({
-});
+export const files = new webix.DataCollection();

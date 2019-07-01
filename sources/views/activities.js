@@ -33,16 +33,15 @@ export default class DataView extends JetView{
 		};
 	}
 
-	ready(view) {
+	ready() {
 		this.table = webix.$$("activities:datatable");
 		this.table.attachEvent("onAfterSelect", (id) => { 
 			this.show(`../activities?id=${id}`);
 		});
-		const grid = view.queryView({view:"datatable"});
-		grid.sync(activities);
 	}
 
 	init() {
+
 		this.form = this.ui(ActivityWindow);
 
 		this.on(this.app, "activities:save", values => {

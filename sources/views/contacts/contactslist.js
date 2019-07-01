@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contactsdata";
+import {activities} from "../../models/activitiesdata";
 
 export default class ContactsView extends JetView{
 	config(){
@@ -78,4 +79,12 @@ export default class ContactsView extends JetView{
 			}
 		});
 	}
+
+	// urlChange() {
+	// 	let id = this.getParam("id");
+	// 	console.log(id)
+	// 	// if (id && contacts.exists(id)) {
+	// 	// 	activities.data.filter( obj => obj.ContactID.toString() === id );
+	// 	// }
+	// }
 }

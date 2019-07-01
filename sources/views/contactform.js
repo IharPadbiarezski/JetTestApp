@@ -116,34 +116,12 @@ export default class ContactForm extends JetView {
 			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
 			    `
 			
-			// view:"window",
-			// id:"tmpWin", 
-			// position:"center",
-			// head:"Preview", 
-			// close:true,
-			// body:{ 
-			// 	id:"tmp", 
-			// 	view:"template",
-			// 	template:"<img src='#src#' class='fit_parent'></img>",
-			// 	width:500,
-			// 	autoheight:true
-			// }
-			
 		};
         
 		const photo_buttons = {
 			margin:10,
 			rows:[
 				{},
-				// {
-				// 	view:"button",
-				// 	value:"Change photo",
-				// 	type:"form",
-				// 	tooltip:"Click to change the photo",
-				// 	click: () => {
-				// 		// this.$$("uploadAPI").fileDialog({ id });
-				// 	}
-				// },
 				{ 
 					view:"uploader",
 					value:"Change photo",
@@ -168,7 +146,7 @@ export default class ContactForm extends JetView {
 					value:"Delete photo",
 					tooltip:"Click to delete the photo",
 					click: () => {
-						const id = this.getParentView().getSelected();
+						const id = this.getParam("id", true);
 						if (id && contacts.exists(id)) {
 							this.photo = "";
 							webix.$$("photo:contact").setValues({Photo: this.photo});
@@ -178,33 +156,6 @@ export default class ContactForm extends JetView {
 				}
 			]
 		};
-
-		// let uploadAPI = {
-		// 	localId:"uploadAPI",
-		// 	view:"uploader",
-		// 	upload:"//docs.webix.com/samples/server/upload",
-		// 	on:{
-		// 		onBeforeFileAdd:function(item){
-		// 			var type = item.type.toLowerCase();
-		// 			if (type != "jpg" && type != "png"){
-		// 				webix.message("Only PNG or JPG images are supported");
-		// 				return false;
-		// 			}
-		// 		},
-		// 		onFileUpload:function(item){
-		// 			var id = item.context.rowid;
-		// 			var row = $$("people").getItem(id);
-		
-		// 			row.photo = item.sname;
-		// 			$$("people").updateItem(id, row);
-		// 		},
-		// 		onFileUploadError:function(item){
-		// 			webix.alert("Error during file upload");
-		// 		}
-		// 	},
-		// 	apiOnly:true
-		// };
-
 		
 		const buttons = {
 			margin:10,
@@ -226,25 +177,25 @@ export default class ContactForm extends JetView {
 					width: 200,
 					tooltip:"Save changes",
 					click:() => {
-						// if (this.form.validate()){
-						this.addContact();
-						this.getParentView().show("contactinfo", {target:"right"});
-						// }
+						if (this.form.validate()){
+							this.addContact();
+							this.getParentView().show("contactinfo", {target:"right"});
+						}
 					}
 				}
 			],
 			rules: {
 				FirstName: webix.rules.isNotEmpty,
 				LastName: webix.rules.isNotEmpty,
-				StartDay: webix.rules.isNotEmpty,
+				// StartDay: webix.rules.isNotEmpty,
 				StatusID: webix.rules.isNotEmpty,
 				Job: webix.rules.isNotEmpty,
 				Company: webix.rules.isNotEmpty,
-				Website: webix.rules.isNotEmpty,
+				// Website: webix.rules.isNotEmpty,
 				Address: webix.rules.isNotEmpty,
 				Email: webix.rules.isEmail,
-				Phone: webix.rules.isNotEmpty,
-				Birthday: webix.rules.isNotEmpty
+				// Phone: webix.rules.isNotEmpty,
+				// Birthday: webix.rules.isNotEmpty
 			}
 		};
 
@@ -298,7 +249,7 @@ export default class ContactForm extends JetView {
 	}
 
 	urlChange() {
-		const id = this.getParentView().getSelected();
+		const id = this.getParam("id", true);
 		if (id) {
 			webix.promise.all([
 				contacts.waitData,
@@ -323,8 +274,7 @@ export default class ContactForm extends JetView {
 			values.Photo = this.photo;
 			contacts.updateItem(id, values);
 			this.contactList.select(id);
-		}
-		else {
+		} else {
 			contacts.add(values);
 			values.Photo = this.photo;
 			this.contactList.select(contacts.getLastId());
@@ -332,12 +282,13 @@ export default class ContactForm extends JetView {
 	}
 
 	closeForm() {
-		const id = this.getParentView().getSelected();
+		const id = this.getParam("id", true);
 		if (id) {
 			this.contactList.select(id);
 		} else {
 			this.contactList.select(this.contactList.getFirstId());
 		}
 		this.getParentView().show("contactinfo", {target:"right"});
+		this.form = "";
 	}
 }

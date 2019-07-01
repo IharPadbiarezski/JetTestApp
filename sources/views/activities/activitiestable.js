@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {activitytypes} from "../../models/activitytypesdata";
 import {contacts} from "../../models/contactsdata";
+import {activities} from "../../models/activitiesdata";
 
 export default class ActivitiesDataTable extends JetView{
 	config(){
@@ -68,6 +69,10 @@ export default class ActivitiesDataTable extends JetView{
 		};	
 	}
 
+	init(view) {
+		activities.data.filter();
+		view.sync(activities);
+	}
 	setDisable() {
 		const comboContact = webix.$$("comboContact:activity");
 		let url = this.getUrlString();
