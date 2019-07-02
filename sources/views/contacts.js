@@ -18,7 +18,7 @@ export default class ContactsView extends JetView {
 	showForm(data, nameHead, nameButton) {
 		this.show("contactform", {target:"right"}).then(() => {
 			webix.$$("header:contactform").setValues({value: `${nameHead} contact`});
-			webix.$$("save:contactform").setValue(nameButton);}
-		);
+			webix.$$("save:contactform").setValue(nameButton);
+		});
 	}
 }
