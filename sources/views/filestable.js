@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {files} from "../models/files";
+import { contacts } from "../models/contactsdata";
 
 export default class FilesDataTable extends JetView{
 	config(){
@@ -60,9 +61,9 @@ export default class FilesDataTable extends JetView{
 						label:"Upload file",
 						width: 200,
 						on:{        
-							onBeforeFileAdd: 
-								(file) => {
-									const id = this.getParam("id", true);
+							onBeforeFileAdd: (file) => {
+								const id = this.getParam("id", true);
+								if(id && contacts.exists(id)) {
 									const values = {
 										name: file.name,
 										size: file.size,
@@ -70,8 +71,12 @@ export default class FilesDataTable extends JetView{
 										ContactID: id
 									};
 									files.add(values);
-									return false;
 								}
+								return false;
+							},
+							onFileUploadError: () => {
+								webix.alert("Upload failed.");
+							}
 						}
 					},
 					{}
