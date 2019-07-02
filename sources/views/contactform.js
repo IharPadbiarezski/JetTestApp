@@ -27,7 +27,7 @@ export default class ContactForm extends JetView {
 					name: "StartDate",
 					label: "Joining date",
 					labelWidth: 90,
-					invalidMessage: "Please select a date"
+					invalidMessage: "Start Date must be less than current Date"
 				},
 				{
 					view: "combo",
@@ -81,7 +81,7 @@ export default class ContactForm extends JetView {
 					label:"Email",
 					labelWidth: 90,
 					placeholder:"Email",
-					invalidMessage:"Ivalid Email"
+					invalidMessage:"Email is required"
 				},
 				{
 					view:"text",
@@ -89,23 +89,23 @@ export default class ContactForm extends JetView {
 					label:"Skype",
 					labelWidth: 90,
 					placeholder:"Skype",
-					invalidMessage:"A skype is required"
+					invalidMessage:"A skype is required (without spaces)"
 				},
 				{
-					view:"text",
-					name:"Phone",
-					label:"Phone",
+					view: "text",
+					name: "Phone",
+					label: "Phone",
 					labelWidth: 90,
-					placeholder:"Phone",
-					pattern:{ mask:"###-## #######", allow:/[0-9]/g},
-					invalidMessage:"Please fill in phone in format 777-77 7777777"
+					placeholder: "Phone",
+					pattern: { mask: "###-## #######", allow:/[0-9]/g},
+					invalidMessage: "Sorry, you must type any 12 numbers"
 				},
 				{
 					view:"datepicker",
 					name: "InfoBirthday",
 					label: "Birthday",
 					labelWidth: 90,
-					invalidMessage: "Please select a date"
+					invalidMessage: "Start Date must be less than current Date"
 				}
 			]
 		};
@@ -224,10 +224,13 @@ export default class ContactForm extends JetView {
 					rules: {
 						FirstName: webix.rules.isNotEmpty,
 						LastName: webix.rules.isNotEmpty,
-						// StartDay: (value) => {
-						// 	const currentDate = new Date().getFullName();
-						// 	return value.getFullYear < currentDate;
-						// },
+						StartDate: (date) => {
+							const currentDate = new Date();
+							currentDate.getFullYear();
+							if(webix.isDate(date) && date < currentDate){
+								return true;
+							}
+						},
 						StatusID: webix.rules.isNotEmpty,
 						Job: webix.rules.isNotEmpty,
 						Company: webix.rules.isNotEmpty,
@@ -245,11 +248,13 @@ export default class ContactForm extends JetView {
 							const regExp = /^[0-9a-zA-Z]+$/;
 							return value.match(regExp);
 						},
-						// Phone: (value) => {
-						// 	const regExp = /^\d{10}$/;
-						// 	return value.match(regExp);
-						// },
-						InfoBirthday: webix.rules.isNotEmpty
+						InfoBirthday: (date) => {
+							const currentDate = new Date();
+							currentDate.getFullYear();
+							if(webix.isDate(date) && date < currentDate){
+								return true;
+							}
+						}
 					}
 				}
 			]
