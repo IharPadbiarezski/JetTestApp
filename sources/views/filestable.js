@@ -75,7 +75,7 @@ export default class FilesDataTable extends JetView{
 								return false;
 							},
 							onFileUploadError: () => {
-								webix.alert("Upload failed.");
+								webix.message("Upload failed.");
 							}
 						}
 					},

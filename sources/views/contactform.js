@@ -46,21 +46,24 @@ export default class ContactForm extends JetView {
 					invalidMessage:"A job position is required"
 				},
 				{
-					view:"text", name:"Company",
+					view:"text",
+					name:"Company",
 					label:"Company",
 					labelWidth: 90,
 					placeholder:"Company",
 					invalidMessage:"A company is required"
 				},
 				{
-					view:"text", name:"Website",
+					view:"text",
+					name:"Website",
 					label:"Website",
 					labelWidth: 90,
 					placeholder:"Website",
-					invalidMessage:"A website is required"
+					invalidMessage: "Website must look like https://webix.com"
 				},
 				{
-					view:"text", name:"Address",
+					view:"text",
+					name:"Address",
 					label:"Address",
 					labelWidth: 90,
 					placeholder:"Address",
@@ -94,7 +97,8 @@ export default class ContactForm extends JetView {
 					label:"Phone",
 					labelWidth: 90,
 					placeholder:"Phone",
-					invalidMessage:"A phone is required"
+					pattern:{ mask:"###-## #######", allow:/[0-9]/g},
+					invalidMessage:"Please fill in phone in format 777-77 7777777"
 				},
 				{
 					view:"datepicker",
@@ -115,7 +119,6 @@ export default class ContactForm extends JetView {
 			template: obj =>  `
 			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
 			    `
-			
 		};
         
 		const photo_buttons = {
@@ -147,7 +150,7 @@ export default class ContactForm extends JetView {
 					tooltip:"Click to delete the photo",
 					click: () => {
 						this.photo = "";
-						webix.$$("photo:contact").setValues({Photo: this.photo});
+						this.$$("photo").setValues({Photo: this.photo});
 					}
 				}
 			]
@@ -173,10 +176,10 @@ export default class ContactForm extends JetView {
 					width: 200,
 					tooltip:"Save changes",
 					click:() => {
-						// if (this.form.validate()){
-						this.addContact();
-						this.getParentView().show("contactinfo", {target:"right"});
-						// }
+						if (this.form.validate()){
+							this.addContact();
+							this.getParentView().show("contactinfo", {target:"right"});
+						}
 					}
 				}
 			]
@@ -221,15 +224,32 @@ export default class ContactForm extends JetView {
 					rules: {
 						FirstName: webix.rules.isNotEmpty,
 						LastName: webix.rules.isNotEmpty,
-						// StartDay: webix.rules.isNotEmpty,
+						// StartDay: (value) => {
+						// 	const currentDate = new Date().getFullName();
+						// 	return value.getFullYear < currentDate;
+						// },
 						StatusID: webix.rules.isNotEmpty,
 						Job: webix.rules.isNotEmpty,
 						Company: webix.rules.isNotEmpty,
-						// Website: webix.rules.isNotEmpty,
+						Website: (value) => {
+							try {
+								new URL(value);
+								return true;
+							} catch (_) {
+								return false;  
+							}
+						},
 						Address: webix.rules.isNotEmpty,
 						Email: webix.rules.isEmail,
-						// Phone: webix.rules.isNotEmpty,
-						// Birthday: webix.rules.isNotEmpty
+						Skype: (value) => {
+							const regExp = /^[0-9a-zA-Z]+$/;
+							return value.match(regExp);
+						},
+						// Phone: (value) => {
+						// 	const regExp = /^\d{10}$/;
+						// 	return value.match(regExp);
+						// },
+						InfoBirthday: webix.rules.isNotEmpty
 					}
 				}
 			]
@@ -256,7 +276,7 @@ export default class ContactForm extends JetView {
 				statuses.waitData
 			]).then(() => {
 				const values = contacts.getItem(id);
-				const photo = webix.$$("photo:contact");
+				const photo = this.$$("photo");
 				if (values) {
 					this.form.setValues(values);
 					photo.setValues({Photo: values.Photo});
@@ -275,8 +295,8 @@ export default class ContactForm extends JetView {
 			contacts.updateItem(id, values);
 			this.contactList.select(id);
 		} else {
-			contacts.add(values);
 			values.Photo = this.photo;
+			contacts.add(values);
 			this.contactList.select(contacts.getLastId());
 		}
 	}
