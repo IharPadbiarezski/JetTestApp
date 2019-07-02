@@ -177,26 +177,13 @@ export default class ContactForm extends JetView {
 					width: 200,
 					tooltip:"Save changes",
 					click:() => {
-						if (this.form.validate()){
+						// if (this.form.validate()){
 							this.addContact();
 							this.getParentView().show("contactinfo", {target:"right"});
-						}
+						// }
 					}
 				}
-			],
-			rules: {
-				FirstName: webix.rules.isNotEmpty,
-				LastName: webix.rules.isNotEmpty,
-				// StartDay: webix.rules.isNotEmpty,
-				StatusID: webix.rules.isNotEmpty,
-				Job: webix.rules.isNotEmpty,
-				Company: webix.rules.isNotEmpty,
-				// Website: webix.rules.isNotEmpty,
-				Address: webix.rules.isNotEmpty,
-				Email: webix.rules.isEmail,
-				// Phone: webix.rules.isNotEmpty,
-				// Birthday: webix.rules.isNotEmpty
-			}
+			]
 		};
 
 		return {
@@ -236,7 +223,17 @@ export default class ContactForm extends JetView {
 						buttons
 					],
 					rules: {
-						$all: webix.rules.isNotEmpty
+						FirstName: webix.rules.isNotEmpty,
+						LastName: webix.rules.isNotEmpty,
+						// StartDay: webix.rules.isNotEmpty,
+						StatusID: webix.rules.isNotEmpty,
+						Job: webix.rules.isNotEmpty,
+						Company: webix.rules.isNotEmpty,
+						// Website: webix.rules.isNotEmpty,
+						Address: webix.rules.isNotEmpty,
+						Email: webix.rules.isEmail,
+						// Phone: webix.rules.isNotEmpty,
+						// Birthday: webix.rules.isNotEmpty
 					}
 				}
 			]

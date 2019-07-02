@@ -1,5 +1,4 @@
 import {JetView} from "webix-jet";
-import {contacts} from "../models/contactsdata";
 import {files} from "../models/files";
 
 export default class FilesDataTable extends JetView{
@@ -29,6 +28,7 @@ export default class FilesDataTable extends JetView{
 							id: "size",
 							header: "Size",
 							fillspace: true,
+							template: obj => `${obj.size}Kb`,
 							sort: "int"
 						},
 						{
@@ -58,7 +58,21 @@ export default class FilesDataTable extends JetView{
 						type:"iconButton",
 						icon:"mdi mdi-upload",
 						label:"Upload file",
-						width: 200
+						width: 200,
+						on:{        
+							onBeforeFileAdd: 
+								(file) => {
+									const id = this.getParam("id", true);
+									const values = {
+										name: file.name,
+										size: file.size,
+										ChangeDate: file.file.lastModifiedDate,
+										ContactID: id
+									};
+									files.add(values);
+									return false;
+								}
+						}
 					},
 					{}
 				]
@@ -68,21 +82,11 @@ export default class FilesDataTable extends JetView{
 	}
 	
 	init(view){
-		view.queryView("datatable").sync(files);
-		files.add({name: "hi", ContactID: 2, size: "4551"});
-		files.add({name: "hi2", ContactID: 2, size: "4525"});
-		files.add({name: "hi3", ContactID: 3, size: "4554"});
-			
+		view.queryView("datatable").sync(files);		
 	}
 	
 	urlChange() {
-		
-
-		contacts.waitData.then(() => {
-			const id = this.getParam("id", true);
-			files.data.filter(file => file.ContactID == id);
-
-
-		});
+		const id = this.getParam("id", true);
+		files.data.filter(file => file.ContactID == id);
 	}
 }
