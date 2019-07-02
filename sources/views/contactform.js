@@ -146,12 +146,12 @@ export default class ContactForm extends JetView {
 					value:"Delete photo",
 					tooltip:"Click to delete the photo",
 					click: () => {
-						const id = this.getParam("id", true);
-						if (id && contacts.exists(id)) {
-							this.photo = "";
-							webix.$$("photo:contact").setValues({Photo: this.photo});
+						// const id = this.getParam("id", true);
+						// if (id && contacts.exists(id)) {
+						this.photo = "";
+						webix.$$("photo:contact").setValues({Photo: this.photo});
 
-						}
+						// }
 					}
 				}
 			]
@@ -178,8 +178,8 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					click:() => {
 						// if (this.form.validate()){
-							this.addContact();
-							this.getParentView().show("contactinfo", {target:"right"});
+						this.addContact();
+						this.getParentView().show("contactinfo", {target:"right"});
 						// }
 					}
 				}
@@ -243,6 +243,13 @@ export default class ContactForm extends JetView {
 	init() {
 		this.contactList = webix.$$("contacts:list");
 		this.form = this.$$("form");
+		const id = this.getParam("id", true);
+		contacts.waitData.then(() => {
+			if (id && contacts.exists(id)) {
+				const photo = contacts.getItem(id).Photo;
+				this.photo = photo;
+			}
+		});			
 	}
 
 	urlChange() {
@@ -257,7 +264,7 @@ export default class ContactForm extends JetView {
 				if (values) {
 					this.form.setValues(values);
 					photo.setValues({Photo: values.Photo});
-				}
+				}			
 			});
 		}
 	}
