@@ -134,7 +134,7 @@ export default class ContactForm extends JetView {
 							var reader = new FileReader();  
 							reader.onload = (event) => {
 								this.photo = event.target.result;
-								webix.$$("photo:contact").setValues({Photo: this.photo});
+								this.$$("photo").setValues({Photo: this.photo});
 							};           
 							reader.readAsDataURL(file);
 							return false;
@@ -146,12 +146,8 @@ export default class ContactForm extends JetView {
 					value:"Delete photo",
 					tooltip:"Click to delete the photo",
 					click: () => {
-						// const id = this.getParam("id", true);
-						// if (id && contacts.exists(id)) {
 						this.photo = "";
 						webix.$$("photo:contact").setValues({Photo: this.photo});
-
-						// }
 					}
 				}
 			]

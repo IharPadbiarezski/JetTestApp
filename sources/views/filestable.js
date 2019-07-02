@@ -66,7 +66,7 @@ export default class FilesDataTable extends JetView{
 								if(id && contacts.exists(id)) {
 									const values = {
 										name: file.name,
-										size: file.size,
+										size: Math.round(file.size / 1000),
 										ChangeDate: file.file.lastModifiedDate,
 										ContactID: id
 									};
@@ -92,6 +92,6 @@ export default class FilesDataTable extends JetView{
 	
 	urlChange() {
 		const id = this.getParam("id", true);
-		files.data.filter(file => file.ContactID == id);
+		files.data.filter(file => file.ContactID.toString() === id);
 	}
 }
