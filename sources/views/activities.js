@@ -77,7 +77,7 @@ export default class DataView extends JetView{
 		view.queryView("datatable").registerFilter(
 			this.$$("selector"),
 			{
-				columnId: ["State"],
+				columnId: "State",
 				compare: (value, filter) => {
 					if (filter == 3) {
 						return value == 1;
