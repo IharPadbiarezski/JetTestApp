@@ -4,6 +4,26 @@ import {contacts} from "../../models/contactsdata";
 export default class ContactsView extends JetView{
 	config(){
 
+		const listInput = {
+			view: "text",
+			gravity: 3,
+			localId: "input",
+			id: "list:input",
+			placeholder: "type to find matching contacts",
+			on: {
+				onTimedKeyPress: () => {
+					let value = this.$$("input").getValue().toLowerCase();
+					this.$$("list").filter((obj) => {
+						let filterByFullName = [obj.FirstName, obj.LastName].join(" ");
+						let filterByLastName = obj.LastName.toLowerCase().indexOf(value);
+						let filterByJob = obj.Job.toLowerCase().indexOf(value);
+						filterByFullName = filterByFullName.toString().toLowerCase().indexOf(value);
+						return filterByFullName !== -1 || filterByLastName !== -1 || filterByJob !== -1;
+					});
+				}
+			}
+		};
+
 		const add_button = {
 			view: "button",
 			label: "Add contact",
@@ -57,6 +77,7 @@ export default class ContactsView extends JetView{
 		return {
 			css:"contact_buttons_bg",
 			rows: [
+				listInput,
 				contact_list,
 				{gravity: 0.05},
 				add_button
