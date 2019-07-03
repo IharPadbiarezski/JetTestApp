@@ -12,25 +12,32 @@ export default class DataView extends JetView{
 			borderless: true,
 			options: [
 				{
-					id: 1, value: "All"
+					id: 1,
+					value: "All"
 				},
 				{
-					id: 2, value: "Overdue"
+					id: 2,
+					value: "Overdue"
 				},
 				{
-					id: 3, value: "Completed"
+					id: 3,
+					value: "Completed"
 				},
 				{
-					id: 4, value: "Today"
+					id: 4,
+					value: "Today"
 				},
 				{
-					id: 5, value: "Tommorow"
+					id: 5,
+					value: "Tommorow"
 				},
 				{
-					id: 6, value: "This week"
+					id: 6,
+					value: "This week"
 				},
 				{
-					id: 7, value: "This month"
+					id: 7,
+					value: "This month"
 				}
 			],
 			on: {
@@ -77,32 +84,68 @@ export default class DataView extends JetView{
 		view.queryView("datatable").registerFilter(
 			this.$$("selector"),
 			{
-				columnId: "State",
-				compare: (value, filter) => {
-					if (filter == 3) {
-						return value == 1;
-					} else {
-						return value;
+				columnId: "DueDate",
+				compare: (value, filter, item)	=> {
+					if (value) {
+						const currentDate = new Date();
+						let mainArr = value.split(" ");
+						let date = mainArr[0].split("-");
+						let time = mainArr[1].split(":");
+						let dd = date[0];
+						let mm = date[1];
+						let yy = date[2];
+						let hh = time[0];
+						let min = time[1];
+						let valDate = new Date(yy, mm-1, dd, hh, min);
+
+						if (Number(filter) === 2) {
+							return valDate < currentDate;
+						} else if (Number(filter) === 3) {
+							return Number(item.State) === 1;
+						} else if (Number(filter) == 4) {
+							let today = new Date().toJSON().slice(0,10).replace(/-/g,"/");
+							let convDate = valDate.toJSON().slice(0,10).replace(/-/g,"/");
+							return convDate === today;
+						} else if (Number(filter) === 5) {
+							let convDate = valDate.toJSON().slice(0,10).replace(/-/g,"/");
+							let currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+							let day = currentDate.getDate();
+							let month = currentDate.getMonth() + 1;
+							let year = currentDate.getFullYear();
+							if (day < 10) {
+								date = day.toString();
+								day = "0" + day;
+							}
+							if (month < 10) {
+								month = month.toString();
+								month = "0" + month;
+							}
+							let tommorow = year + "/" + month + "/" + day;
+							return convDate === tommorow;
+						} else if (Number(filter) === 6) {
+							let now = new Date();
+							let dayOfWeek = now.getDay();
+							let numDay = now.getDate();
+
+							let startDate = new Date(now);
+							startDate.setDate(numDay - dayOfWeek);
+							startDate.setHours(0, 0, 0, 0);
+
+							let endDate = new Date(now);
+							endDate.setDate(numDay + (7 - dayOfWeek));
+							endDate.setHours(0, 0, 0, 0);
+
+							return (valDate > startDate && valDate < endDate);
+						} else if (Number(filter) === 7) {
+							let today = new Date().toJSON().slice(0,7).replace(/-/g,"/");
+							let convMonth = valDate.toJSON().slice(0,7).replace(/-/g,"/");
+							return convMonth === today;
+						} else {
+							return value;
+						}
 					}
 				}
 			},
-			// {
-			// 	columnId: "ConvDueDate",
-			// 	compare: (value, filter, item)	=> {
-			// 		// const currentDate = new Date();
-			// 		// let date = new Date(value);
-			// 		if (filter == 2) {
-			// 			// console.log(value);
-			// 			return value.getFullYear() < 2010;
-			// 		// } else if (filter == 3) {
-			// 		// 	return value > 1980 && value <= 2000;
-			// 		// } else if (filter == 4) {
-			// 		// 	return value > 2000 && value <= currentYear.getFullYear();
-			// 		} else {
-			// 			return value;
-			// 		}
-			// 	}
-			// },
 			{
 				getValue: function(node) {
 					return node.getValue();
