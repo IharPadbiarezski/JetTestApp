@@ -66,7 +66,7 @@ export default class CommonTableForSettings extends JetView {
 				{},
 				{
 					view: "button",
-					label: "Add type",
+					label: this.label,
 					type:"icon",
 					icon: "wxi-plus",
 					css: "webix_primary",
