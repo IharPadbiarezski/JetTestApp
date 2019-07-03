@@ -12,11 +12,11 @@ export default class CommonTableForSettings extends JetView {
 	}
 
 	config() {
-		// const _ = this.app.getService("locale")._;
+		const _ = this.app.getService("locale")._;
 
 		const label = {
 			view: "label",
-			label: this.label,
+			label: _(this.label),
 			align: "center",
 			localId: "label",
 			css: "settings_label"
@@ -31,13 +31,13 @@ export default class CommonTableForSettings extends JetView {
 			columns: [
 				{
 					id: "Value",
-					header: this.valHeader,
+					header: _(this.valHeader),
 					fillspace: true,
 					editor: "text"
 				},
 				{
 					id: "Icon",
-					header: this.valIcon,
+					header: _(this.valIcon),
 					width: 150,
 					editor: "text"
 				},
@@ -47,10 +47,17 @@ export default class CommonTableForSettings extends JetView {
 					width: 60
 				}
 			],
+			// on: {
+			// 	// onAfterEditStop: (e) =>  {
+			// 	// 	if (e.value !== e.old) {
+			
+			// 	// 	}
+			// 	// }
+			// }, 
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
-						text: `Are you sure you want to delete the ${this.valHeader}?`
+						text: _("Are you sure you want to delete the ") + _(this.valHeader)
 					}).then( () => {
 						this._tdata.remove(id);
 					});
@@ -66,7 +73,7 @@ export default class CommonTableForSettings extends JetView {
 				{},
 				{
 					view: "button",
-					label: this.label,
+					label: _(this.label),
 					type:"icon",
 					icon: "wxi-plus",
 					css: "webix_primary",
@@ -84,9 +91,11 @@ export default class CommonTableForSettings extends JetView {
 			rows: [
 				label,
 				table,
-				{cols: [
-					button
-				]}
+				{
+					cols: [
+						button
+					]
+				}
 			]
 		};
 	}

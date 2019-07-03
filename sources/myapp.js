@@ -1,5 +1,5 @@
 import "./styles/app.css";
-import {JetApp, EmptyRouter, HashRouter } from "webix-jet";
+import {JetApp, EmptyRouter, HashRouter, plugins } from "webix-jet";
 
 export default class MyApp extends JetApp{
 	constructor(config){
@@ -22,5 +22,6 @@ if (!BUILD_AS_MODULE){
 		app.attachEvent("app:error:resolve", () => {
 			webix.delay(() => app.show("/top/contacts"));
 		});
+		app.use(plugins.Locale);
 	});
 }

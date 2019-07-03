@@ -5,8 +5,7 @@ import { statuses } from "../models/statusesdata";
 
 export default class SettingsView extends JetView {
 	config() {
-		// const lang = this.app.getService("locale").getLang();
-		// const _ = this.app.getService("locale")._;
+		const lang = this.app.getService("locale").getLang();
 
 		const selector = {
 			view: "segmented",
@@ -16,8 +15,8 @@ export default class SettingsView extends JetView {
 				{id: "en", value: "EN"},
 				{id: "ru", value: "RU"}
 			],
-			// click: () => this.toggleLanguage(),
-			// value: lang
+			click: () => this.toggleLanguage(),
+			value: lang
 		};
 
 		return {
@@ -33,9 +32,9 @@ export default class SettingsView extends JetView {
 		};
 	}
 
-	// toggleLanguage() {
-	// 	const langs = this.app.getService("locale");
-	// 	const value = this.$$("lng").getValue();
-	// 	langs.setLang(value);
-	// }
+	toggleLanguage() {
+		const langs = this.app.getService("locale");
+		const value = this.$$("lng").getValue();
+		langs.setLang(value);
+	}
 }
