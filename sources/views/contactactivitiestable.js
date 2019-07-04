@@ -25,7 +25,7 @@ export default class ContactActivitiesTable extends JetView{
 							inputWidth: 200,
 							click: () => {
 								const value = this.$$("addButton").getValue();
-								this.form.showForm({}, value, value);
+								this.form.showActivityForm({}, value);
 								const id = this.getParam("id", true);
 								const comboContact = webix.$$("comboContact:activity");
 								comboContact.setValue(id);

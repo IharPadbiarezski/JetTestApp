@@ -23,7 +23,7 @@ export default class DataView extends JetView{
 							inputWidth: 200,
 							click: () => {
 								const value = this.$$("addButton").getValue();
-								this.form.showForm({}, value, value);
+								this.form.showActivityForm({}, value, value);
 							}
 						}
 					]

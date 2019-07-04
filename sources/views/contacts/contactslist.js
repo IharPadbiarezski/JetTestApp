@@ -7,7 +7,7 @@ export default class ContactsView extends JetView{
 		const add_button = {
 			view: "button",
 			label: "Add contact",
-			localId: "add_button",
+			localId: "addButton",
 			autoheight: true,
 			type:"icon",
 			value: "Add",
@@ -21,9 +21,9 @@ export default class ContactsView extends JetView{
 				const form = webix.$$("contact:form");
 				if (form) {
 					form.clear();
-
 				}
-				this.getParentView().showForm({}, "Add new", "Add");
+				const value = this.$$("addButton").getValue();
+				this.getParentView().showContactForm({}, "Add new", value);
 			}
 		};
 

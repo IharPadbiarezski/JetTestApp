@@ -100,7 +100,7 @@ export default class ActivityWindow extends JetView {
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", values => {
-			this.showForm({}, "Edit", "Save");
+			this.showActivityForm({}, "Edit", "Save");
 			this.form.setValues(values);
 		});
 	}
@@ -112,10 +112,13 @@ export default class ActivityWindow extends JetView {
 		}
 	}
 
-	showForm(data, headerType, buttonType){
+	showActivityForm(data, name, additionName){
 		this.getRoot().show();
-		this.$$("activity:header").setValues({value: `${headerType} activity`});
-		this.$$("activity_save_button").setValue(buttonType);
+		this.$$("activity:header").setValues({value: `${name} activity`});
+		if (!additionName) {
+			this.$$("activity_save_button").setValue(name);
+		}
+		this.$$("activity_save_button").setValue(additionName);
 	}
 
 	hideForm(){

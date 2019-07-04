@@ -15,10 +15,14 @@ export default class ContactsView extends JetView {
 		this.show("contactinfo", {target:"right"});
 	}
 
-	showForm(data, nameHead, nameButton) {
+	showContactForm(data, name, additionName) {
 		this.show("contactform", {target:"right"}).then(() => {
-			webix.$$("header:contactform").setValues({value: `${nameHead} contact`});
-			webix.$$("save:contactform").setValue(nameButton);
+			webix.$$("header:contactform").setValues({value: `${name} contact`});
+			if (!additionName) {
+				webix.$$("save:contactform").setValue(name);
+			} else {
+				webix.$$("save:contactform").setValue(additionName);
+			}
 		});
 	}
 }

@@ -76,10 +76,13 @@ export default class ContactInfo extends JetView{
 				view: "button",
 				label: "Edit",
 				type:"icon",
+				value: "Edit",
 				icon:"mdi mdi-calendar-edit",
+				localId: "editButton",
 				css: "webix_primary",
 				click: () => {
-					this.getParentView().showForm({}, "Edit", "Save");
+					const value = this.$$("editButton").getValue();
+					this.getParentView().showContactForm({}, value, "Save");
 				}
 			},
 			{}
