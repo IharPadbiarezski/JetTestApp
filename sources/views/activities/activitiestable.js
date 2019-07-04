@@ -8,7 +8,6 @@ export default class ActivitiesDataTable extends JetView{
 		return {
 			view:"datatable",
 			localId: "activities",
-			id: "activities:datatable",
 			select: true,
 			columns: [
 				{ id:"State", header:"", template:"{common.checkbox()}", width: 40, sort: "string"},
@@ -88,5 +87,18 @@ export default class ActivitiesDataTable extends JetView{
 		if (url.includes("contactinfo")) {
 			comboContact.disable();
 		}
+	}
+
+	urlChange(view) {
+		webix.promise.all([
+			activities.waitData,
+		]).then(() => {
+			const table = view.query("datatable");
+			const id = this.getParam("id");
+			const selectedId = table.getSelectedId().id;
+			if (id && activities.exists(id) && id !== selectedId) {
+				table.select(id);
+			}
+		});
 	}
 }

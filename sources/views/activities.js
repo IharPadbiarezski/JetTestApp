@@ -49,16 +49,4 @@ export default class DataView extends JetView{
 		this.app.detachEvent("activities:delete");
 	}
 
-	urlChange() {
-		webix.promise.all([
-			activities.waitData,
-		]).then(() => {
-			const activitiesTable = this.$$("activities:datatable");
-			const id = this.getParam("id");
-			const selectedId = activitiesTable.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				activitiesTable.select(id);
-			}
-		});
-	}
 }
