@@ -18,10 +18,6 @@ export default class ContactsView extends JetView{
 			click: () => {		
 				this.list.unselect();
 				this.show("../contacts");
-				const form = webix.$$("contact:form");
-				if (form) {
-					form.clear();
-				}
 				const value = this.$$("addButton").getValue();
 				this.getParentView().showContactForm({}, "Add new", value);
 			}
@@ -64,6 +60,7 @@ export default class ContactsView extends JetView{
 		};
 	}
 	init() {
+		
 		this.list = this.$$("list");
 		this.list.sync(contacts);
 

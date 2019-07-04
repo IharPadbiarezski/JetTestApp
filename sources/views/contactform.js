@@ -196,7 +196,6 @@ export default class ContactForm extends JetView {
 				{
 					view: "form",
 					localId: "form",
-					id: "contact:form",
 					rows: [
 						{   margin:10,
 							cols: [
@@ -261,8 +260,9 @@ export default class ContactForm extends JetView {
 	}
 
 	init() {
-		this.contactList = webix.$$("contacts:list");
 		this.form = this.$$("form");
+		this.form.clear();
+		this.contactList = webix.$$("contacts:list");
 		const id = this.getParam("id", true);
 		contacts.waitData.then(() => {
 			if (id && contacts.exists(id)) {
