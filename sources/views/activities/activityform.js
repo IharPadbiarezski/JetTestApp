@@ -108,7 +108,7 @@ export default class ActivityWindow extends JetView {
 	}
 
 	setEnable() {
-		const comboContact = this.$$("comboContact");
+		const comboContact = this.form.elements["ContactID"];
 		if (!comboContact.isEnabled()) {
 			comboContact.enable();
 		}
