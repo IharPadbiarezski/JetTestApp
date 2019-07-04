@@ -115,7 +115,6 @@ export default class ContactForm extends JetView {
 			name: "Photo",
 			borderless: true,
 			localId: "photo",
-			id: "photo:contact",
 			template: obj =>  `
 			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
 			    `

@@ -11,7 +11,7 @@ export default class ContactInfo extends JetView{
 
 		const contactTemplate = {
 			view: "template",
-			id: "contact:template",
+			localId: "contactTemplate",
 			template: obj =>  `
                 <div class="contacts-container">
                     <div class="main_info">
@@ -109,7 +109,7 @@ export default class ContactInfo extends JetView{
 	}
     
 	urlChange() {
-		const template = this.$$("contact:template");
+		const template = this.$$("contactTemplate");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData,
