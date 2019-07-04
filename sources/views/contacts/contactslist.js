@@ -26,7 +26,6 @@ export default class ContactsView extends JetView{
 		const contact_list = {
 			view:"list",
 			localId: "list",
-			id: "contacts:list",
 			borderless: true,
 			scroll: "auto",
 			width:250,
