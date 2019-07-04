@@ -129,4 +129,9 @@ export default class ActivityWindow extends JetView {
 		this.form.clear();
 		this.form.clearValidation();
 	}
+
+	setDisable() {
+		const comboContact = this.form.elements["ContactID"];
+		comboContact.disable();
+	}
 }

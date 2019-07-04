@@ -81,14 +81,7 @@ export default class ActivitiesDataTable extends JetView{
 		activities.data.filter();
 		view.sync(activities);
 	}
-	setDisable() {
-		const comboContact = webix.$$("comboContact:activity");
-		let url = this.getUrlString();
-		if (url.includes("contactinfo")) {
-			comboContact.disable();
-		}
-	}
-
+	
 	urlChange(view) {
 		webix.promise.all([
 			activities.waitData,

@@ -313,6 +313,5 @@ export default class ContactForm extends JetView {
 			this.contactList.select(this.contactList.getFirstId());
 		}
 		this.getParentView().show("contactinfo", {target:"right"});
-		this.form = "";
 	}
 }
