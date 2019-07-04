@@ -65,6 +65,15 @@ export default class ActivitiesDataTable extends JetView{
 					this.app.callEvent("form:fill", [item]);
 					this.setDisable();
 				}
+			},
+			on:{        
+				onAfterSelect: (id) => {
+					// refactor here
+					let url = this.getUrlString();
+					if (url.includes("activities")) {
+						this.show(`../activities?id=${id}`);
+					}
+				}
 			}
 		};	
 	}

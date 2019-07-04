@@ -5,15 +5,17 @@ import {activitytypes} from "../../models/activitytypesdata";
 export default class ActivityWindow extends JetView {
 	config() {
 		return {
-			view:"window", head:false, position:"center",
-			modal:true, body:{
+			view:"window",
+			head:false,
+			position:"center",
+			modal:true,
+			body:{
 				view: "form",
-				localId: "activityform",
 				width:600,
 				elements: [
 					{
 						view:"template",
-						localId: "activity:header",
+						localId: "activityHeader",
 						template: obj => obj.value,
 						type:"header",
 						css: "activities_header_align"
@@ -35,7 +37,7 @@ export default class ActivityWindow extends JetView {
 						view: "combo",
 						name: "ContactID",
 						label: "Contact",
-						localId: "formCombo",
+						localId: "comboContact",
 						id: "comboContact:activity",
 						options: contacts,
 						invalidMessage: "Please select a contact"
@@ -67,7 +69,7 @@ export default class ActivityWindow extends JetView {
 						{gravity: 2},
 						{
 							view: "button",
-							localId: "activity_save_button",
+							localId: "saveButton",
 							type: "form",
 							css: "webix_primary",
 							click: () => {
@@ -106,7 +108,7 @@ export default class ActivityWindow extends JetView {
 	}
 
 	setEnable() {
-		const comboContact = webix.$$("comboContact:activity");
+		const comboContact = this.$$("comboContact");
 		if (!comboContact.isEnabled()) {
 			comboContact.enable();
 		}
@@ -114,11 +116,11 @@ export default class ActivityWindow extends JetView {
 
 	showActivityForm(data, name, additionName){
 		this.getRoot().show();
-		this.$$("activity:header").setValues({value: `${name} activity`});
+		this.$$("activityHeader").setValues({value: `${name} activity`});
 		if (!additionName) {
-			this.$$("activity_save_button").setValue(name);
+			this.$$("saveButton").setValue(name);
 		}
-		this.$$("activity_save_button").setValue(additionName);
+		this.$$("saveButton").setValue(additionName);
 	}
 
 	hideForm(){

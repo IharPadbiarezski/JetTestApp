@@ -33,13 +33,6 @@ export default class DataView extends JetView{
 		};
 	}
 
-	ready() {
-		this.table = webix.$$("activities:datatable");
-		this.table.attachEvent("onAfterSelect", (id) => { 
-			this.show(`../activities?id=${id}`);
-		});
-	}
-
 	init() {
 
 		this.form = this.ui(ActivityWindow);
@@ -52,7 +45,8 @@ export default class DataView extends JetView{
 	}
 
 	destroy(){
-		this.table.detachEvent("onAfterSelect");
+		this.app.detachEvent("activities:save");
+		this.app.detachEvent("activities:delete");
 	}
 
 	urlChange() {
