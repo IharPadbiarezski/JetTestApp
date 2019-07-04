@@ -61,8 +61,10 @@ export default class ActivitiesDataTable extends JetView{
 				},
 				"wxi-pencil":(e, id) => {
 					const item = this.getRoot().getItem(id);
-					this.app.callEvent("form:fill", [item]);
-					this.setDisable();
+					// refactor here
+					let currentPage = this.getUrlString();
+					currentPage = currentPage.includes("contact") ? "contact": false;
+					this.app.callEvent("form:fill", [item, currentPage]);
 				}
 			},
 			on:{        

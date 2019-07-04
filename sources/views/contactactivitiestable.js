@@ -26,13 +26,6 @@ export default class ContactActivitiesTable extends JetView{
 							click: () => {
 								const value = this.$$("addButton").getValue();
 								this.form.showActivityForm({}, value);
-								const id = this.getParam("id", true);
-								const comboContact = webix.$$("comboContact:activity");
-								// let test = this.getSubView();
-								// console.log(test);
-								comboContact.setValue(id);
-								comboContact.disable();
-
 							}
 						}
 					]
