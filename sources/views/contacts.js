@@ -45,6 +45,10 @@ export default class ContactsView extends JetView {
 		});
 	}
 
+	// urlChange() {
+	// 	this.setParam("page", "contacts");
+	// }
+
 	destroy() {
 		this.app.detachEvent("contactinfo:show");
 		this.app.detachEvent("contactform:show");

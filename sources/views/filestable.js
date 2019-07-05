@@ -59,9 +59,16 @@ export default class FilesDataTable extends JetView{
 						icon:"mdi mdi-upload",
 						label:"Upload file",
 						width: 200,
+						autosend: false,
 						on:{        
 							onBeforeFileAdd: (file) => {
-								const id = this.getParam("id", true);
+
+								// Not working here
+
+								//let id = this.$scope.getParam("id", true);
+								// let id = this.$scope.getParam("id", true);
+
+								debugger;
 								if(id && contacts.exists(id)) {
 									const values = {
 										name: file.name,
@@ -85,12 +92,13 @@ export default class FilesDataTable extends JetView{
 		};
 	}
 	
-	init(view){
-		view.queryView("datatable").sync(files);		
-	}
-	
-	urlChange() {
-		const id = this.getParam("id", true);
-		files.data.filter(file => file.ContactID.toString() === id);
+	urlChange(view) {
+		files.waitData.then(
+			() => {
+				const id = this.getParam("id", true);
+				files.data.filter(file => file.ContactID.toString() === id.toString());
+				view.queryView("datatable").sync(files);	
+			}
+		);
 	}
 }

@@ -44,10 +44,12 @@ export default class ContactsView extends JetView{
 			},
 			on: {
 				onAfterSelect: (id) => {					
-					this.setParam("id", id, true);
 					const mode = this.getParam("mode");
-					if (mode) {
+					if (mode === "Add") {
 						this.app.callEvent("contactinfo:show", [id]);
+					}
+					else {
+						this.setParam("id", id, true);
 					}
 				}				
 			}
