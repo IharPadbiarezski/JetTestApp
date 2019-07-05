@@ -1,6 +1,10 @@
 import {JetView} from "webix-jet";
 import FilesDataTable from "./filestable";
 import ContactActivitiesTable from "./contactactivitiestable";
+import {contacts} from "../models/contactsdata";
+import {statuses} from "../models/statusesdata";
+import {activities} from "../models/activitiesdata";
+
 
 
 export default class ContactInfo extends JetView{
@@ -108,5 +112,22 @@ export default class ContactInfo extends JetView{
 	ready(view) {
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
+	}
+
+	urlChange() {
+		const template = this.$$("contactTemplate");
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData,
+			activities.waitData
+		]).then(() => {
+			const id = this.getParam("id", true);
+			let values = webix.copy(contacts.getItem(id));
+			values.status = statuses.getItem(values.StatusID).Value;
+			if (values) { template.setValues(values); }
+			if (id && contacts.exists(id)) {
+				activities.data.filter( obj => obj.ContactID.toString() === id.toString() );
+			}
+		});
 	}
 }

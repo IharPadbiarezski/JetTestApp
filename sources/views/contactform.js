@@ -165,7 +165,8 @@ export default class ContactForm extends JetView {
 					width: 200,
 					click:() => {
 						const id = this.getParam("id", true);
-						this.app.callEvent("contactinfo:show", [id]);
+						const mode = this.getParam("mode", true);
+						this.app.callEvent("contactinfo:show", [id, mode, true]);
 					},
 					tooltip:"Click to close the form"
 				},
@@ -177,17 +178,21 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					click:() => {
 						if (this.form.validate()){
-							let newId;
-							
+
 							const values = this.form.getValues();
+							values.Photo = this.photo;
 							const id = values.id;
-							if (contacts.exists(id)) {
-								this.updateContact(id, values);
+							const mode = this.getParam("mode", true);
+							if (id) {
+								contacts.updateItem(id, values);
+								this.app.callEvent("contactinfo:show", [id, mode]);
 							} else {
-								newId = contacts.getLastId();
-								this.addContact(newId, values);
+								contacts.waitSave(() => {
+									contacts.add(values);
+								}).then((item) => {
+									this.app.callEvent("contactinfo:show", [item.id, mode]);
+								});
 							}
-							this.app.callEvent("contactinfo:show", [newId]);
 						}
 					}
 				}
@@ -228,41 +233,41 @@ export default class ContactForm extends JetView {
 						{},
 						buttons
 					],
-					// rules: {
-					// 	FirstName: webix.rules.isNotEmpty,
-					// 	LastName: webix.rules.isNotEmpty,
-					// 	StartDate: (date) => {
-					// 		const currentDate = new Date();
-					// 		currentDate.getFullYear();
-					// 		if(webix.isDate(date) && date < currentDate){
-					// 			return true;
-					// 		}
-					// 	},
-					// 	StatusID: webix.rules.isNotEmpty,
-					// 	Job: webix.rules.isNotEmpty,
-					// 	Company: webix.rules.isNotEmpty,
-					// 	Website: (value) => {
-					// 		try {
-					// 			new URL(value);
-					// 			return true;
-					// 		} catch (_) {
-					// 			return false;  
-					// 		}
-					// 	},
-					// 	Address: webix.rules.isNotEmpty,
-					// 	Email: webix.rules.isEmail,
-					// 	Skype: (value) => {
-					// 		const regExp = /^[0-9a-zA-Z]+$/;
-					// 		return value.match(regExp);
-					// 	},
-					// 	InfoBirthday: (date) => {
-					// 		const currentDate = new Date();
-					// 		currentDate.getFullYear();
-					// 		if(webix.isDate(date) && date < currentDate){
-					// 			return true;
-					// 		}
-					// 	}
-					// }
+					rules: {
+						FirstName: webix.rules.isNotEmpty,
+						LastName: webix.rules.isNotEmpty,
+						StartDate: (date) => {
+							const currentDate = new Date();
+							currentDate.getFullYear();
+							if(webix.isDate(date) && date < currentDate){
+								return true;
+							}
+						},
+						StatusID: webix.rules.isNotEmpty,
+						Job: webix.rules.isNotEmpty,
+						Company: webix.rules.isNotEmpty,
+						Website: (value) => {
+							try {
+								new URL(value);
+								return true;
+							} catch (_) {
+								return false;  
+							}
+						},
+						Address: webix.rules.isNotEmpty,
+						Email: webix.rules.isEmail,
+						Skype: (value) => {
+							const regExp = /^[0-9a-zA-Z]+$/;
+							return value.match(regExp);
+						},
+						InfoBirthday: (date) => {
+							const currentDate = new Date();
+							currentDate.getFullYear();
+							if(webix.isDate(date) && date < currentDate){
+								return true;
+							}
+						}
+					}
 				}
 			]
 		};
@@ -270,7 +275,6 @@ export default class ContactForm extends JetView {
 
 	init() {
 		this.form = this.$$("form");
-		this.contactList = this.getParentView().getRoot().queryView("list");
 		const id = this.getParam("id", true);
 		contacts.waitData.then(() => {
 			if (id && contacts.exists(id)) {
@@ -300,6 +304,8 @@ export default class ContactForm extends JetView {
 					this.$$("headerForm").setValues({value: `${mode} contact`});
 
 					if (mode === "Add") {
+						this.photo = "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png";
+						this.$$("photo").setValues({Photo: this.photo});
 						this.$$("form").setValues({});
 						this.$$("saveButton").setValue(mode);
 					}
@@ -308,26 +314,6 @@ export default class ContactForm extends JetView {
 					}
 				}
 			});
-		}
-	}
-
-	addContact(newId, values) {
-		values.Photo = this.photo;
-		contacts.add(values);
-		this.contactList.select(newId);
-	}
-
-	updateContact(id, values) {
-		values.Photo = this.photo;
-		contacts.updateItem(id, values);
-		this.contactList.select(id);
-	}
-
-	closeForm(id) {
-		if (id) {
-			this.contactList.select(id);
-		} else {
-			this.contactList.select(this.contactList.getFirstId());
 		}
 	}
 }

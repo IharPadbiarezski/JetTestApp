@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contactsdata";
-import {statuses} from "../../models/statusesdata";
 import {activities} from "../../models/activitiesdata";
 
 export default class ContactsView extends JetView{
@@ -44,13 +43,8 @@ export default class ContactsView extends JetView{
 			},
 			on: {
 				onAfterSelect: (id) => {					
-					const mode = this.getParam("mode");
-					if (mode === "Add") {
-						this.app.callEvent("contactinfo:show", [id]);
-					}
-					else {
-						this.setParam("id", id, true);
-					}
+					this.setParam("id", id, true);
+					this.app.callEvent("contactinfo:show", [id]);
 				}				
 			}
 		};
@@ -83,12 +77,7 @@ export default class ContactsView extends JetView{
 
 		this.on(this.app, "contact:delete", () => {
 			this.deleteRow();
-		});
-
-		contacts.data.attachEvent("onIdChange", (oldid, newid) =>{
-			webix.message("An ID was changed");
-		});
-		
+		});		
 	}
 
 	deleteRow() {
@@ -107,23 +96,6 @@ export default class ContactsView extends JetView{
 				});
 			});
 		}
-	}
-
-	urlChange() {
-		const template = this.getParentView().getRoot().queryView("template");
-		webix.promise.all([
-			contacts.waitData,
-			statuses.waitData,
-			activities.waitData
-		]).then(() => {
-			const id = this.getParam("id");
-			let values = webix.copy(contacts.getItem(id));
-			values.status = statuses.getItem(values.StatusID).Value;
-			if (values) { template.setValues(values); }
-			if (id && contacts.exists(id)) {
-				activities.data.filter( obj => obj.ContactID.toString() === id.toString() );
-			}
-		});
 	}
 
 	destroy() {

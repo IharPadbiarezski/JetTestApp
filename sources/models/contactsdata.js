@@ -7,7 +7,9 @@ export const contacts = new webix.DataCollection({
 		$init: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
 			
-			obj.StartDate = dateFormat(obj.StartDate);
+			if (obj.StartDate) {
+				obj.StartDate = dateFormat(obj.StartDate);
+			}
 
 			if (!obj.InfoBirthday && obj.Birthday) {
 				obj.InfoBirthday = dateFormat(obj.Birthday);

@@ -62,13 +62,7 @@ export default class FilesDataTable extends JetView{
 						autosend: false,
 						on:{        
 							onBeforeFileAdd: (file) => {
-
-								// Not working here
-
-								//let id = this.$scope.getParam("id", true);
-								// let id = this.$scope.getParam("id", true);
-
-								debugger;
+								let id = this.getParam("id", true);
 								if(id && contacts.exists(id)) {
 									const values = {
 										name: file.name,
@@ -91,14 +85,13 @@ export default class FilesDataTable extends JetView{
 			]
 		};
 	}
+
+	init(view) {
+		view.queryView("datatable").sync(files);
+	}
 	
-	urlChange(view) {
-		files.waitData.then(
-			() => {
-				const id = this.getParam("id", true);
-				files.data.filter(file => file.ContactID.toString() === id.toString());
-				view.queryView("datatable").sync(files);	
-			}
-		);
+	urlChange() {
+		const id = this.getParam("id", true);
+		files.data.filter(file => file.ContactID.toString() === id.toString());	
 	}
 }
