@@ -100,11 +100,11 @@ export default class ActivityWindow extends JetView {
 	init(view){
 		this.form = view.getBody();
 
-		this.on(this.app, "form:fill", (values, page) => {
+		this.on(this.app, "form:fill", (values, page, id) => {
 			this.showActivityForm({}, "Edit", "Save");
 			this.form.setValues(values);
 			if (page === "contactinfo") {
-				this.setContact();
+				this.setContact(id);
 				this.setDisable();
 			}
 		});
@@ -138,15 +138,8 @@ export default class ActivityWindow extends JetView {
 		comboContact.disable();
 	}
 
-	setContact() {
+	setContact(id) {
 		const comboContact = this.form.elements["ContactID"];
-		comboContact.setValue(this.idContactEl);
-	}
-
-	urlChange() {
-		const id = this.getParam("id", true);
-		if (id) {
-			this.idContactEl = id;
-		}
+		comboContact.setValue(id);
 	}
 }

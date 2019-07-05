@@ -82,6 +82,10 @@ export default class ContactsView extends JetView{
 		this.on(this.app, "contact:delete", () => {
 			this.deleteRow();
 		});
+
+		contacts.data.attachEvent("onIdChange", (oldid, newid) =>{
+			webix.message("An ID was changed");
+		});
 		
 	}
 
@@ -115,7 +119,7 @@ export default class ContactsView extends JetView{
 			values.status = statuses.getItem(values.StatusID).Value;
 			if (values) { template.setValues(values); }
 			if (id && contacts.exists(id)) {
-				activities.data.filter( obj => obj.ContactID.toString() === id );
+				activities.data.filter( obj => obj.ContactID.toString() === id.toString() );
 			}
 		});
 	}

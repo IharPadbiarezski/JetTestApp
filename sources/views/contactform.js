@@ -177,13 +177,14 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					click:() => {
 						if (this.form.validate()){
-							const newId = this.getRoot().getParentView().queryView("list").getLastId();
+							let newId;
 							
 							const values = this.form.getValues();
 							const id = values.id;
 							if (contacts.exists(id)) {
 								this.updateContact(id, values);
 							} else {
+								newId = contacts.getLastId();
 								this.addContact(newId, values);
 							}
 							this.app.callEvent("contactinfo:show", [newId]);
@@ -227,41 +228,41 @@ export default class ContactForm extends JetView {
 						{},
 						buttons
 					],
-					rules: {
-						FirstName: webix.rules.isNotEmpty,
-						LastName: webix.rules.isNotEmpty,
-						StartDate: (date) => {
-							const currentDate = new Date();
-							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
-								return true;
-							}
-						},
-						StatusID: webix.rules.isNotEmpty,
-						Job: webix.rules.isNotEmpty,
-						Company: webix.rules.isNotEmpty,
-						Website: (value) => {
-							try {
-								new URL(value);
-								return true;
-							} catch (_) {
-								return false;  
-							}
-						},
-						Address: webix.rules.isNotEmpty,
-						Email: webix.rules.isEmail,
-						Skype: (value) => {
-							const regExp = /^[0-9a-zA-Z]+$/;
-							return value.match(regExp);
-						},
-						InfoBirthday: (date) => {
-							const currentDate = new Date();
-							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
-								return true;
-							}
-						}
-					}
+					// rules: {
+					// 	FirstName: webix.rules.isNotEmpty,
+					// 	LastName: webix.rules.isNotEmpty,
+					// 	StartDate: (date) => {
+					// 		const currentDate = new Date();
+					// 		currentDate.getFullYear();
+					// 		if(webix.isDate(date) && date < currentDate){
+					// 			return true;
+					// 		}
+					// 	},
+					// 	StatusID: webix.rules.isNotEmpty,
+					// 	Job: webix.rules.isNotEmpty,
+					// 	Company: webix.rules.isNotEmpty,
+					// 	Website: (value) => {
+					// 		try {
+					// 			new URL(value);
+					// 			return true;
+					// 		} catch (_) {
+					// 			return false;  
+					// 		}
+					// 	},
+					// 	Address: webix.rules.isNotEmpty,
+					// 	Email: webix.rules.isEmail,
+					// 	Skype: (value) => {
+					// 		const regExp = /^[0-9a-zA-Z]+$/;
+					// 		return value.match(regExp);
+					// 	},
+					// 	InfoBirthday: (date) => {
+					// 		const currentDate = new Date();
+					// 		currentDate.getFullYear();
+					// 		if(webix.isDate(date) && date < currentDate){
+					// 			return true;
+					// 		}
+					// 	}
+					// }
 				}
 			]
 		};
