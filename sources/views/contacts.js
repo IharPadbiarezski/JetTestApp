@@ -17,15 +17,24 @@ export default class ContactsView extends JetView {
 			// }
 		};
 	}
+
+	ready(view) {
+		this.contactList = view.queryView("list");
+	}
 	
 	init() {
 		contacts.waitData.then(() => {
-			this.show("/top/contacts/contactinfo").then();
+			this.show("/top/contacts/contactinfo");
 		});
 
 		this.on(this.app, "contactinfo:show", (id) => {
 			this.show("/top/contacts/contactinfo").then(() => {
 				this.setParam("id", id, true);
+				if (id) {
+					this.contactList.select(id);
+				} else {
+					this.contactList.select(this.contactList.getFirstId());
+				}
 			});
 		});
 
@@ -37,7 +46,7 @@ export default class ContactsView extends JetView {
 	}
 
 	destroy() {
-		this.app.detachEvent("activities:save");
-		this.app.detachEvent("activities:delete");
+		this.app.detachEvent("contactinfo:show");
+		this.app.detachEvent("contactform:show");
 	}
 }

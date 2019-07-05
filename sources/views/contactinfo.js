@@ -109,4 +109,8 @@ export default class ContactInfo extends JetView{
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
 	}
+
+	init() {
+		this.setParam("currentPage", "contacts");
+	}
 }
