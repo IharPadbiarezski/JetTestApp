@@ -5,7 +5,6 @@ import { contacts } from "../models/contactsdata";
 export default class FilesDataTable extends JetView{
 	config(){
 		return {
-			id: "contact:files",
 			rows: [
 				{
 					view:"datatable",

@@ -1,5 +1,7 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contactsdata";
+import {statuses} from "../../models/statusesdata";
+import {activities} from "../../models/activitiesdata";
 
 export default class ContactsView extends JetView{
 	config(){
@@ -17,9 +19,8 @@ export default class ContactsView extends JetView{
 			inputWidth: 200,
 			click: () => {		
 				this.list.unselect();
-				this.show("../contacts");
-				const value = this.$$("addButton").getValue();
-				this.getParentView().showContactForm({}, "Add new", value);
+				this.setParam("mode", "Add");
+				this.app.callEvent("contactform:show", ["Add"]);
 			}
 		};
 
@@ -42,10 +43,13 @@ export default class ContactsView extends JetView{
 				height:66
 			},
 			on: {
-				onAfterSelect: (id) => {
-					this.getParentView().show("contactinfo", {target:"right"});
-					this.show(`../contacts?id=${id}`);
-				}
+				onAfterSelect: (id) => {					
+					this.setParam("id", id, true);
+					const mode = this.getParam("mode");
+					if (mode) {
+						this.app.callEvent("contactinfo:show", [id]);
+					}
+				}				
 			}
 		};
 
@@ -74,5 +78,50 @@ export default class ContactsView extends JetView{
 				this.list.select(id);
 			}
 		});
+
+		this.on(this.app, "contact:delete", () => {
+			this.deleteRow();
+		});
+		
 	}
+
+	deleteRow() {
+		const id = this.getParam("id");
+
+		if(id && contacts.exists(id)){
+			webix.confirm({
+				text: "The contact will be deleted.<br/> Are you sure?"
+			}).then(() => {
+				contacts.remove(id);
+				let firstId = contacts.getFirstId();
+				this.$$("list").select(firstId);
+				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
+				connectedActivities.forEach((activity) => {
+					activities.remove(activity.id);
+				});
+			});
+		}
+	}
+
+	urlChange() {
+		const template = this.getParentView().getRoot().queryView("template");
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData,
+			activities.waitData
+		]).then(() => {
+			const id = this.getParam("id");
+			let values = webix.copy(contacts.getItem(id));
+			values.status = statuses.getItem(values.StatusID).Value;
+			if (values) { template.setValues(values); }
+			if (id && contacts.exists(id)) {
+				activities.data.filter( obj => obj.ContactID.toString() === id );
+			}
+		});
+	}
+
+	destroy() {
+		this.app.detachEvent("contact:delete");
+	}
+
 }

@@ -1,7 +1,4 @@
 import {JetView} from "webix-jet";
-import {contacts} from "../models/contactsdata";
-import {statuses} from "../models/statusesdata";
-import {activities} from "../models/activitiesdata";
 import FilesDataTable from "./filestable";
 import ContactActivitiesTable from "./contactactivitiestable";
 
@@ -51,8 +48,14 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				ContactActivitiesTable,
-				FilesDataTable
+				{
+					id: "contact:activities",
+					$subview: ContactActivitiesTable,
+				},
+				{
+					id: "contact:files",
+					$subview: FilesDataTable,
+				}
 			]
 		};
 
@@ -69,7 +72,7 @@ export default class ContactInfo extends JetView{
 				icon: "wxi-trash",
 				css: "webix_primary",
 				click: () => {
-					this.deleteRow();
+					this.app.callEvent("contact:delete");
 				}
 			},
 			{
@@ -81,8 +84,7 @@ export default class ContactInfo extends JetView{
 				localId: "editButton",
 				css: "webix_primary",
 				click: () => {
-					const value = this.$$("editButton").getValue();
-					this.getParentView().showContactForm({}, value, "Save");
+					this.app.callEvent("contactform:show", ["Edit"]);
 				}
 			},
 			{}
@@ -106,39 +108,5 @@ export default class ContactInfo extends JetView{
 	ready(view) {
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
-	}
-    
-	urlChange() {
-		const template = this.$$("contactTemplate");
-		webix.promise.all([
-			contacts.waitData,
-			statuses.waitData,
-			activities.waitData
-		]).then(() => {
-			const id = this.getParam("id", true);
-			let values = webix.copy(contacts.getItem(id));
-			values.status = statuses.getItem(values.StatusID).Value;
-			if (values) { template.setValues(values); }
-			if (id && contacts.exists(id)) {
-				activities.data.filter( obj => obj.ContactID.toString() === id );
-			}
-		});
-	}
-
-	deleteRow() {
-		const id = this.getParam("id", true);
-		if(id && contacts.exists(id)){
-			webix.confirm({
-				text: "The contact will be deleted.<br/> Are you sure?"
-			}).then(() => {
-				contacts.remove(id);
-				let firstId = contacts.getFirstId();
-				this.getRoot().getParentView().queryView("list").select(firstId);
-				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
-				connectedActivities.forEach((activity) => {
-					activities.remove(activity.id);
-				});
-			});
-		}
 	}
 }

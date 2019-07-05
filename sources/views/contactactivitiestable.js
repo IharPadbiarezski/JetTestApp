@@ -6,7 +6,6 @@ import ActivityWindow from "./activities/activityform";
 export default class ContactActivitiesTable extends JetView{
 	config(){
 		return {
-			id: "contact:activities",
 			rows: [
 				{ $subview:ActivitiesDataTable },
 				{	

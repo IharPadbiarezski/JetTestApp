@@ -164,20 +164,30 @@ export default class ContactForm extends JetView {
 					value:"Cancel",
 					width: 200,
 					click:() => {
-						this.closeForm();
+						const id = this.getParam("id", true);
+						this.closeForm(id);
+						this.app.callEvent("contactinfo:show", [id]);
 					},
 					tooltip:"Click to close the form"
 				},
 				{
 					view:"button",
-					id: "save:contactform",
+					localId: "saveButton",
 					type:"form",
 					width: 200,
 					tooltip:"Save changes",
 					click:() => {
 						if (this.form.validate()){
-							this.addContact();
-							this.getParentView().show("contactinfo", {target:"right"});
+							const newId = this.getRoot().getParentView().queryView("list").getLastId();
+							
+							const values = this.form.getValues();
+							const id = values.id;
+							if (contacts.exists(id)) {
+								this.updateContact(id, values);
+							} else {
+								this.addContact(newId, values);
+							}
+							this.app.callEvent("contactinfo:show", [newId]);
 						}
 					}
 				}
@@ -188,8 +198,7 @@ export default class ContactForm extends JetView {
 			rows: [
 				{
 					type:"header",
-					localId: "header_contactform",
-					id: "header:contactform",
+					localId: "headerForm",
 					template: obj => obj.value,
 					css:"webix_header"
 				},
@@ -261,7 +270,6 @@ export default class ContactForm extends JetView {
 
 	init() {
 		this.form = this.$$("form");
-		this.form.clear();
 		this.contactList = this.getParentView().getRoot().queryView("list");
 		const id = this.getParam("id", true);
 		contacts.waitData.then(() => {
@@ -284,34 +292,42 @@ export default class ContactForm extends JetView {
 				if (values) {
 					this.form.setValues(values);
 					photo.setValues({Photo: values.Photo});
-				}			
+				}		
+				
+				const mode = this.getParam("mode", true);
+
+				if (mode) {
+					this.$$("headerForm").setValues({value: `${mode} contact`});
+
+					if (mode === "Add") {
+						this.$$("form").setValues({});
+						this.$$("saveButton").setValue(mode);
+					}
+					if (mode === "Edit") {
+						this.$$("saveButton").setValue("Save");
+					}
+				}
 			});
 		}
 	}
 
-
-	addContact() {
-		const values = this.form.getValues();
-		const id = values.id;
-		this.newID = contacts.getLastId();
-		if (contacts.exists(id)) {
-			values.Photo = this.photo;
-			contacts.updateItem(id, values);
-			this.contactList.select(id);
-		} else {
-			values.Photo = this.photo;
-			contacts.add(values);
-			this.contactList.select(contacts.getLastId());
-		}
+	addContact(newId, values) {
+		values.Photo = this.photo;
+		contacts.add(values);
+		this.contactList.select(newId);
 	}
 
-	closeForm() {
-		const id = this.getParam("id", true);
+	updateContact(id, values) {
+		values.Photo = this.photo;
+		contacts.updateItem(id, values);
+		this.contactList.select(id);
+	}
+
+	closeForm(id) {
 		if (id) {
 			this.contactList.select(id);
 		} else {
 			this.contactList.select(this.contactList.getFirstId());
 		}
-		this.getParentView().show("contactinfo", {target:"right"});
 	}
 }
