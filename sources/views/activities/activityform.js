@@ -117,8 +117,12 @@ export default class ActivityWindow extends JetView {
 		}
 	}
 
-	showActivityForm(data, name, additionName){
+	showActivityForm(data, name, additionName, id, check){
 		this.getRoot().show();
+		if(check) {
+			this.setContact(id);
+			this.setDisable();
+		}
 		this.$$("activityHeader").setValues({value: `${name} activity`});
 		if (!additionName) {
 			this.$$("saveButton").setValue(name);
