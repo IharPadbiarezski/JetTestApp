@@ -44,7 +44,9 @@ export default class FilesDataTable extends JetView{
 					onClick: {
 						"wxi-trash":(e, id) => {
 							webix.confirm({
-								text: _("The file will be deleted. Deleting cannot be undone... <br/> Are you sure?")
+								text: _("The file will be deleted. Deleting cannot be undone... <br/> Are you sure?"),
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								if (id)
 									files.remove(id);

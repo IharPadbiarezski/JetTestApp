@@ -55,6 +55,7 @@ export default {
 	Skype: "Скайп",
 	Phone: "Телефон",
 	Birthday: "Рождение",
+	OK: "Да",
 	"Change photo": "Изменить фото",
 	"Delete photo": "Удалить фото",
 	"Job position": "Должность",

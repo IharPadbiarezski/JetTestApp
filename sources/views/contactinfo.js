@@ -130,7 +130,9 @@ export default class ContactInfo extends JetView{
 		const id = this.getParam("id", true);
 		if(id && contacts.exists(id)){
 			webix.confirm({
-				text: _("The contact will be deleted.<br/> Are you sure?")
+				text: _("The contact will be deleted.<br/> Are you sure?"),
+				ok: _("OK"),
+				cancel: _("Cancel")
 			}).then(() => {
 				contacts.remove(id);
 				let firstId = contacts.getFirstId();

@@ -42,6 +42,7 @@ export default {
 	"Add Contact": "Add Contact",
 	Delete: "Delete",
 	Edit: "Edit",
+	OK: "OK",
 	"Add contact": "Add contact",
 	"type to find matching contacts": "type to find matching contacts",
 	"Add new contact": "Add new contact",
