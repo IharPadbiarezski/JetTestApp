@@ -44,7 +44,7 @@ export default class ContactsView extends JetView{
 					form.clear();
 
 				}
-				this.getParentView().showForm({}, _("Add new"), _("Add"));
+				this.getParentView().showForm({}, `${_("Add new")}`, `${_("Add")}`);
 			}
 		};
 

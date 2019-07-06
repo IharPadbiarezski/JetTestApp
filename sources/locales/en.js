@@ -49,6 +49,8 @@ export default {
 	"First name": "First name",
 	"Last name": "Last name",
 	"Joining date": "Joining date",
+	"Add new": "Add new",
+	contact: "contact",
 	Job: "Job",
 	Company: "Company",
 	Website: "Website",

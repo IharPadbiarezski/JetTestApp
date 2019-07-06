@@ -194,7 +194,7 @@ export default class ContactForm extends JetView {
 					type: "header",
 					localId: "header_contactform",
 					id: "header:contactform",
-					template: obj => _(obj.value),
+					template: obj => obj.value,
 					css:"webix_header"
 				},
 				{

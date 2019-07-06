@@ -16,7 +16,7 @@ export default class ActivityWindow extends JetView {
 					{
 						view:"template",
 						localId: "activity:header",
-						template: obj => _(obj.value),
+						template: obj => obj.value,
 						type:"header",
 						css: "activities_header_align"
 					},
@@ -104,7 +104,7 @@ export default class ActivityWindow extends JetView {
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", values => {
-			this.showForm({}, "Edit", "Save");
+			this.showForm({}, `${_("Edit")}`, `${_("Save")}`);
 			this.form.setValues(values);
 		});
 	}
@@ -119,7 +119,7 @@ export default class ActivityWindow extends JetView {
 	showForm(data, headerType, buttonType){
 		const _ = this.app.getService("locale")._;
 		this.getRoot().show();
-		this.$$("activity:header").setValues({value: `${_(headerType)} ${_("activity")}`});
+		this.$$("activity:header").setValues({value: `${headerType} ${_("activity")}`});
 		this.$$("activity_save_button").setValue(buttonType);
 	}
 

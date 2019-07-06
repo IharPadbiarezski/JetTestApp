@@ -44,6 +44,8 @@ export default {
 	"Add contact": "Добавить контакт",
 	"type to find matching contacts": "начните вводить для поиска",
 	"Add new contact": "Добавить новый контакт",
+	"Add new": "Добавить новый",
+	contact: "контакт",
 	"First name": "Имя",
 	"Last name": "Фамилия",
 	"Joining date": "Дата вступления",
