@@ -22,6 +22,11 @@ if (!BUILD_AS_MODULE){
 		app.attachEvent("app:error:resolve", () => {
 			webix.delay(() => app.show("/top/contacts"));
 		});
-		app.use(plugins.Locale);
+		app.use(plugins.Locale, {
+			webix:{
+				en:"en-US",
+				ru:"ru-RU"
+			}
+		});
 	});
 }

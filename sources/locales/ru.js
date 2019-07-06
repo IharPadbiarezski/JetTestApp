@@ -62,6 +62,8 @@ export default {
 	"Change photo": "Изменить фото",
 	"Delete photo": "Удалить фото",
 	"Job position": "Должность",
+	EN: "Англ",
+	RU: "Рус",
 	"Click to delete the photo": "Кликните, чтобы удалить",
 	"Click to close the form": "Кликните, чтобы закрыть форму",
 	"Save changes": "Сохранить изменения",

@@ -6,14 +6,15 @@ import { statuses } from "../models/statusesdata";
 export default class SettingsView extends JetView {
 	config() {
 		const lang = this.app.getService("locale").getLang();
+		const _ = this.app.getService("locale")._;
 
 		const selector = {
 			view: "segmented",
 			inputWidth: 250,
 			id: "lng",
 			options: [
-				{id: "en", value: "EN"},
-				{id: "ru", value: "RU"}
+				{id: "en", value: _("EN")},
+				{id: "ru", value: _("RU")}
 			],
 			click: () => this.toggleLanguage(),
 			value: lang

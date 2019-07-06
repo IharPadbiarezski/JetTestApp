@@ -60,6 +60,8 @@ export default {
 	Phone: "Phone",
 	Birthday: "Birthday",
 	activity: "activity",
+	EN: "EN",
+	RU: "RU",
 	"Change photo": "Change photo",
 	"Delete photo": "Delete photo",
 	"Job position": "Job position",
