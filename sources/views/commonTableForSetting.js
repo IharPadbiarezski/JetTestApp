@@ -57,7 +57,7 @@ export default class CommonTableForSettings extends JetView {
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
-						text: _("Are you sure you want to delete the ") + _(this.valHeader)
+						text: `${_("Are you sure you want to delete the ")} ${_(this.valHeader)}`
 					}).then( () => {
 						this._tdata.remove(id);
 					});

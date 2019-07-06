@@ -5,6 +5,8 @@ import {activities} from "../../models/activitiesdata";
 
 export default class ActivitiesDataTable extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			view:"datatable",
 			localId: "activities",
@@ -14,27 +16,27 @@ export default class ActivitiesDataTable extends JetView{
 				{ id:"State", header:"", template:"{common.checkbox()}", width: 40, sort: "string"},
 				{
 					id: "TypeID",
-					header: [ "Activity type", { content: "selectFilter" } ],
+					header: [ _("Activity type"), { content: "selectFilter" } ],
 					collection: activitytypes,
 					fillspace: true,
 					sort: "string"
 				},
 				{ 
 					id: "ConvDueDate",
-					header: [ "Due date", { content:"datepickerFilter", inputConfig:{ format:webix.i18n.longDateFormatStr } } ],
+					header: [ _("Due date"), { content:"datepickerFilter", inputConfig:{ format:webix.i18n.longDateFormatStr } } ],
 					fillspace: true,
 					sort: "date",
 					format:webix.i18n.longDateFormatStr
 				},
 				{ 
 					id: "Details",
-					header: [ "Details", { content: "textFilter" } ],
+					header: [ _("Details"), { content: "textFilter" } ],
 					fillspace: true,
 					sort: "string"
 				},
 				{
 					id: "ContactID",
-					header: [ "Contact", { content: "selectFilter" } ],
+					header: [ _("Contact"), { content: "selectFilter" } ],
 					collection: contacts,
 					fillspace: true,
 					sort: "string"
@@ -53,7 +55,7 @@ export default class ActivitiesDataTable extends JetView{
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
-						text: "The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?"
+						text: _("The activity will be deleted. Deleting cannot be undone... <br/> Are you sure?")
 					}).then( res => {
 						if (res)
 							this.app.callEvent("activities:delete",[id.row]);

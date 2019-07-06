@@ -5,6 +5,8 @@ import ActivityWindow from "./activities/activityform";
 
 export default class DataView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		const tabbar = {
 			view: "tabbar",
 			id: "selector",
@@ -13,31 +15,31 @@ export default class DataView extends JetView{
 			options: [
 				{
 					id: 1,
-					value: "All"
+					value: _("All")
 				},
 				{
 					id: 2,
-					value: "Overdue"
+					value: _("Overdue")
 				},
 				{
 					id: 3,
-					value: "Completed"
+					value: _("Completed")
 				},
 				{
 					id: 4,
-					value: "Today"
+					value: _("Today")
 				},
 				{
 					id: 5,
-					value: "Tommorow"
+					value: _("Tommorow")
 				},
 				{
 					id: 6,
-					value: "This week"
+					value: _("This week")
 				},
 				{
 					id: 7,
-					value: "This month"
+					value: _("This month")
 				}
 			],
 			on: {
@@ -55,10 +57,10 @@ export default class DataView extends JetView{
 						tabbar,
 						{
 							view: "button",
-							label: "Add",
+							label: _("Add"),
 							localId: "addButton",
 							type:"icon",
-							value: "Add",
+							value: _("Add"),
 							icon: "wxi-plus-square",
 							css: "webix_primary",
 							align: "right",

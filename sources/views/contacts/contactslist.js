@@ -3,13 +3,14 @@ import {contacts} from "../../models/contactsdata";
 
 export default class ContactsView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
 
 		const listInput = {
 			view: "text",
 			gravity: 3,
 			localId: "input",
 			id: "list:input",
-			placeholder: "type to find matching contacts",
+			placeholder: _("type to find matching contacts"),
 			on: {
 				onTimedKeyPress: () => {
 					let value = this.$$("input").getValue().toLowerCase();
@@ -26,7 +27,7 @@ export default class ContactsView extends JetView{
 
 		const add_button = {
 			view: "button",
-			label: "Add contact",
+			label: _("Add contact"),
 			localId: "add_button",
 			autoheight: true,
 			type:"icon",
@@ -43,7 +44,7 @@ export default class ContactsView extends JetView{
 					form.clear();
 
 				}
-				this.getParentView().showForm({}, "Add new", "Add");
+				this.getParentView().showForm({}, _("Add new"), _("Add"));
 			}
 		};
 

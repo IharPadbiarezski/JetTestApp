@@ -5,6 +5,8 @@ import ActivityWindow from "./activities/activityform";
 
 export default class ContactActivitiesTable extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			id: "contact:activities",
 			rows: [
@@ -15,10 +17,10 @@ export default class ContactActivitiesTable extends JetView{
 						{},
 						{
 							view: "button",
-							label: "Add",
+							label: _("Add"),
 							localId: "addButton",
 							type:"icon",
-							value: "Add",
+							value: _("Add"),
 							icon: "wxi-plus",
 							css: "webix_primary",
 							align: "right",

@@ -4,6 +4,8 @@ import { contacts } from "../models/contactsdata";
 
 export default class FilesDataTable extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+		
 		return {
 			id: "contact:files",
 			rows: [
@@ -14,20 +16,20 @@ export default class FilesDataTable extends JetView{
 					columns: [
 						{ 
 							id: "name",
-							header: "Name",
+							header: _("Name"),
 							fillspace: true,
 							sort: "string"
 						},
 						{ 
 							id: "ChangeDate",
-							header: "Change date",
+							header: _("Change date"),
 							fillspace: true,
 							sort: "date",
 							format:webix.i18n.longDateFormatStr
 						},
 						{ 
 							id: "size",
-							header: "Size",
+							header: _("Size"),
 							fillspace: true,
 							template: obj => `${obj.size}Kb`,
 							sort: "int"
@@ -42,7 +44,7 @@ export default class FilesDataTable extends JetView{
 					onClick: {
 						"wxi-trash":(e, id) => {
 							webix.confirm({
-								text: "The file will be deleted. Deleting cannot be undone... <br/> Are you sure?"
+								text: _("The file will be deleted. Deleting cannot be undone... <br/> Are you sure?")
 							}).then(() => {
 								if (id)
 									files.remove(id);
@@ -54,11 +56,11 @@ export default class FilesDataTable extends JetView{
 				{ cols: [
 					{},
 					{
-						view:"uploader",
+						view: "uploader",
 						id: "uploader",
-						type:"iconButton",
-						icon:"mdi mdi-upload",
-						label:"Upload file",
+						type: "iconButton",
+						icon: "mdi mdi-upload",
+						label: _("Upload file"),
 						width: 200,
 						on:{        
 							onBeforeFileAdd: (file) => {

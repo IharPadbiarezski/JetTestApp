@@ -4,6 +4,8 @@ import {activitytypes} from "../../models/activitytypesdata";
 
 export default class ActivityWindow extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			view:"window", head:false, position:"center",
 			modal:true, body:{
@@ -14,54 +16,54 @@ export default class ActivityWindow extends JetView {
 					{
 						view:"template",
 						localId: "activity:header",
-						template: obj => obj.value,
+						template: obj => _(obj.value),
 						type:"header",
 						css: "activities_header_align"
 					},
 					{
 						view: "textarea",
 						name: "Details",
-						label: "Details",
-						invalidMessage: "Please entry your name"
+						label: _("Details"),
+						invalidMessage: _("Please entry your name")
 					},
 					{
 						view: "combo",
 						name: "TypeID",
-						label: "Type",
+						label: _("Type"),
 						options: activitytypes,
-						invalidMessage: "Please select a type"
+						invalidMessage: _("Please select a type")
 					},
 					{
 						view: "combo",
 						name: "ContactID",
-						label: "Contact",
+						label: _("Contact"),
 						localId: "formCombo",
 						id: "comboContact:activity",
 						options: contacts,
-						invalidMessage: "Please select a contact"
+						invalidMessage: _("Please select a contact")
 					},
 					{
 						cols: [
 							{
 								view:"datepicker",
 								name: "ConvDueDate",
-								label: "Date",
-								invalidMessage: "Please select a date"
+								label: _("Date"),
+								invalidMessage: _("Please select a date")
 							},
 							{
 								view:"datepicker",
 								name: "ConvDueTime",
 								format:"%H:%i",
-								label: "Time",
+								label: _("Time"),
 								type: "time",
-								invalidMessage: "Please select any time"
+								invalidMessage: _("Please select any time")
 							}
 						]
 					},
 					{
 						view:"checkbox",
 						name: "State",
-						labelRight:"Completed"
+						labelRight: _("Completed")
 					},
 					{cols: [
 						{gravity: 2},
@@ -80,7 +82,7 @@ export default class ActivityWindow extends JetView {
 						},
 						{
 							view: "button",
-							value: "Cancel",
+							value: _("Cancel"),
 							click: () => {
 								this.hideForm();
 								this.setEnable();

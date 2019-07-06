@@ -4,70 +4,73 @@ import {contacts} from "../models/contactsdata";
 
 export default class ContactForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 
 		const main_info = {
 			margin:10,
 			rows:[
 				{
-					view:"text", name:"FirstName",
-					label:"First name",
+					view: "text",
+					name: "FirstName",
+					label: _("First name"),
 					labelWidth: 90,
-					placeholder:"First name",
-					invalidMessage:"A first name is required"
+					placeholder: _("First name"),
+					invalidMessage: _("A first name is required")
 				},
 				{
-					view:"text", name:"LastName",
-					label:"Last name",
+					view: "text",
+					name: "LastName",
+					label: _("Last name"),
 					labelWidth: 90,
-					placeholder:"Last name",
-					invalidMessage:"A last name is required"
+					placeholder: _("Last name"),
+					invalidMessage: _("A last name is required")
 				},
 				{
 					view:"datepicker",
 					name: "StartDate",
-					label: "Joining date",
+					label: _("Joining date"),
 					labelWidth: 90,
-					invalidMessage: "Start Date must be less than current Date"
+					invalidMessage: _("Start Date must be less than current Date")
 				},
 				{
 					view: "combo",
 					name: "StatusID",
-					label: "Status",
+					label: _("Status"),
 					labelWidth: 90,
 					options: statuses,
-					invalidMessage: "Please select a status"
+					invalidMessage: _("Please select a status")
 				},
 				{
-					view:"text",
-					name:"Job",
-					label:"Job",
+					view: "text",
+					name: "Job",
+					label: _("Job"),
 					labelWidth: 90,
-					placeholder:"Job position",
-					invalidMessage:"A job position is required"
+					placeholder: _("Job position"),
+					invalidMessage: _("A job position is required")
 				},
 				{
-					view:"text",
-					name:"Company",
-					label:"Company",
+					view: "text",
+					name: "Company",
+					label: _("Company"),
 					labelWidth: 90,
-					placeholder:"Company",
-					invalidMessage:"A company is required"
+					placeholder: _("Company"),
+					invalidMessage: _("A company is required")
 				},
 				{
-					view:"text",
-					name:"Website",
-					label:"Website",
+					view: "text",
+					name: "Website",
+					label: _("Website"),
 					labelWidth: 90,
-					placeholder:"Website",
-					invalidMessage: "Website must look like https://webix.com"
+					placeholder: _("Website"),
+					invalidMessage: _("Website must look like https://webix.com")
 				},
 				{
-					view:"text",
-					name:"Address",
-					label:"Address",
+					view: "text",
+					name: "Address",
+					label: _("Address"),
 					labelWidth: 90,
-					placeholder:"Address",
-					invalidMessage:"An address is required"
+					placeholder: _("Address"),
+					invalidMessage: _("An address is required")
 				}
 			]
 		};
@@ -76,36 +79,36 @@ export default class ContactForm extends JetView {
 			margin:10,
 			rows: [
 				{
-					view:"text",
-					name:"Email",
-					label:"Email",
+					view: "text",
+					name: "Email",
+					label: _("Email"),
 					labelWidth: 90,
-					placeholder:"Email",
-					invalidMessage:"Email is required"
+					placeholder: _("Email"),
+					invalidMessage: _("Email is required")
 				},
 				{
-					view:"text",
-					name:"Skype",
-					label:"Skype",
+					view: "text",
+					name: "Skype",
+					label: _("Skype"),
 					labelWidth: 90,
-					placeholder:"Skype",
-					invalidMessage:"A skype is required (without spaces)"
+					placeholder: _("Skype"),
+					invalidMessage: _("A skype is required (without spaces)")
 				},
 				{
 					view: "text",
 					name: "Phone",
-					label: "Phone",
+					label: _("Phone"),
 					labelWidth: 90,
-					placeholder: "Phone",
+					placeholder: _("Phone"),
 					pattern: { mask: "###-## #######", allow:/[0-9]/g},
-					invalidMessage: "Sorry, you must type any 12 numbers"
+					invalidMessage: _("Sorry, you must type any 12 numbers")
 				},
 				{
 					view:"datepicker",
 					name: "InfoBirthday",
-					label: "Birthday",
+					label: _("Birthday"),
 					labelWidth: 90,
-					invalidMessage: "Start Date must be less than current Date"
+					invalidMessage: _("Start Date must be less than current Date")
 				}
 			]
 		};
@@ -126,11 +129,11 @@ export default class ContactForm extends JetView {
 			rows:[
 				{},
 				{ 
-					view:"uploader",
-					value:"Change photo",
-					accept:"image/jpeg, image/png",       
-					autosend:false, 
-					multiple:false,
+					view: "uploader",
+					value: _("Change photo"),
+					accept: "image/jpeg, image/png",       
+					autosend: false, 
+					multiple: false,
 					on:{        
 						onBeforeFileAdd: (upload) => {        
 							var file = upload.file;
@@ -145,9 +148,9 @@ export default class ContactForm extends JetView {
 					}
 				},
 				{
-					view:"button",
-					value:"Delete photo",
-					tooltip:"Click to delete the photo",
+					view: "button",
+					value: _("Delete photo"),
+					tooltip: _("Click to delete the photo"),
 					click: () => {
 						this.photo = "";
 						this.$$("photo").setValues({Photo: this.photo});
@@ -161,20 +164,20 @@ export default class ContactForm extends JetView {
 			cols:[
 				{},
 				{
-					view:"button",
-					value:"Cancel",
+					view: "button",
+					value: _("Cancel"),
 					width: 200,
 					click:() => {
 						this.closeForm();
 					},
-					tooltip:"Click to close the form"
+					tooltip: _("Click to close the form")
 				},
 				{
-					view:"button",
+					view: "button",
 					id: "save:contactform",
-					type:"form",
+					type: "form",
 					width: 200,
-					tooltip:"Save changes",
+					tooltip: _("Save changes"),
 					click:() => {
 						if (this.form.validate()){
 							this.addContact();
@@ -188,10 +191,10 @@ export default class ContactForm extends JetView {
 		return {
 			rows: [
 				{
-					type:"header",
+					type: "header",
 					localId: "header_contactform",
 					id: "header:contactform",
-					template: obj => obj.value,
+					template: obj => _(obj.value),
 					css:"webix_header"
 				},
 				{
