@@ -57,6 +57,7 @@ export default {
 	Skype: "Skype",
 	Phone: "Phone",
 	Birthday: "Birthday",
+	activity: "activity",
 	"Change photo": "Change photo",
 	"Delete photo": "Delete photo",
 	"Job position": "Job position",

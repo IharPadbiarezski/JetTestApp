@@ -99,6 +99,8 @@ export default class ActivityWindow extends JetView {
 	}
 
 	init(view){
+
+		const _ = this.app.getService("locale")._;
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", values => {
@@ -115,8 +117,9 @@ export default class ActivityWindow extends JetView {
 	}
 
 	showForm(data, headerType, buttonType){
+		const _ = this.app.getService("locale")._;
 		this.getRoot().show();
-		this.$$("activity:header").setValues({value: `${headerType} activity`});
+		this.$$("activity:header").setValues({value: `${_(headerType)} ${_("activity")}`});
 		this.$$("activity_save_button").setValue(buttonType);
 	}
 

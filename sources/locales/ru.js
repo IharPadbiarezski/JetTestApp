@@ -56,6 +56,7 @@ export default {
 	Phone: "Телефон",
 	Birthday: "Рождение",
 	OK: "Да",
+	activity: "активность",
 	"Change photo": "Изменить фото",
 	"Delete photo": "Удалить фото",
 	"Job position": "Должность",

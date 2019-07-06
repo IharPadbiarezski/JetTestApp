@@ -47,13 +47,6 @@ export default class CommonTableForSettings extends JetView {
 					width: 60
 				}
 			],
-			// on: {
-			// 	// onAfterEditStop: (e) =>  {
-			// 	// 	if (e.value !== e.old) {
-			
-			// 	// 	}
-			// 	// }
-			// }, 
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({

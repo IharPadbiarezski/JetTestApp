@@ -10,6 +10,9 @@ export const activities = new webix.DataCollection({
 			}
 			obj.ConvDueTime = obj.ConvDueDate;
 		},
+		$update: (obj) => {
+			obj.DueDate =`${strFormatDate(obj.ConvDueDate)} ${strFormatTime(obj.ConvDueTime)}`;
+		},
 		$save: (obj) => {
 			obj.DueDate =`${strFormatDate(obj.ConvDueDate)} ${strFormatTime(obj.ConvDueTime)}`;
 		}
