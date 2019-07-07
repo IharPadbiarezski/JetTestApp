@@ -178,21 +178,20 @@ export default class ContactForm extends JetView {
 					tooltip:"Save changes",
 					click:() => {
 						if (this.form.validate()){
-
 							const values = this.form.getValues();
 							values.Photo = this.photo;
 							const id = values.id;
 							const mode = this.getParam("mode", true);
-							if (id) {
-								contacts.updateItem(id, values);
-								this.app.callEvent("contactinfo:show", [id, mode]);
-							} else {
-								contacts.waitSave(() => {
+							contacts.waitSave(() => {
+								if (id) {
+									contacts.updateItem(id, values);
+								} else {
 									contacts.add(values);
-								}).then((item) => {
-									this.app.callEvent("contactinfo:show", [item.id, mode]);
-								});
-							}
+								}
+							}).then((item) => {
+								this.app.callEvent("contactinfo:show", [item.id, mode]);
+							});
+							
 						}
 					}
 				}
