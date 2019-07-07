@@ -25,7 +25,8 @@ export default class ContactActivitiesTable extends JetView{
 							click: () => {
 								const id = this.getParam("id", true);
 								const value = this.$$("addButton").getValue();
-								this.form.showActivityForm({}, "Add new", value, id, true);
+								const title = {head: `${value} new`, button: value};
+								this.form.showActivityForm({ContactID: id}, title, true);
 							}
 						}
 					]

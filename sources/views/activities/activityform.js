@@ -101,12 +101,9 @@ export default class ActivityWindow extends JetView {
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", (values, page) => {
-			this.showActivityForm({}, "Edit", "Save");
-			this.form.setValues(values);
-			if (page === "contactinfo") {
-				this.setContact(values.ContactID);
-				this.setDisable();
-			}
+			const check = (page === "contactinfo") ? true : false;
+			const title = {head: "Edit", button: "Save"};
+			this.showActivityForm(values, title, check);
 		});
 	}
 
@@ -117,17 +114,13 @@ export default class ActivityWindow extends JetView {
 		}
 	}
 
-	showActivityForm(data, name, additionName, id, check){
+	showActivityForm(values, title, check){
+		this.form.setValues(values);
 		this.getRoot().show();
+		this.$$("activityHeader").setValues({value: `${title.head} activity`});
+		this.$$("saveButton").setValue(title.button || title.head);
 		if(check) {
-			this.setContact(id);
 			this.setDisable();
-		}
-		this.$$("activityHeader").setValues({value: `${name} activity`});
-		if (!additionName) {
-			this.$$("saveButton").setValue(name);
-		} else {
-			this.$$("saveButton").setValue(additionName);
 		}
 	}
 
@@ -140,10 +133,5 @@ export default class ActivityWindow extends JetView {
 	setDisable() {
 		const comboContact = this.form.elements["ContactID"];
 		comboContact.disable();
-	}
-
-	setContact(id) {
-		const comboContact = this.form.elements["ContactID"];
-		comboContact.setValue(id);
 	}
 }
