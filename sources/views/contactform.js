@@ -305,7 +305,7 @@ export default class ContactForm extends JetView {
 					if (mode === "Add") {
 						this.photo = "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png";
 						this.$$("photo").setValues({Photo: this.photo});
-						this.$$("form").setValues({});
+						this.$$("form").clear();
 						this.$$("saveButton").setValue(mode);
 					}
 					if (mode === "Edit") {
