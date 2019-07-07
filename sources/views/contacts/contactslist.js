@@ -73,6 +73,10 @@ export default class ContactsView extends JetView{
 			}
 		});
 
+		this.on(this.app, "firstcontact:select", () => {
+			this.list.select(contacts.getFirstId());
+		});
+
 		this.on(this.app, "contact:delete", () => {
 			this.deleteRow();
 		});		

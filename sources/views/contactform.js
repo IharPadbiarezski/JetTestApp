@@ -164,9 +164,13 @@ export default class ContactForm extends JetView {
 					value:"Cancel",
 					width: 200,
 					click:() => {
-						const id = this.getParam("id", true);
 						const mode = this.getParam("mode", true);
-						this.app.callEvent("contactinfo:show", [id, mode, true]);
+						if (mode === "Add") {
+							this.app.callEvent("firstcontact:select");
+						} else {
+							let id = this.getParam("id", true);
+							this.app.callEvent("contactinfo:show", [id, mode]);
+						}
 					},
 					tooltip:"Click to close the form"
 				},

@@ -17,12 +17,7 @@ export default class ContactsView extends JetView {
 	
 	init() {
 
-		this.on(this.app, "contactinfo:show", (id, mode, check) => {
-			if (mode === "Add" && check) {	
-				this.contactList.select(this.contactList.getFirstId());
-			} else if (mode) {
-				this.contactList.select(id);
-			}
+		this.on(this.app, "contactinfo:show", (id) => {
 			this.show(`/top/contacts?id=${id}/contactinfo`);
 		});
 
