@@ -122,10 +122,10 @@ export default class ContactInfo extends JetView{
 			activities.waitData
 		]).then(() => {
 			const id = this.getParam("id", true);
-			let values = webix.copy(contacts.getItem(id));
-			values.status = statuses.getItem(values.StatusID).Value;
-			if (values) { template.setValues(values); }
 			if (id && contacts.exists(id)) {
+				let values = webix.copy(contacts.getItem(id));
+				values.status = statuses.getItem(values.StatusID).Value;
+				if (values) { template.setValues(values); }
 				activities.data.filter( obj => obj.ContactID.toString() === id.toString() );
 			}
 		});
