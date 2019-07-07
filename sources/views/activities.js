@@ -43,10 +43,4 @@ export default class DataView extends JetView{
 
 		this.on(this.app,"activities:delete", id => activities.remove(id));
 	}
-
-	destroy(){
-		this.app.detachEvent("activities:save");
-		this.app.detachEvent("activities:delete");
-	}
-
 }

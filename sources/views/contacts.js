@@ -32,9 +32,4 @@ export default class ContactsView extends JetView {
 			});
 		});
 	}
-
-	destroy() {
-		this.app.detachEvent("contactinfo:show");
-		this.app.detachEvent("contactform:show");
-	}
 }
