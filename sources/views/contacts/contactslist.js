@@ -97,9 +97,4 @@ export default class ContactsView extends JetView{
 			});
 		}
 	}
-
-	destroy() {
-		this.app.detachEvent("contact:delete");
-	}
-
 }
