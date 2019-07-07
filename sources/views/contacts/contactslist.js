@@ -18,7 +18,6 @@ export default class ContactsView extends JetView{
 			inputWidth: 200,
 			click: () => {		
 				this.list.unselect();
-				this.setParam("mode", "Add");
 				this.app.callEvent("contactform:show", ["Add"]);
 			}
 		};
