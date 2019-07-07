@@ -160,7 +160,6 @@ export default class DataView extends JetView{
 						let now = new Date();
 						let dayOfWeek = now.getDay();
 						let numDay = now.getDate();
-
 						let startDate = new Date(now);
 						startDate.setDate(numDay - dayOfWeek);
 						startDate.setHours(0, 0, 0, 0);
