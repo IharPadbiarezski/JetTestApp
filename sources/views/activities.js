@@ -28,7 +28,7 @@ export default class DataView extends JetView{
 						}
 					]
 				},
-				{ $subview:ActivitiesDataTable }
+				{ $subview: new ActivitiesDataTable(this.app, "", "all") }
 			]
 		};
 	}
@@ -42,9 +42,5 @@ export default class DataView extends JetView{
 		});
 
 		this.on(this.app,"activities:delete", id => activities.remove(id));
-	}
-
-	urlChange() {
-		this.setParam("page", "activities", true);
 	}
 }

@@ -17,8 +17,7 @@ export default class ContactsView extends JetView{
 			align: "center",
 			inputWidth: 200,
 			click: () => {		
-				this.list.unselect();
-				this.app.callEvent("contactform:show", ["Add"]);
+				this.app.callEvent("contactform:show", ["flag"]);
 			}
 		};
 
@@ -73,29 +72,42 @@ export default class ContactsView extends JetView{
 			}
 		});
 
-		this.on(this.app, "firstcontact:select", () => {
-			this.list.select(contacts.getFirstId());
+		this.on(this.app, "contact:select", () => {
+			const id = this.getParam("id", true);
+			if (!id) {
+				const firstId = contacts.getFirstId();
+				this.selectContact(this.list, firstId);
+			} else {
+				this.selectContact(this.list, id);
+			}
+			this.app.callEvent("contactinfo:show", [id]);
+		
 		});
 
 		this.on(this.app, "contact:delete", () => {
 			this.deleteRow();
+			this.app.callEvent("contact:select");
 		});		
+	}
+
+	selectContact(view, id) {
+		if(id) {
+			view.select(id);
+		}
 	}
 
 	deleteRow() {
 		const id = this.getParam("id");
-
 		if(id && contacts.exists(id)){
 			webix.confirm({
 				text: "The contact will be deleted.<br/> Are you sure?"
 			}).then(() => {
 				contacts.remove(id);
-				let firstId = contacts.getFirstId();
-				this.$$("list").select(firstId);
 				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
 				connectedActivities.forEach((activity) => {
 					activities.remove(activity.id);
 				});
+				return false;
 			});
 		}
 	}

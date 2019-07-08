@@ -4,6 +4,11 @@ import {contacts} from "../../models/contactsdata";
 import {activities} from "../../models/activitiesdata";
 
 export default class ActivitiesDataTable extends JetView{
+	constructor(app, name, flag) {
+		super(app, name);
+		this.flag = flag;
+	}
+
 	config(){
 		return {
 			view:"datatable",
@@ -61,18 +66,9 @@ export default class ActivitiesDataTable extends JetView{
 				},
 				"wxi-pencil":(e, id) => {
 					const item = this.getRoot().getItem(id);
-					let currentPage = this.getParam("page", true);
-					this.app.callEvent("form:fill", [item, currentPage]);
+					this.app.callEvent("form:fill", [item, this.flag]);
 				}
-			},
-			on:{        
-				onAfterSelect: (id) => {
-					let currentPage = this.getParam("page", true);
-					if ( currentPage === "activities") {
-						this.show(`../activities?id=${id}`);
-					}
-				}
-			}
+			},	
 		};	
 	}
 

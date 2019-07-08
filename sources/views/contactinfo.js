@@ -88,7 +88,7 @@ export default class ContactInfo extends JetView{
 				localId: "editButton",
 				css: "webix_primary",
 				click: () => {
-					this.app.callEvent("contactform:show", ["Edit"]);
+					this.app.callEvent("contactform:show");
 				}
 			},
 			{}
@@ -115,7 +115,6 @@ export default class ContactInfo extends JetView{
 	}
 
 	urlChange() {
-		this.setParam("page", "contactinfo", true);
 		const template = this.$$("contactTemplate");
 		webix.promise.all([
 			contacts.waitData,

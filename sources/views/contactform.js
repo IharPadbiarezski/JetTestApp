@@ -164,13 +164,7 @@ export default class ContactForm extends JetView {
 					value:"Cancel",
 					width: 200,
 					click:() => {
-						const mode = this.getParam("mode", true);
-						if (mode === "Add") {
-							this.app.callEvent("firstcontact:select");
-						} else {
-							let id = this.getParam("id", true);
-							this.app.callEvent("contactinfo:show", [id]);
-						}
+						this.app.callEvent("contact:select");
 					},
 					tooltip:"Click to close the form"
 				},
@@ -190,6 +184,7 @@ export default class ContactForm extends JetView {
 									contacts.updateItem(id, values);
 								} else {
 									contacts.add(values);
+									
 								}
 							}).then((item) => {
 								this.app.callEvent("contactinfo:show", [item.id]);
@@ -288,34 +283,27 @@ export default class ContactForm extends JetView {
 
 	urlChange() {
 		const id = this.getParam("id", true);
-		if (id) {
-			webix.promise.all([
-				contacts.waitData,
-				statuses.waitData
-			]).then(() => {
-				const values = contacts.getItem(id);
-				const photo = this.$$("photo");
-				if (values) {
-					this.form.setValues(values);
-					photo.setValues({Photo: values.Photo});
-				}		
-				
-				const mode = this.getParam("mode", true);
-
-				if (mode) {
-					this.$$("headerForm").setValues({value: `${mode} contact`});
-
-					if (mode === "Add") {
-						this.photo = "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png";
-						this.$$("photo").setValues({Photo: this.photo});
-						this.$$("form").clear();
-						this.$$("saveButton").setValue(mode);
-					}
-					if (mode === "Edit") {
-						this.$$("saveButton").setValue("Save");
-					}
-				}
-			});
-		}
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData
+		]).then(() => {
+			const values = contacts.getItem(id);
+			const photo = this.$$("photo");
+			if (values) {
+				this.form.setValues(values);
+				photo.setValues({Photo: values.Photo});
+			}
+			if (!id) {		
+				const name = "Add";
+				this.$$("headerForm").setValues({value: `${name} contact`});
+				this.photo = "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png";
+				this.$$("photo").setValues({Photo: this.photo});
+				this.$$("form").clear();
+				this.$$("saveButton").setValue(name);
+			} else {
+				this.$$("headerForm").setValues({value: "Edit contact"});
+				this.$$("saveButton").setValue("Save");
+			}
+		});
 	}
 }

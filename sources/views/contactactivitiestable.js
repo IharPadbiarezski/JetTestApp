@@ -7,7 +7,7 @@ export default class ContactActivitiesTable extends JetView{
 	config(){
 		return {
 			rows: [
-				{ $subview:ActivitiesDataTable },
+				{ $subview: new ActivitiesDataTable(this.app, "", "specific") },
 				{	
 					view:"toolbar", css:"subbar", padding:0,
 					elements:[
