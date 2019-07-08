@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {icons} from "../models/icons";
 
 export default class CommonTableForSettings extends JetView {
 	constructor(app, name, data, localId, valHeader, valIcon, label, value ) {
@@ -39,7 +40,9 @@ export default class CommonTableForSettings extends JetView {
 					id: "Icon",
 					header: _(this.valIcon),
 					width: 150,
-					editor: "text"
+					// editor: "text"
+					editor: "select",
+					collection: icons
 				},
 				{
 					id: "",
@@ -75,7 +78,7 @@ export default class CommonTableForSettings extends JetView {
 					width: 300,
 					align: "center",
 					click: () => {
-						this._tdata.add({Value: `${this.value}`, Icon: "icon"});
+						this._tdata.add({Value: `${this.value}`, Icon: "1"});
 					}
 				},
 				{}

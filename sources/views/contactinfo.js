@@ -2,6 +2,7 @@ import {JetView} from "webix-jet";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
+import {icons} from "../models/icons";
 import FilesDataTable from "./filestable";
 import ContactActivitiesTable from "./contactactivitiestable";
 
@@ -19,7 +20,7 @@ export default class ContactInfo extends JetView{
                     <div class="main_info">
                         <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
                         <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                        <p class="status"> <span class='webix_icon wxi-${obj.statusIcon || "clock"}'></span> ${obj.status || "-"}</p>
+                        <p class="status"> <span class='webix_icon wxi-${obj.icon || "clock"}'></span> ${obj.status || "-"}</p>
                     </div>
                     <div class="addition_info">
                         <p><span class="useremail mdi mdi-email"></span> ${_("email")}: ${obj.Email || "-"}</p>
@@ -117,7 +118,8 @@ export default class ContactInfo extends JetView{
 			const id = this.getParam("id", true);
 			let values = webix.copy(contacts.getItem(id));
 			values.status = statuses.getItem(values.StatusID).Value;
-			values.statusIcon = statuses.getItem(values.StatusID).Icon;
+			const statusId = statuses.getItem(values.StatusID).Icon;
+			values.icon = icons.getItem(statusId).Value;
 			if (values) { template.setValues(values); }
 			if (id && contacts.exists(id)) {
 				activities.data.filter( obj => obj.ContactID.toString() === id );
