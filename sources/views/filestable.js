@@ -96,6 +96,6 @@ export default class FilesDataTable extends JetView{
 	
 	urlChange() {
 		const id = this.getParam("id", true);
-		files.data.filter(file => file.ContactID.toString() === id);
+		files.data.filter(file => file.ContactID.toString() === id.toString());
 	}
 }
