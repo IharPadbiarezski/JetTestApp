@@ -169,7 +169,7 @@ export default class ContactForm extends JetView {
 							this.app.callEvent("firstcontact:select");
 						} else {
 							let id = this.getParam("id", true);
-							this.app.callEvent("contactinfo:show", [id, mode]);
+							this.app.callEvent("contactinfo:show", [id]);
 						}
 					},
 					tooltip:"Click to close the form"
@@ -185,7 +185,6 @@ export default class ContactForm extends JetView {
 							const values = this.form.getValues();
 							values.Photo = this.photo;
 							const id = values.id;
-							const mode = this.getParam("mode", true);
 							contacts.waitSave(() => {
 								if (id) {
 									contacts.updateItem(id, values);
@@ -193,7 +192,7 @@ export default class ContactForm extends JetView {
 									contacts.add(values);
 								}
 							}).then((item) => {
-								this.app.callEvent("contactinfo:show", [item.id, mode]);
+								this.app.callEvent("contactinfo:show", [item.id]);
 							});
 							
 						}

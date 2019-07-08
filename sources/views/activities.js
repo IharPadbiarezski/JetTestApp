@@ -45,6 +45,6 @@ export default class DataView extends JetView{
 	}
 
 	urlChange() {
-		this.setParam("page", "activities");
+		this.setParam("page", "activities", true);
 	}
 }

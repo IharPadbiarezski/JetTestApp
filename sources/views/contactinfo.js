@@ -115,7 +115,7 @@ export default class ContactInfo extends JetView{
 	}
 
 	urlChange() {
-		this.setParam("page", "contactinfo");
+		this.setParam("page", "contactinfo", true);
 		const template = this.$$("contactTemplate");
 		webix.promise.all([
 			contacts.waitData,

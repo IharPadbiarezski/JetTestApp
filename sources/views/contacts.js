@@ -10,10 +10,6 @@ export default class ContactsView extends JetView {
 			]
 		};
 	}
-
-	ready(view) {
-		this.contactList = view.queryView("list");
-	}
 	
 	init() {
 
@@ -22,9 +18,7 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "contactform:show", (mode) => {
-			this.show("contactform").then(() => {
-				this.setParam("mode", mode);
-			});
+			this.show(`contactform?mode=${mode}`);
 		});
 	}
 }
