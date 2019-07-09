@@ -135,8 +135,6 @@ export default class ContactForm extends JetView {
 							var file = upload.file;
 							var reader = new FileReader();  
 							reader.onload = (event) => {
-								// this.photo = event.target.result;
-								// this.$$("photo").setValues({Photo: this.photo});
 								const photo = event.target.result;
 								this.$$("photo").setValues({Photo: photo});
 							};           
