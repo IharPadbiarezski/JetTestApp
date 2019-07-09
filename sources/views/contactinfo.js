@@ -5,8 +5,6 @@ import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
 import {icons} from "../models/icons";
-import FilesDataTable from "./filestable";
-import ContactActivitiesTable from "./contactactivitiestable";
 
 
 export default class ContactInfo extends JetView{
