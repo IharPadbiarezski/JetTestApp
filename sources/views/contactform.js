@@ -135,8 +135,10 @@ export default class ContactForm extends JetView {
 							var file = upload.file;
 							var reader = new FileReader();  
 							reader.onload = (event) => {
-								this.photo = event.target.result;
-								this.$$("photo").setValues({Photo: this.photo});
+								// this.photo = event.target.result;
+								// this.$$("photo").setValues({Photo: this.photo});
+								const photo = event.target.result;
+								this.$$("photo").setValues({Photo: photo});
 							};           
 							reader.readAsDataURL(file);
 							return false;
@@ -164,7 +166,8 @@ export default class ContactForm extends JetView {
 					value:"Cancel",
 					width: 200,
 					click:() => {
-						this.app.callEvent("contact:select");
+						const id = this.getParam("id", true);
+						this.app.callEvent("contactinfo:show", [id]);
 					},
 					tooltip:"Click to close the form"
 				},
@@ -177,7 +180,8 @@ export default class ContactForm extends JetView {
 					click:() => {
 						if (this.form.validate()){
 							const values = this.form.getValues();
-							values.Photo = this.photo;
+							const photo = this.$$("photo").getValues().Photo;
+							values.Photo = photo;
 							const id = values.id;
 							contacts.waitSave(() => {
 								if (id) {
@@ -296,8 +300,6 @@ export default class ContactForm extends JetView {
 			if (!id) {		
 				const name = "Add";
 				this.$$("headerForm").setValues({value: `${name} contact`});
-				this.photo = "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png";
-				this.$$("photo").setValues({Photo: this.photo});
 				this.$$("form").clear();
 				this.$$("saveButton").setValue(name);
 			} else {

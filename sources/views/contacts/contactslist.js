@@ -16,8 +16,9 @@ export default class ContactsView extends JetView{
 			css: "webix_primary",
 			align: "center",
 			inputWidth: 200,
-			click: () => {		
-				this.app.callEvent("contactform:show", ["flag"]);
+			click: () => {
+				this.$$("list").unselectAll();
+				this.app.callEvent("contactform:show", ["add"]);
 			}
 		};
 
@@ -60,10 +61,17 @@ export default class ContactsView extends JetView{
 		this.list = this.$$("list");
 		this.list.sync(contacts);
 
+		this.on(this.app, "contact:delete", () => {
+			this.deleteRow();
+		});		
+	}
+
+	urlChange(view, url){
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
+			let page = url[1] ? url[1].page : "";
 			
-			if (!id || !contacts.exists(id)) { 
+			if ((!id || !contacts.exists(id)) && page !=="contactform") {
 				id = contacts.getFirstId(); 
 			}
 			
@@ -71,31 +79,6 @@ export default class ContactsView extends JetView{
 				this.list.select(id);
 			}
 		});
-
-		this.on(this.app, "contact:select", () => {
-			const id = this.getParam("id", true);
-			if (!id) {
-				contacts.waitData.then(() => {
-					const firstId = contacts.getFirstId();
-					this.selectContact(this.list, firstId);
-				});
-			} else {
-				this.selectContact(this.list, id);
-			}
-			this.app.callEvent("contactinfo:show", [id]);
-		
-		});
-
-		this.on(this.app, "contact:delete", () => {
-			this.deleteRow();
-			this.app.callEvent("contact:select");
-		});		
-	}
-
-	selectContact(view, id) {
-		if(id) {
-			view.select(id);
-		}
 	}
 
 	deleteRow() {
@@ -105,6 +88,7 @@ export default class ContactsView extends JetView{
 				text: "The contact will be deleted.<br/> Are you sure?"
 			}).then(() => {
 				contacts.remove(id);
+				this.show("../../contacts");
 				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
 				connectedActivities.forEach((activity) => {
 					activities.remove(activity.id);

@@ -124,9 +124,9 @@ export default class ContactInfo extends JetView{
 			const id = this.getParam("id", true);
 			if (id && contacts.exists(id)) {
 				let values = webix.copy(contacts.getItem(id));
-				values.status = statuses.getItem(values.StatusID).Value;
-				if (values) { template.setValues(values); }
-				activities.data.filter( obj => obj.ContactID.toString() === id.toString() );
+
+				values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
+				template.setValues(values);
 			}
 		});
 	}

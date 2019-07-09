@@ -69,24 +69,20 @@ export default class ActivitiesDataTable extends JetView{
 					this.app.callEvent("form:fill", [item, this.flag]);
 				}
 			},	
+			on:{
+				onAfterFilter:()=>{
+					if(this.flag == "specific"){
+						const id = this.getParam("id", true);
+						this.getRoot().filter( obj => obj.ContactID.toString() === id.toString(), "", true );
+					}
+				}
+			}
 		};	
 	}
 
 	init(view) {
-		activities.data.filter();
-		view.sync(activities);
-	}
-	
-	urlChange(view) {
-		webix.promise.all([
-			activities.waitData,
-		]).then(() => {
-			const table = view.query("datatable");
-			const id = this.getParam("id");
-			const selectedId = table.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				table.select(id);
-			}
+		view.sync(activities, ()=>{
+			view.filterByAll();
 		});
 	}
 }
