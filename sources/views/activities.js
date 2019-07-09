@@ -67,26 +67,19 @@ export default class DataView extends JetView{
 							inputWidth: 200,
 							click: () => {
 								const value = this.$$("addButton").getValue();
-								this.form.showForm({}, value, value);
+								const title = {head: `${value} new`, button: value};
+								this.form.showActivityForm({}, title);
 							}
 						}
 					]
 				},
-				{ $subview:ActivitiesDataTable }
+				{ $subview: new ActivitiesDataTable(this.app, "", "all") }
 			]
 		};
 	}
 
-	ready(view) {
-		this.table = webix.$$("activities:datatable");
-		this.table.attachEvent("onAfterSelect", (id) => { 
-			this.show(`../activities?id=${id}`);
-		});
-		
-		this.table = view.queryView("datatable");		
-	}
-
 	init() {
+
 		this.form = this.ui(ActivityWindow);
 
 		this.on(this.app, "activities:save", values => {
@@ -109,10 +102,6 @@ export default class DataView extends JetView{
 			});
 		});
 
-	}
-
-	destroy(){
-		this.table.detachEvent("onAfterSelect");
 	}
 
 	filterTableByTabbar(view) {
@@ -187,18 +176,5 @@ export default class DataView extends JetView{
 				}
 			}
 		);
-	}
-
-	urlChange() {
-		webix.promise.all([
-			activities.waitData,
-		]).then(() => {
-			const activitiesTable = this.$$("activities:datatable");
-			const id = this.getParam("id");
-			const selectedId = activitiesTable.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				activitiesTable.select(id);
-			}
-		});
 	}
 }

@@ -1,4 +1,6 @@
 import {JetView} from "webix-jet";
+import FilesDataTable from "./filestable";
+import ContactActivitiesTable from "./contactactivitiestable";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
@@ -8,13 +10,12 @@ import ContactActivitiesTable from "./contactactivitiestable";
 
 
 export default class ContactInfo extends JetView{
-	
 	config(){
 		const _ = this.app.getService("locale")._;
 
 		const contactTemplate = {
 			view: "template",
-			id: "contact:template",
+			localId: "contactTemplate",
 			template: obj =>  `
                 <div class="contacts-container">
                     <div class="main_info">
@@ -54,8 +55,14 @@ export default class ContactInfo extends JetView{
 		const contactTabbarElements = {
 			animate: false,
 			cells: [
-				ContactActivitiesTable,
-				FilesDataTable
+				{
+					id: "contact:activities",
+					$subview: ContactActivitiesTable,
+				},
+				{
+					id: "contact:files",
+					$subview: FilesDataTable,
+				}
 			]
 		};
 
@@ -72,17 +79,19 @@ export default class ContactInfo extends JetView{
 				icon: "wxi-trash",
 				css: "webix_primary",
 				click: () => {
-					this.deleteRow();
+					this.app.callEvent("contact:delete");
 				}
 			},
 			{
 				view: "button",
 				label: _("Edit"),
 				type: "icon",
+				value: "Edit",
+				localId: "editButton",
 				icon: "mdi mdi-calendar-edit",
 				css: "webix_primary",
 				click: () => {
-					this.getParentView().showForm({}, "Edit", "Save");
+					this.app.callEvent("contactform:show");
 				}
 			},
 			{}
@@ -107,9 +116,9 @@ export default class ContactInfo extends JetView{
 		const grid = view.queryView({view:"datatable"});
 		grid.hideColumn("ContactID");
 	}
-    
+
 	urlChange() {
-		const template = this.$$("contact:template");
+		const template = this.$$("contactTemplate");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData,
@@ -117,12 +126,11 @@ export default class ContactInfo extends JetView{
 		]).then(() => {
 			const id = this.getParam("id", true);
 			let values = webix.copy(contacts.getItem(id));
-			values.status = statuses.getItem(values.StatusID).Value;
-			const statusId = statuses.getItem(values.StatusID).Icon;
-			values.icon = icons.getItem(statusId).Value;
-			if (values) { template.setValues(values); }
 			if (id && contacts.exists(id)) {
-				activities.data.filter( obj => obj.ContactID.toString() === id );
+				values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
+				const statusId = statuses.getItem(values.StatusID).Icon;
+				values.icon = icons.getItem(statusId).Value;
+				template.setValues(values);
 			}
 		});
 	}

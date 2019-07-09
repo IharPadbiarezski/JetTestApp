@@ -5,6 +5,11 @@ import {activities} from "../../models/activitiesdata";
 import {icons} from "../../models/icons";
 
 export default class ActivitiesDataTable extends JetView{
+	constructor(app, name, flag) {
+		super(app, name);
+		this.flag = flag;
+	}
+
 	config(){
 		const _ = this.app.getService("locale")._;
 
@@ -72,25 +77,27 @@ export default class ActivitiesDataTable extends JetView{
 				},
 				"wxi-pencil":(e, id) => {
 					const item = this.getRoot().getItem(id);
-					this.app.callEvent("form:fill", [item]);
-					this.setDisable();
+					this.app.callEvent("form:fill", [item, this.flag]);
+				}
+			},
+			on:{
+				onAfterFilter:()=>{
+					if(this.flag == "specific"){
+						const id = this.getParam("id", true);
+						this.getRoot().filter( obj => obj.ContactID.toString() === id.toString(), "", true );
+					}
 				}
 			}
 		};	
 	}
 
 	init(view) {
-		view.sync(activities);
-		activities.waitData.then(() => {
-			activities.data.filter();
+		view.sync(activities, ()=>{
+			view.filterByAll();
 		});
 	}
 
-	setDisable() {
-		const comboContact = webix.$$("comboContact:activity");
-		let url = this.getUrlString();
-		if (url.includes("contactinfo")) {
-			comboContact.disable();
-		}
+	urlChange(view){
+		view.filterByAll();
 	}
 }

@@ -8,9 +8,8 @@ export default class ContactActivitiesTable extends JetView{
 		const _ = this.app.getService("locale")._;
 
 		return {
-			id: "contact:activities",
 			rows: [
-				{ $subview:ActivitiesDataTable },
+				{ $subview: new ActivitiesDataTable(this.app, "", "specific") },
 				{	
 					view:"toolbar", css:"subbar", padding:0,
 					elements:[
@@ -26,13 +25,10 @@ export default class ContactActivitiesTable extends JetView{
 							align: "right",
 							inputWidth: 200,
 							click: () => {
-								const value = this.$$("addButton").getValue();
-								this.form.showForm({}, value, value);
 								const id = this.getParam("id", true);
-								const comboContact = webix.$$("comboContact:activity");
-								comboContact.setValue(id);
-								comboContact.disable();
-
+								const value = this.$$("addButton").getValue();
+								const title = {head: `${value} new`, button: value};
+								this.form.showActivityForm({ContactID: id}, title, true);
 							}
 						}
 					]

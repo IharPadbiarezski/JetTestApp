@@ -5,9 +5,8 @@ import { contacts } from "../models/contactsdata";
 export default class FilesDataTable extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
-		
+
 		return {
-			id: "contact:files",
 			rows: [
 				{
 					view:"datatable",
@@ -64,9 +63,10 @@ export default class FilesDataTable extends JetView{
 						icon: "mdi mdi-upload",
 						label: _("Upload file"),
 						width: 200,
-						on:{        
+						autosend: false,
+						on:{
 							onBeforeFileAdd: (file) => {
-								const id = this.getParam("id", true);
+								let id = this.getParam("id", true);
 								if(id && contacts.exists(id)) {
 									const values = {
 										name: file.name,
@@ -89,13 +89,14 @@ export default class FilesDataTable extends JetView{
 			]
 		};
 	}
-	
-	init(view){
-		view.queryView("datatable").sync(files);		
+
+	init(view)
+		// refactor
+		view.queryView("datatable").sync(files);
 	}
 	
 	urlChange() {
 		const id = this.getParam("id", true);
 		files.data.filter(file => file.ContactID.toString() === id.toString());
-	}	
+	}
 }

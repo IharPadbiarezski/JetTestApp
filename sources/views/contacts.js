@@ -6,20 +6,23 @@ export default class ContactsView extends JetView {
 		return {
 			cols: [
 				ContactsList,
-				{ $subview: true, name: "right" }
+				{ $subview: true }
 			]
 		};
 	}
 	
 	init() {
-		this.show("contactinfo", {target:"right"});
-	}
 
-	showForm(data, nameHead, nameButton) {
-		const _ = this.app.getService("locale")._;
-		this.show("contactform", {target:"right"}).then(() => {
-			webix.$$("header:contactform").setValues({value: `${nameHead} ${_("contact")}`});
-			webix.$$("save:contactform").setValue(nameButton);
+		this.on(this.app, "contactinfo:show", (id) => {
+			this.show(`/top/contacts?id=${id}/contactinfo`);
+		});
+
+		this.on(this.app, "contactform:show", (flag) => {
+			if (flag) {
+				this.show("/top/contacts/contactform");
+			} else {
+				this.show("contactform");
+			}
 		});
 	}
 }
