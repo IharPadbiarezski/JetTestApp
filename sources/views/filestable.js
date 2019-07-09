@@ -93,10 +93,9 @@ export default class FilesDataTable extends JetView{
 	init(view){
 		view.queryView("datatable").sync(files);		
 	}
-	}
-
+	
 	urlChange() {
 		const id = this.getParam("id", true);
 		files.data.filter(file => file.ContactID.toString() === id.toString());
-	}
+	}	
 }
