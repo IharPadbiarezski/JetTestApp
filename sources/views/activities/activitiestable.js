@@ -85,4 +85,8 @@ export default class ActivitiesDataTable extends JetView{
 			view.filterByAll();
 		});
 	}
+
+	urlChange(view){
+		view.filterByAll();
+	}
 }
