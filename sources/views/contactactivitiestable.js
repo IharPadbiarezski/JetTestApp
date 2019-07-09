@@ -3,10 +3,11 @@ import {activities} from "../models/activitiesdata";
 import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityWindow from "./activities/activityform";
 
-export default class DataView extends JetView{
+export default class ContactActivitiesTable extends JetView{
 	config(){
 		return {
 			rows: [
+				{ $subview: new ActivitiesDataTable(this.app, "", "specific") },
 				{	
 					view:"toolbar", css:"subbar", padding:0,
 					elements:[
@@ -17,19 +18,19 @@ export default class DataView extends JetView{
 							localId: "addButton",
 							type:"icon",
 							value: "Add",
-							icon: "wxi-plus-square",
+							icon: "wxi-plus",
 							css: "webix_primary",
 							align: "right",
 							inputWidth: 200,
 							click: () => {
+								const id = this.getParam("id", true);
 								const value = this.$$("addButton").getValue();
 								const title = {head: `${value} new`, button: value};
-								this.form.showActivityForm({}, title);
+								this.form.showActivityForm({ContactID: id}, title, true);
 							}
 						}
 					]
 				},
-				{ $subview: new ActivitiesDataTable(this.app, "", "all") }
 			]
 		};
 	}

@@ -5,15 +5,17 @@ import {activitytypes} from "../../models/activitytypesdata";
 export default class ActivityWindow extends JetView {
 	config() {
 		return {
-			view:"window", head:false, position:"center",
-			modal:true, body:{
+			view:"window",
+			head:false,
+			position:"center",
+			modal:true,
+			body:{
 				view: "form",
-				localId: "activityform",
 				width:600,
 				elements: [
 					{
 						view:"template",
-						id: "activity:header",
+						localId: "activityHeader",
 						template: obj => obj.value,
 						type:"header",
 						css: "activities_header_align"
@@ -35,6 +37,7 @@ export default class ActivityWindow extends JetView {
 						view: "combo",
 						name: "ContactID",
 						label: "Contact",
+						localId: "comboContact",
 						options: contacts,
 						invalidMessage: "Please select a contact"
 					},
@@ -65,13 +68,14 @@ export default class ActivityWindow extends JetView {
 						{gravity: 2},
 						{
 							view: "button",
-							localId: "activity_save_button",
+							localId: "saveButton",
 							type: "form",
 							css: "webix_primary",
 							click: () => {
 								if (this.form.validate()) {
 									this.app.callEvent("activities:save", [this.form.getValues()]);
 									this.hideForm();
+									this.setEnable();
 								}
 							}
 						},
@@ -80,6 +84,7 @@ export default class ActivityWindow extends JetView {
 							value: "Cancel",
 							click: () => {
 								this.hideForm();
+								this.setEnable();
 							}
 						}
 					]},
@@ -95,21 +100,38 @@ export default class ActivityWindow extends JetView {
 	init(view){
 		this.form = view.getBody();
 
-		this.on(this.app, "form:fill", values => {
-			this.showForm({}, "Save");
-			this.form.setValues(values);
+		this.on(this.app, "form:fill", (values, flag) => {
+			const check = (flag === "specific") ? true : false;
+			const title = {head: "Edit", button: "Save"};
+			this.showActivityForm(values, title, check);
 		});
 	}
 
-	showForm(data, type){
+	setEnable() {
+		const comboContact = this.form.elements["ContactID"];
+		if (!comboContact.isEnabled()) {
+			comboContact.enable();
+		}
+	}
+
+	showActivityForm(values, title, check){
+		this.form.setValues(values);
 		this.getRoot().show();
-		this.$$("activity:header").setValues({value: `${type} activity`});
-		this.$$("activity_save_button").setValue(type);
+		this.$$("activityHeader").setValues({value: `${title.head} activity`});
+		this.$$("saveButton").setValue(title.button || title.head);
+		if(check) {
+			this.setDisable();
+		}
 	}
 
 	hideForm(){
 		this.getRoot().hide();
 		this.form.clear();
 		this.form.clearValidation();
+	}
+
+	setDisable() {
+		const comboContact = this.form.elements["ContactID"];
+		comboContact.disable();
 	}
 }

@@ -1,9 +1,14 @@
 import {JetView} from "webix-jet";
-import {activities} from "../../models/activitiesdata";
 import {activitytypes} from "../../models/activitytypesdata";
 import {contacts} from "../../models/contactsdata";
+import {activities} from "../../models/activitiesdata";
 
 export default class ActivitiesDataTable extends JetView{
+	constructor(app, name, flag) {
+		super(app, name);
+		this.flag = flag;
+	}
+
 	config(){
 		return {
 			view:"datatable",
@@ -49,11 +54,6 @@ export default class ActivitiesDataTable extends JetView{
 					width: 60
 				},
 			],
-			on: {
-				onAfterSelect: (id) => {
-					this.show(`../activities?id=${id}`);
-				}
-			},
 			onClick: {
 				"wxi-trash":(e, id) => {
 					webix.confirm({
@@ -66,28 +66,27 @@ export default class ActivitiesDataTable extends JetView{
 				},
 				"wxi-pencil":(e, id) => {
 					const item = this.getRoot().getItem(id);
-					this.app.callEvent("form:fill", [item]);
+					this.app.callEvent("form:fill", [item, this.flag]);
+				}
+			},	
+			on:{
+				onAfterFilter:()=>{
+					if(this.flag == "specific"){
+						const id = this.getParam("id", true);
+						this.getRoot().filter( obj => obj.ContactID.toString() === id.toString(), "", true );
+					}
 				}
 			}
-		};
-	}
-	
-	init(view){
-		view.sync(activities);
+		};	
 	}
 
-	urlChange() {
-		webix.promise.all([
-			activities.waitData,
-			activitytypes.waitData,
-			contacts.waitData
-		]).then(() => {
-			const activitiesTable = this.$$("activities");
-			const id = this.getParam("id");
-			const selectedId = activitiesTable.getSelectedId().id;
-			if (id && activities.exists(id) && id !== selectedId) {
-				activitiesTable.select(id);
-			}
+	init(view) {
+		view.sync(activities, ()=>{
+			view.filterByAll();
 		});
+	}
+
+	urlChange(view){
+		view.filterByAll();
 	}
 }
