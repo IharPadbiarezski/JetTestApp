@@ -30,7 +30,6 @@ export default class ContactsView extends JetView{
 			view: "button",
 			label: _("Add contact"),
 			localId: "addButton",
-			//localId: "add_button",
 			autoheight: true,
 			type:"icon",
 			value: "Add",
@@ -105,10 +104,13 @@ export default class ContactsView extends JetView{
 	}
 
 	deleteRow() {
+		const _ = this.app.getService("locale")._;
 		const id = this.getParam("id");
 		if(id && contacts.exists(id)){
 			webix.confirm({
-				text: "The contact will be deleted.<br/> Are you sure?"
+				text: _("The contact will be deleted.<br/> Are you sure?"),
+				ok: _("OK"),
+				cancel: _("Cancel")
 			}).then(() => {
 				contacts.remove(id);
 				this.show("../../contacts");

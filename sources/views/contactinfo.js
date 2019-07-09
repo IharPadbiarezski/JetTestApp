@@ -120,37 +120,17 @@ export default class ContactInfo extends JetView{
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData,
-			activities.waitData
+			activities.waitData,
+			icons.waitData
 		]).then(() => {
 			const id = this.getParam("id", true);
 			let values = webix.copy(contacts.getItem(id));
 			if (id && contacts.exists(id)) {
 				values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
-				const statusId = statuses.getItem(values.StatusID).Icon;
+				const statusId = values.StatusID ? statuses.getItem(values.StatusID).Icon : "";
 				values.icon = icons.getItem(statusId).Value;
 				template.setValues(values);
 			}
 		});
-	}
-
-	deleteRow() {
-		const _ = this.app.getService("locale")._;
-
-		const id = this.getParam("id", true);
-		if(id && contacts.exists(id)){
-			webix.confirm({
-				text: _("The contact will be deleted.<br/> Are you sure?"),
-				ok: _("OK"),
-				cancel: _("Cancel")
-			}).then(() => {
-				contacts.remove(id);
-				let firstId = contacts.getFirstId();
-				this.getRoot().getParentView().queryView("list").select(firstId);
-				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
-				connectedActivities.forEach((activity) => {
-					activities.remove(activity.id);
-				});
-			});
-		}
 	}
 }

@@ -205,7 +205,6 @@ export default class ContactForm extends JetView {
 				{
 					type:"header",
 					localId: "headerForm",
-					// localId: "header_contactform",
 					template: obj => obj.value,
 					css:"webix_header"
 				},
@@ -280,6 +279,7 @@ export default class ContactForm extends JetView {
 	}
 
 	urlChange() {
+		const _ = this.app.getService("locale")._;
 		const id = this.getParam("id", true);
 		webix.promise.all([
 			contacts.waitData,
@@ -292,13 +292,13 @@ export default class ContactForm extends JetView {
 				photo.setValues({Photo: values.Photo});
 			}
 			if (!id) {
-				const name = "Add";
-				this.$$("headerForm").setValues({value: `${name} contact`});
+				const name = _("Add");
+				this.$$("headerForm").setValues({value: `${name} ${_("contact")}`});
 				this.$$("form").clear();
 				this.$$("saveButton").setValue(name);
 			} else {
-				this.$$("headerForm").setValues({value: "Edit contact"});
-				this.$$("saveButton").setValue("Save");
+				this.$$("headerForm").setValues({value: _("Edit contact")});
+				this.$$("saveButton").setValue(_("Save"));
 			}
 		});
 	}

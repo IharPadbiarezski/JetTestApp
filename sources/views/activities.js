@@ -44,7 +44,7 @@ export default class DataView extends JetView{
 			],
 			on: {
 				onChange: () => {
-					webix.$$("activities:datatable").filterByAll();
+					this.table.filterByAll();
 				}
 			}
 		};
@@ -60,14 +60,14 @@ export default class DataView extends JetView{
 							label: _("Add"),
 							localId: "addButton",
 							type:"icon",
-							value: _("Add"),
+							value: "Add",
 							icon: "wxi-plus-square",
 							css: "webix_primary",
 							align: "right",
 							inputWidth: 200,
 							click: () => {
 								const value = this.$$("addButton").getValue();
-								const title = {head: `${value} new`, button: value};
+								const title = {head: _(`${value} new`), button: `${_(value)}`};
 								this.form.showActivityForm({}, title);
 							}
 						}
@@ -76,6 +76,10 @@ export default class DataView extends JetView{
 				{ $subview: new ActivitiesDataTable(this.app, "", "all") }
 			]
 		};
+	}
+
+	ready(view) {
+		this.table = view.queryView("datatable");
 	}
 
 	init() {
@@ -103,67 +107,38 @@ export default class DataView extends JetView{
 		});
 
 	}
-
+	
 	filterTableByTabbar(view) {
 		view.registerFilter(
 			this.$$("selector"),
 			{
-				columnId: "DueDate",
 				compare: (value, filter, item)	=> {
-					const currentDate = new Date();
-					let mainArr = value.split(" ");
-					let date = mainArr[0].split("-");
-					let time = mainArr[1].split(":");
-					let dd = date[0];
-					let mm = date[1];
-					let yy = date[2];
-					let hh = time[0];
-					let min = time[1];
-					let valDate = new Date(yy, mm-1, dd, hh, min);
+					const filterId = Number(filter);
+					const state = Number(item.State);
+					const date = item.ConvDueDate;
+					const newDate = new Date();
+					const currentDay = webix.Date.datePart(newDate);
+					const tomorrow = webix.Date.add(currentDay, 1, "day", true);
+					const startCurrentWeek = webix.Date.weekStart(currentDay);
+					const startCurrentMonth = webix.Date.monthStart(currentDay);			
+					const DateDay = webix.Date.datePart(date, true);
+					const startWeek = webix.Date.weekStart(DateDay);
+					const startMonth = webix.Date.monthStart(DateDay);
 
-					if (Number(filter) === 2) {
-						return valDate < currentDate;
-					} else if (Number(filter) === 3) {
-						return Number(item.State) === 1;
-					} else if (Number(filter) == 4) {
-						let today = new Date().toJSON().slice(0,10).replace(/-/g,"/");
-						let convDate = valDate.toJSON().slice(0,10).replace(/-/g,"/");
-						return convDate === today;
-					} else if (Number(filter) === 5) {
-						let convDate = valDate.toJSON().slice(0,10).replace(/-/g,"/");
-						let currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-						let day = currentDate.getDate();
-						let month = currentDate.getMonth() + 1;
-						let year = currentDate.getFullYear();
-						if (day < 10) {
-							date = day.toString();
-							day = "0" + day;
-						}
-						if (month < 10) {
-							month = month.toString();
-							month = "0" + month;
-						}
-						let tommorow = year + "/" + month + "/" + day;
-						return convDate === tommorow;
-					} else if (Number(filter) === 6) {
-						let now = new Date();
-						let dayOfWeek = now.getDay();
-						let numDay = now.getDate();
-						let startDate = new Date(now);
-						startDate.setDate(numDay - dayOfWeek);
-						startDate.setHours(0, 0, 0, 0);
-
-						let endDate = new Date(now);
-						endDate.setDate(numDay + (7 - dayOfWeek));
-						endDate.setHours(0, 0, 0, 0);
-
-						return (valDate > startDate && valDate < endDate);
-					} else if (Number(filter) === 7) {
-						let today = new Date().toJSON().slice(0,7).replace(/-/g,"/");
-						let convMonth = valDate.toJSON().slice(0,7).replace(/-/g,"/");
-						return convMonth === today;
+					if (filterId === 2) {
+						return date < currentDay && state === 0;
+					} else if (filterId === 3) {
+						return state === 1;
+					} else if (filterId == 4) {
+						return webix.Date.equal(currentDay, DateDay) && state === 0;
+					} else if (filterId === 5) {
+						return webix.Date.equal(tomorrow, DateDay) && state === 0;
+					} else if (filterId === 6) {
+						return webix.Date.equal(startCurrentWeek, startWeek) && state === 0;
+					} else if (filterId === 7) {
+						return webix.Date.equal(startCurrentMonth, startMonth) && state === 0;
 					} else {
-						return value;
+						return item;
 					}
 				}
 			},

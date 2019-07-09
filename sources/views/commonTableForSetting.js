@@ -40,7 +40,6 @@ export default class CommonTableForSettings extends JetView {
 					id: "Icon",
 					header: _(this.valIcon),
 					width: 150,
-					// editor: "text"
 					editor: "select",
 					collection: icons
 				},

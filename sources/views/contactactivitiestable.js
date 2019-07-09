@@ -19,7 +19,7 @@ export default class ContactActivitiesTable extends JetView{
 							label: _("Add"),
 							localId: "addButton",
 							type:"icon",
-							value: _("Add"),
+							value: "Add",
 							icon: "wxi-plus",
 							css: "webix_primary",
 							align: "right",
@@ -27,7 +27,7 @@ export default class ContactActivitiesTable extends JetView{
 							click: () => {
 								const id = this.getParam("id", true);
 								const value = this.$$("addButton").getValue();
-								const title = {head: `${value} new`, button: value};
+								const title = {head: _(`${value} new`), button: _(value)};
 								this.form.showActivityForm({ContactID: id}, title, true);
 							}
 						}

@@ -91,7 +91,6 @@ export default class FilesDataTable extends JetView{
 	}
 
 	init(view) {
-		// refactor hear
 		view.queryView("datatable").sync(files);
 	}
 	

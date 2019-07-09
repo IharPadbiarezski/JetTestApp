@@ -41,7 +41,6 @@ export default class ActivityWindow extends JetView {
 						name: "ContactID",
 						label: _("Contact"),
 						localId: "comboContact",
-						// localId: "formCombo",
 						options: contacts,
 						invalidMessage: _("Please select a contact")
 					},
@@ -73,7 +72,6 @@ export default class ActivityWindow extends JetView {
 						{
 							view: "button",
 							localId: "saveButton",
-							// localId: "activity_save_button",
 							type: "form",
 							css: "webix_primary",
 							click: () => {
@@ -109,12 +107,8 @@ export default class ActivityWindow extends JetView {
 
 		this.on(this.app, "form:fill", (values, flag) => {
 			const check = (flag === "specific") ? true : false;
-			const title = {head: "Edit", button: "Save"};
+			const title = {head: `${_("Edit")}`, button: `${_("Save")}`};
 			this.showActivityForm(values, title, check);
-
-			// this.on(this.app, "form:fill", values => {
-			// 	this.showForm({}, `${_("Edit")}`, `${_("Save")}`);
-			// 	this.form.setValues(values);
 		});
 	}
 
@@ -126,9 +120,10 @@ export default class ActivityWindow extends JetView {
 	}
 
 	showActivityForm(values, title, check){
+		const _ = this.app.getService("locale")._;
 		this.form.setValues(values);
 		this.getRoot().show();
-		this.$$("activityHeader").setValues({value: `${title.head} activity`});
+		this.$$("activityHeader").setValues({value: `${_(title.head)} ${_("activity")}`});
 		this.$$("saveButton").setValue(title.button || title.head);
 		if(check) {
 			this.setDisable();

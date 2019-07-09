@@ -1,5 +1,8 @@
 export default {
 	Contacts: "Contacts",
+	activity: "activity",
+	new: "new",
+	"Edit contact": "Edit contact",
 	Activities: "Activities",
 	Settings: "Settings",
 	"Activity Types": "Activity Types",
@@ -59,7 +62,6 @@ export default {
 	Skype: "Skype",
 	Phone: "Phone",
 	Birthday: "Birthday",
-	activity: "activity",
 	EN: "EN",
 	RU: "RU",
 	"Change photo": "Change photo",
