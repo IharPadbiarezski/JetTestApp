@@ -148,8 +148,7 @@ export default class ContactForm extends JetView {
 					value:"Delete photo",
 					tooltip:"Click to delete the photo",
 					click: () => {
-						this.photo = "";
-						this.$$("photo").setValues({Photo: this.photo});
+						this.$$("photo").setValues({Photo: ""});
 					}
 				}
 			]
@@ -273,14 +272,7 @@ export default class ContactForm extends JetView {
 	}
 
 	init() {
-		this.form = this.$$("form");
-		const id = this.getParam("id", true);
-		contacts.waitData.then(() => {
-			if (id && contacts.exists(id)) {
-				const photo = contacts.getItem(id).Photo;
-				this.photo = photo;
-			}
-		});			
+		this.form = this.$$("form");		
 	}
 
 	urlChange() {
