@@ -2,8 +2,8 @@ import {JetView} from "webix-jet";
 import {contacts} from "../../models/contactsdata";
 import {activities} from "../../models/activitiesdata";
 
-export default class ContactsView extends JetView{
-	config(){
+export default class ContactsView extends JetView {
+	config() {
 		const _ = this.app.getService("locale")._;
 
 		const listInput = {
@@ -16,22 +16,20 @@ export default class ContactsView extends JetView{
 				onTimedKeyPress: () => {
 					let value = this.$$("input").getValue().toLowerCase();
 					this.$$("list").filter((obj) => {
-						let filterByFullName = [obj.FirstName, obj.LastName].join(" ");
-						let filterByLastName = obj.LastName.toLowerCase().indexOf(value);
 						let filterByJob = obj.Job.toLowerCase().indexOf(value);
-						filterByFullName = filterByFullName.toString().toLowerCase().indexOf(value);
-						return filterByFullName !== -1 || filterByLastName !== -1 || filterByJob !== -1;
+						let filterByFullName = [obj.FirstName, obj.LastName].join(" ").toString().toLowerCase().indexOf(value);
+						return filterByFullName !== -1 || filterByJob !== -1;
 					});
 				}
 			}
 		};
 
-		const add_button = {
+		const addButton = {
 			view: "button",
 			label: _("Add contact"),
 			localId: "addButton",
 			autoheight: true,
-			type:"icon",
+			type: "icon",
 			value: "Add",
 			icon: "wxi-plus",
 			css: "webix_primary",
@@ -43,23 +41,23 @@ export default class ContactsView extends JetView{
 			}
 		};
 
-		const contact_list = {
-			view:"list",
+		const contactList = {
+			view: "list",
 			localId: "list",
 			borderless: true,
 			scroll: "auto",
-			width:250,
-			select:true,
+			width: 250,
+			select: true,
 			css: "persons_list",
-			type:{
-				template:obj => `
+			type: {
+				template: obj => `
                 <image class="contactphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
                 <div class="text">
                     <span class="contactname">${obj.FirstName || "-"} ${obj.LastName || "-"}</span>
                     <span class="contactjob">${obj.Job || "-"}</span>
                 </div>
                 `,
-				height:66
+				height: 66
 			},
 			on: {
 				onAfterSelect: (id) => {
@@ -69,17 +67,17 @@ export default class ContactsView extends JetView{
 		};
 
 		return {
-			css:"contact_buttons_bg",
+			css: "contact_buttons_bg",
 			rows: [
 				listInput,
-				contact_list,
+				contactList,
 				{gravity: 0.05},
-				add_button
+				addButton
 			]
 		};
 	}
-	init() {
 
+	init() {
 		this.list = this.$$("list");
 		this.list.sync(contacts);
 
@@ -88,16 +86,16 @@ export default class ContactsView extends JetView{
 		});
 	}
 
-	urlChange(view, url){
+	urlChange(view, url) {
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 			let page = url[1] ? url[1].page : "";
 
-			if ((!id || !contacts.exists(id)) && page !=="contactform") {
-				id = contacts.getFirstId(); 
+			if ((!id || !contacts.exists(id)) && page !== "contactform") {
+				id = contacts.getFirstId();
 			}
-			
-			if (id && id !== this.list.getSelectedId()) { 
+
+			if (id && id !== this.list.getSelectedId()) {
 				this.list.select(id);
 			}
 		});
@@ -106,7 +104,7 @@ export default class ContactsView extends JetView{
 	deleteRow() {
 		const _ = this.app.getService("locale")._;
 		const id = this.getParam("id");
-		if(id && contacts.exists(id)){
+		if (id && contacts.exists(id)) {
 			webix.confirm({
 				text: _("The contact will be deleted.<br/> Are you sure?"),
 				ok: _("OK"),
@@ -114,7 +112,7 @@ export default class ContactsView extends JetView{
 			}).then(() => {
 				contacts.remove(id);
 				this.show("../../contacts");
-				const connectedActivities = activities.find( obj => obj.ContactID.toString() === id );
+				const connectedActivities = activities.find(obj => obj.ContactID.toString() === id);
 				connectedActivities.forEach((activity) => {
 					activities.remove(activity.id);
 				});

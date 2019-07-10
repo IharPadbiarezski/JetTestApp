@@ -6,9 +6,9 @@ export default class ContactForm extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
 
-		const main_info = {
-			margin:10,
-			rows:[
+		const mainInfo = {
+			margin: 10,
+			rows: [
 				{
 					view: "text",
 					name: "FirstName",
@@ -26,7 +26,7 @@ export default class ContactForm extends JetView {
 					invalidMessage: _("A last name is required")
 				},
 				{
-					view:"datepicker",
+					view: "datepicker",
 					name: "StartDate",
 					label: _("Joining date"),
 					labelWidth: 90,
@@ -75,8 +75,8 @@ export default class ContactForm extends JetView {
 			]
 		};
 
-		const more_info = {
-			margin:10,
+		const moreInfo = {
+			margin: 10,
 			rows: [
 				{
 					view: "text",
@@ -100,11 +100,11 @@ export default class ContactForm extends JetView {
 					label: _("Phone"),
 					labelWidth: 90,
 					placeholder: _("Phone"),
-					pattern: { mask: "###-## #######", allow:/[0-9]/g},
+					pattern: {mask: "###-## #######", allow: /[0-9]/g},
 					invalidMessage: _("Sorry, you must type any 12 numbers")
 				},
 				{
-					view:"datepicker",
+					view: "datepicker",
 					name: "InfoBirthday",
 					label: _("Birthday"),
 					labelWidth: 90,
@@ -113,34 +113,34 @@ export default class ContactForm extends JetView {
 			]
 		};
 
-		const contact_photo = {
+		const contactPhoto = {
 			view: "template",
 			name: "Photo",
 			borderless: true,
 			localId: "photo",
-			template: obj =>  `
+			template: obj => `
 			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
 			    `
 		};
-        
-		const photo_buttons = {
-			margin:10,
-			rows:[
+
+		const photoButtons = {
+			margin: 10,
+			rows: [
 				{},
-				{ 
+				{
 					view: "uploader",
 					value: _("Change photo"),
 					accept: "image/jpeg, image/png",
 					autosend: false,
 					multiple: false,
-					on:{        
-						onBeforeFileAdd: (upload) => {        
-							var file = upload.file;
-							var reader = new FileReader();  
+					on: {
+						onBeforeFileAdd: (upload) => {
+							let file = upload.file;
+							let reader = new FileReader();
 							reader.onload = (event) => {
 								const photo = event.target.result;
 								this.$$("photo").setValues({Photo: photo});
-							};           
+							};
 							reader.readAsDataURL(file);
 							return false;
 						}
@@ -156,29 +156,29 @@ export default class ContactForm extends JetView {
 				}
 			]
 		};
-		
+
 		const buttons = {
-			margin:10,
-			cols:[
+			margin: 10,
+			cols: [
 				{},
 				{
 					view: "button",
 					value: _("Cancel"),
 					width: 200,
-					click:() => {
+					click: () => {
 						const id = this.getParam("id", true);
 						this.app.callEvent("contactinfo:show", [id]);
 					},
 					tooltip: _("Click to close the form")
 				},
 				{
-					view:"button",
+					view: "button",
 					localId: "saveButton",
-					type:"form",
+					type: "form",
 					width: 200,
 					tooltip: _("Save changes"),
-					click:() => {
-						if (this.form.validate()){
+					click: () => {
+						if (this.form.validate()) {
 							const values = this.form.getValues();
 							const photo = this.$$("photo").getValues().Photo;
 							values.Photo = photo;
@@ -186,14 +186,13 @@ export default class ContactForm extends JetView {
 							contacts.waitSave(() => {
 								if (id) {
 									contacts.updateItem(id, values);
-								} else {
+								}
+								else {
 									contacts.add(values);
-
 								}
 							}).then((item) => {
 								this.app.callEvent("contactinfo:show", [item.id]);
 							});
-
 						}
 					}
 				}
@@ -203,30 +202,30 @@ export default class ContactForm extends JetView {
 		return {
 			rows: [
 				{
-					type:"header",
+					type: "header",
 					localId: "headerForm",
 					template: obj => obj.value,
-					css:"webix_header"
+					css: "webix_header"
 				},
 				{
 					view: "form",
 					localId: "form",
 					rows: [
-						{   margin:10,
+						{margin: 10,
 							cols: [
-								main_info,
+								mainInfo,
 								{
 									margin: 10,
 									rows: [
-										more_info,
+										moreInfo,
 										{
 											margin: 10,
 											cols: [
-												contact_photo,
-												photo_buttons
+												contactPhoto,
+												photoButtons
 											]
 										}
-										
+
 									]
 								}
 							]
@@ -240,21 +239,15 @@ export default class ContactForm extends JetView {
 						StartDate: (date) => {
 							const currentDate = new Date();
 							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
+							if (webix.isDate(date) && date < currentDate) {
 								return true;
 							}
+							return false;
 						},
 						StatusID: webix.rules.isNotEmpty,
 						Job: webix.rules.isNotEmpty,
 						Company: webix.rules.isNotEmpty,
-						Website: (value) => {
-							try {
-								new URL(value);
-								return true;
-							} catch (_) {
-								return false;  
-							}
-						},
+						Website: webix.rules.isNotEmpty,
 						Address: webix.rules.isNotEmpty,
 						Email: webix.rules.isEmail,
 						Skype: (value) => {
@@ -264,9 +257,11 @@ export default class ContactForm extends JetView {
 						InfoBirthday: (date) => {
 							const currentDate = new Date();
 							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
+							if (webix.isDate(date) && date < currentDate) {
 								return true;
 							}
+
+							return false;
 						}
 					}
 				}
@@ -296,7 +291,8 @@ export default class ContactForm extends JetView {
 				this.$$("headerForm").setValues({value: `${name} ${_("contact")}`});
 				this.$$("form").clear();
 				this.$$("saveButton").setValue(name);
-			} else {
+			}
+			else {
 				this.$$("headerForm").setValues({value: _("Edit contact")});
 				this.$$("saveButton").setValue(_("Save"));
 			}

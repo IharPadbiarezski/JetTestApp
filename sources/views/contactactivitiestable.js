@@ -3,22 +3,24 @@ import {activities} from "../models/activitiesdata";
 import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityWindow from "./activities/activityform";
 
-export default class ContactActivitiesTable extends JetView{
-	config(){
+export default class ContactActivitiesTable extends JetView {
+	config() {
 		const _ = this.app.getService("locale")._;
 
 		return {
 			rows: [
-				{ $subview: new ActivitiesDataTable(this.app, "", "specific") },
-				{	
-					view:"toolbar", css:"subbar", padding:0,
-					elements:[
+				{$subview: new ActivitiesDataTable(this.app, "", "specific")},
+				{
+					view: "toolbar",
+					css: "subbar",
+					padding: 0,
+					elements: [
 						{},
 						{
 							view: "button",
 							label: _("Add"),
 							localId: "addButton",
-							type:"icon",
+							type: "icon",
 							value: "Add",
 							icon: "wxi-plus",
 							css: "webix_primary",
@@ -32,19 +34,23 @@ export default class ContactActivitiesTable extends JetView{
 							}
 						}
 					]
-				},
+				}
 			]
 		};
 	}
 
 	init() {
-
 		this.form = this.ui(ActivityWindow);
 
-		this.on(this.app, "activities:save", values => {
-			values.id ? activities.updateItem(values.id, values) : activities.add(values);
+		this.on(this.app, "activities:save", (values) => {
+			if (values.id) {
+				activities.updateItem(values.id, values);
+			}
+			else {
+				activities.add(values);
+			}
 		});
 
-		this.on(this.app,"activities:delete", id => activities.remove(id));
+		this.on(this.app, "activities:delete", id => activities.remove(id));
 	}
 }

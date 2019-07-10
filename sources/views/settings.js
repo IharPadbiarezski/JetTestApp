@@ -1,7 +1,11 @@
 import {JetView} from "webix-jet";
 import CommonTableForSettings from "./commonTableForSetting";
-import { activitytypes } from "../models/activitytypesdata";
-import { statuses } from "../models/statusesdata";
+import {
+	activitytypes
+} from "../models/activitytypesdata";
+import {
+	statuses
+} from "../models/statusesdata";
 
 export default class SettingsView extends JetView {
 	config() {

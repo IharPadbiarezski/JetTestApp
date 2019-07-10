@@ -2,7 +2,7 @@ import {JetView} from "webix-jet";
 import {icons} from "../models/icons";
 
 export default class CommonTableForSettings extends JetView {
-	constructor(app, name, data, valHeader, valIcon, label, value ) {
+	constructor(app, name, data, valHeader, valIcon, label, value) {
 		super(app, name);
 		this._tdata = data;
 		this.valHeader = valHeader;
@@ -21,7 +21,7 @@ export default class CommonTableForSettings extends JetView {
 			localId: "label",
 			css: "settings_label"
 		};
-        
+
 		const table = {
 			view: "datatable",
 			editable: true,
@@ -38,8 +38,17 @@ export default class CommonTableForSettings extends JetView {
 					id: "Icon",
 					header: _(this.valIcon),
 					width: 150,
-					editor: "select",
-					collection: icons
+					editor: "richselect",
+					collection: icons,
+					template: (obj, common, value, config) => {
+						const icon = config.collection.getItem(value);
+						return icon ? icon.value + icon.Value : "";
+					},
+					suggest: {
+						body: {
+							template: "#value# #Value#"
+						}
+					}
 				},
 				{
 					id: "",
@@ -48,28 +57,28 @@ export default class CommonTableForSettings extends JetView {
 				}
 			],
 			onClick: {
-				"wxi-trash":(e, id) => {
+				"wxi-trash": (e, id) => {
 					webix.confirm({
 						text: `${_("Are you sure you want to delete the ")} ${_(this.valHeader)}`,
 						ok: _("OK"),
 						cancel: _("Cancel")
-					}).then( () => {
+					}).then(() => {
 						this._tdata.remove(id);
 					});
 					return false;
 				}
 			}
 		};
-        
-		const button = {	
-			view:"toolbar",
-			padding:0,
-			elements:[
+
+		const button = {
+			view: "toolbar",
+			padding: 0,
+			elements: [
 				{},
 				{
 					view: "button",
 					label: _(this.label),
-					type:"icon",
+					type: "icon",
 					icon: "wxi-plus",
 					css: "webix_primary",
 					width: 300,
@@ -82,7 +91,7 @@ export default class CommonTableForSettings extends JetView {
 				{}
 			]
 		};
-        
+
 		return {
 			rows: [
 				label,

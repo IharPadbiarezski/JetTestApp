@@ -7,20 +7,20 @@ export default class ActivityWindow extends JetView {
 		const _ = this.app.getService("locale")._;
 
 		return {
-			view:"window",
-			head:false,
-			position:"center",
-			modal:true,
-			body:{
+			view: "window",
+			head: false,
+			position: "center",
+			modal: true,
+			body: {
 				view: "form",
 				localId: "activityform",
-				width:600,
+				width: 600,
 				elements: [
 					{
-						view:"template",
+						view: "template",
 						localId: "activityHeader",
 						template: obj => obj.value,
-						type:"header",
+						type: "header",
 						css: "activities_header_align"
 					},
 					{
@@ -33,7 +33,12 @@ export default class ActivityWindow extends JetView {
 						view: "combo",
 						name: "TypeID",
 						label: _("Type"),
-						options: activitytypes,
+						options: {
+							body: {
+								data: activitytypes,
+								template: "#Value#"
+							}
+						},
 						invalidMessage: _("Please select a type")
 					},
 					{
@@ -47,15 +52,15 @@ export default class ActivityWindow extends JetView {
 					{
 						cols: [
 							{
-								view:"datepicker",
+								view: "datepicker",
 								name: "ConvDueDate",
 								label: _("Date"),
 								invalidMessage: _("Please select a date")
 							},
 							{
-								view:"datepicker",
+								view: "datepicker",
 								name: "ConvDueTime",
-								format:"%H:%i",
+								format: "%H:%i",
 								label: _("Time"),
 								type: "time",
 								invalidMessage: _("Please select any time")
@@ -63,7 +68,7 @@ export default class ActivityWindow extends JetView {
 						]
 					},
 					{
-						view:"checkbox",
+						view: "checkbox",
 						name: "State",
 						labelRight: _("Completed"),
 						checkValue: "Close",
@@ -102,44 +107,43 @@ export default class ActivityWindow extends JetView {
 		};
 	}
 
-	init(view){
-
+	init(view) {
 		const _ = this.app.getService("locale")._;
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", (values, flag) => {
-			const check = (flag === "specific") ? true : false;
+			const check = flag === "specific" ? "flag" : "";
 			const title = {head: `${_("Edit")}`, button: `${_("Save")}`};
 			this.showActivityForm(values, title, check);
 		});
 	}
 
 	setEnable() {
-		const comboContact = this.form.elements["ContactID"];
+		const comboContact = this.form.elements.ContactID;
 		if (!comboContact.isEnabled()) {
 			comboContact.enable();
 		}
 	}
 
-	showActivityForm(values, title, check){
+	showActivityForm(values, title, check) {
 		const _ = this.app.getService("locale")._;
 		this.form.setValues(values);
 		this.getRoot().show();
 		this.$$("activityHeader").setValues({value: `${_(title.head)} ${_("activity")}`});
 		this.$$("saveButton").setValue(title.button || title.head);
-		if(check) {
+		if (check) {
 			this.setDisable();
 		}
 	}
 
-	hideForm(){
+	hideForm() {
 		this.getRoot().hide();
 		this.form.clear();
 		this.form.clearValidation();
 	}
 
 	setDisable() {
-		const comboContact = this.form.elements["ContactID"];
+		const comboContact = this.form.elements.ContactID;
 		comboContact.disable();
 	}
 }

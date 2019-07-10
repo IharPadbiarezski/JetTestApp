@@ -3,10 +3,10 @@ const strFormatDate = webix.Date.dateToStr("%Y-%m-%d %H:%i");
 const strFormatDateInfo = webix.Date.dateToStr("%d-%m-%Y");
 
 export const contacts = new webix.DataCollection({
-	scheme:{
+	scheme: {
 		$change: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
-			
+
 			if (obj.StartDate) {
 				obj.StartDate = dateFormat(obj.StartDate);
 			}

@@ -1,8 +1,8 @@
-function getIcon(icon){
-	return `<span class="webix_icon wxi-${icon}"></span> ${icon}`;
-} 
+function getIcon(icon) {
+	return `<span class="webix_icon wxi-${icon}"></span>`;
+}
 export const icons = new webix.DataCollection({
-	scheme:{
+	scheme: {
 		$init: (obj) => {
 			obj.value = getIcon(obj.Value);
 		}

@@ -3,8 +3,8 @@ import {activities} from "../models/activitiesdata";
 import ActivitiesDataTable from "./activities/activitiestable";
 import ActivityWindow from "./activities/activityform";
 
-export default class DataView extends JetView{
-	config(){
+export default class DataView extends JetView {
+	config() {
 		const _ = this.app.getService("locale")._;
 
 		const tabbar = {
@@ -51,15 +51,17 @@ export default class DataView extends JetView{
 
 		return {
 			rows: [
-				{	
-					view:"toolbar", css:"subbar", padding:0,
-					elements:[
+				{
+					view: "toolbar",
+					css: "subbar",
+					padding: 0,
+					elements: [
 						tabbar,
 						{
 							view: "button",
 							label: _("Add"),
 							localId: "addButton",
-							type:"icon",
+							type: "icon",
 							value: "Add",
 							icon: "wxi-plus-square",
 							css: "webix_primary",
@@ -73,7 +75,7 @@ export default class DataView extends JetView{
 						}
 					]
 				},
-				{ $subview: new ActivitiesDataTable(this.app, "", "all") }
+				{$subview: new ActivitiesDataTable(this.app, "", "all")}
 			]
 		};
 	}
@@ -83,22 +85,26 @@ export default class DataView extends JetView{
 	}
 
 	init() {
-
 		this.form = this.ui(ActivityWindow);
 
-		this.on(this.app, "activities:save", values => {
-			values.id ? activities.updateItem(values.id, values) : activities.add(values);
+		this.on(this.app, "activities:save", (values) => {
+			if (values.id) {
+				activities.updateItem(values.id, values);
+			}
+			else {
+				activities.add(values);
+			}
 		});
 
-		this.on(this.app,"activities:delete", id => activities.remove(id));
+		this.on(this.app, "activities:delete", id => activities.remove(id));
 
 		webix.promise.all([
-			activities.waitData,
+			activities.waitData
 		]).then(() => {
 			this.filterTableByTabbar(this.table);
 		});
 	}
-	
+
 	filterTableByTabbar(view) {
 		const newDate = new Date();
 		const currentDay = webix.Date.datePart(newDate);
@@ -116,29 +122,33 @@ export default class DataView extends JetView{
 					const DateDay = webix.Date.datePart(date, true);
 					const startWeek = webix.Date.weekStart(DateDay);
 					const startMonth = webix.Date.monthStart(DateDay);
-					
+
 					if (filterId === 2) {
 						return date < currentDay && state === "Open";
-					} else if (filterId === 3) {
-						return state === "Close";
-					} else if (filterId == 4) {
-						return webix.Date.equal(currentDay, DateDay) && state === "Open";
-					} else if (filterId === 5) {
-						return webix.Date.equal(tomorrow, DateDay) && state === "Open";
-					} else if (filterId === 6) {
-						return webix.Date.equal(startCurrentWeek, startWeek) && state === "Open";
-					} else if (filterId === 7) {
-						return webix.Date.equal(startCurrentMonth, startMonth) && state === "Open";
-					} else {
-						return item;
 					}
+					else if (filterId === 3) {
+						return state === "Close";
+					}
+					else if (filterId === 4) {
+						return webix.Date.equal(currentDay, DateDay) && state === "Open";
+					}
+					else if (filterId === 5) {
+						return webix.Date.equal(tomorrow, DateDay) && state === "Open";
+					}
+					else if (filterId === 6) {
+						return webix.Date.equal(startCurrentWeek, startWeek) && state === "Open";
+					}
+					else if (filterId === 7) {
+						return webix.Date.equal(startCurrentMonth, startMonth) && state === "Open";
+					}
+					return item;
 				}
 			},
 			{
-				getValue: function(node) {
+				getValue(node) {
 					return node.getValue();
 				},
-				setValue: function(node, value) {
+				setValue(node, value) {
 					node.setValue(value);
 				}
 			}
