@@ -74,30 +74,32 @@ export default class ActivityWindow extends JetView {
 						checkValue: "Close",
 						uncheckValue: "Open"
 					},
-					{cols: [
-						{gravity: 2},
-						{
-							view: "button",
-							localId: "saveButton",
-							type: "form",
-							css: "webix_primary",
-							click: () => {
-								if (this.form.validate()) {
-									this.app.callEvent("activities:save", [this.form.getValues()]);
+					{
+						cols: [
+							{gravity: 2},
+							{
+								view: "button",
+								localId: "saveButton",
+								type: "form",
+								css: "webix_primary",
+								click: () => {
+									if (this.form.validate()) {
+										this.app.callEvent("activities:save", [this.form.getValues()]);
+										this.hideForm();
+										this.setEnable();
+									}
+								}
+							},
+							{
+								view: "button",
+								value: _("Cancel"),
+								click: () => {
 									this.hideForm();
 									this.setEnable();
 								}
 							}
-						},
-						{
-							view: "button",
-							value: _("Cancel"),
-							click: () => {
-								this.hideForm();
-								this.setEnable();
-							}
-						}
-					]},
+						]
+					},
 					{}
 				],
 				rules: {

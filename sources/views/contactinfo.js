@@ -131,8 +131,8 @@ export default class ContactInfo extends JetView {
 					values.status = status.Value || "";
 					const icon = icons.getItem(status.Icon);
 					values.icon = icon.value || "";
-					template.setValues(values);
 				}
+				template.setValues(values);
 			}
 		});
 	}
