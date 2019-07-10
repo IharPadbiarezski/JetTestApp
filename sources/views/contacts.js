@@ -6,13 +6,12 @@ export default class ContactsView extends JetView {
 		return {
 			cols: [
 				ContactsList,
-				{ $subview: true }
+				{$subview: true}
 			]
 		};
 	}
-	
-	init() {
 
+	init() {
 		this.on(this.app, "contactinfo:show", (id) => {
 			this.show(`/top/contacts?id=${id}/contactinfo`);
 		});
@@ -20,7 +19,8 @@ export default class ContactsView extends JetView {
 		this.on(this.app, "contactform:show", (flag) => {
 			if (flag) {
 				this.show("/top/contacts/contactform");
-			} else {
+			}
+			else {
 				this.show("contactform");
 			}
 		});

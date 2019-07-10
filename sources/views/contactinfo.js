@@ -4,29 +4,30 @@ import ContactActivitiesTable from "./contactactivitiestable";
 import {contacts} from "../models/contactsdata";
 import {statuses} from "../models/statusesdata";
 import {activities} from "../models/activitiesdata";
+import {icons} from "../models/icons";
 
 
-
-export default class ContactInfo extends JetView{
-	config(){
+export default class ContactInfo extends JetView {
+	config() {
+		const _ = this.app.getService("locale")._;
 
 		const contactTemplate = {
 			view: "template",
 			localId: "contactTemplate",
-			template: obj =>  `
+			template: obj => `
                 <div class="contacts-container">
                     <div class="main_info">
-                        <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
+                        <h2 class="username">${obj.FirstName || "-"} ${obj.LastName || "-"}</h2>
                         <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                        <p class="status">${obj.status || "-"}</p>
+                        <p class="status"> ${obj.status ? `${obj.icon} ${obj.status}` : "-"}</p>
                     </div>
                     <div class="addition_info">
-                        <p><span class="useremail mdi mdi-email"></span> email: ${obj.Email || "-"}</p>
-                        <p><span class="userskype mdi mdi-skype"></span> skype: ${obj.Skype || "-"}</p>
-                        <p><span class="userjob mdi mdi-tag"></span> job: ${obj.Job || "-"}</p>
-                        <p><span class="usercompany mdi mdi-briefcase"></span> company ${obj.Company || "-"}</p>
-                        <p><span class="userbirthday webix_icon wxi-calendar"></span> day of birth: ${obj.Birthday || "-"}</p>
-                        <p><span class="userlocation mdi mdi-map-marker"></span> location: ${obj.Address || "-"}</p>
+                        <p><span class="useremail mdi mdi-email"></span> ${_("email")}: ${obj.Email || "-"}</p>
+                        <p><span class="userskype mdi mdi-skype"></span> ${_("skype")}: ${obj.Skype || "-"}</p>
+                        <p><span class="userjob mdi mdi-tag"></span> ${_("job")}: ${obj.Job || "-"}</p>
+                        <p><span class="usercompany mdi mdi-briefcase"></span> ${_("company")} ${obj.Company || "-"}</p>
+                        <p><span class="userbirthday webix_icon wxi-calendar"></span> ${_("day of birth")}: ${obj.Birthday || "-"}</p>
+                        <p><span class="userlocation mdi mdi-map-marker"></span> ${_("location")}: ${obj.Address || "-"}</p>
                     </div>
                 </div>
             `
@@ -38,11 +39,11 @@ export default class ContactInfo extends JetView{
 			localID: "tabbar",
 			options: [
 				{
-					value: "Activities",
+					value: _("Activities"),
 					id: "contact:activities"
 				},
 				{
-					value: "Files",
+					value: _("Files"),
 					id: "contact:files"
 				}
 			],
@@ -54,25 +55,25 @@ export default class ContactInfo extends JetView{
 			cells: [
 				{
 					id: "contact:activities",
-					$subview: ContactActivitiesTable,
+					$subview: ContactActivitiesTable
 				},
 				{
 					id: "contact:files",
-					$subview: FilesDataTable,
+					$subview: FilesDataTable
 				}
 			]
 		};
 
 		const buttons = {
-			
+
 			width: 200,
 			css: "contact_buttons_bg",
 			margin: 10,
 			padding: 10,
 			rows: [{
 				view: "button",
-				label: "Delete",
-				type:"icon",
+				label: _("Delete"),
+				type: "icon",
 				icon: "wxi-trash",
 				css: "webix_primary",
 				click: () => {
@@ -81,11 +82,11 @@ export default class ContactInfo extends JetView{
 			},
 			{
 				view: "button",
-				label: "Edit",
-				type:"icon",
+				label: _("Edit"),
+				type: "icon",
 				value: "Edit",
-				icon:"mdi mdi-calendar-edit",
 				localId: "editButton",
+				icon: "mdi mdi-calendar-edit",
 				css: "webix_primary",
 				click: () => {
 					this.app.callEvent("contactform:show");
@@ -95,9 +96,9 @@ export default class ContactInfo extends JetView{
 			]
 		};
 
-		return { 	
+		return {
 			rows: [
-				{ cols:
+				{cols:
 							[
 								contactTemplate,
 								buttons
@@ -110,7 +111,7 @@ export default class ContactInfo extends JetView{
 	}
 
 	ready(view) {
-		const grid = view.queryView({view:"datatable"});
+		const grid = view.queryView({view: "datatable"});
 		grid.hideColumn("ContactID");
 	}
 
@@ -119,13 +120,18 @@ export default class ContactInfo extends JetView{
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData,
-			activities.waitData
+			activities.waitData,
+			icons.waitData
 		]).then(() => {
 			const id = this.getParam("id", true);
 			if (id && contacts.exists(id)) {
 				let values = webix.copy(contacts.getItem(id));
-
-				values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
+				if (values.StatusID) {
+					const status = statuses.getItem(values.StatusID) || "";
+					values.status = status ? status.Value : "";
+					const icon = icons.getItem(status.Icon) || "";
+					values.icon = icon.value || "";
+				}
 				template.setValues(values);
 			}
 		});

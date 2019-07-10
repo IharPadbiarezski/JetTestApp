@@ -4,65 +4,75 @@ import {activitytypes} from "../../models/activitytypesdata";
 
 export default class ActivityWindow extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
-			view:"window",
-			head:false,
-			position:"center",
-			modal:true,
-			body:{
+			view: "window",
+			head: false,
+			position: "center",
+			modal: true,
+			body: {
 				view: "form",
-				width:600,
+				localId: "activityform",
+				width: 600,
 				elements: [
 					{
-						view:"template",
+						view: "template",
 						localId: "activityHeader",
 						template: obj => obj.value,
-						type:"header",
+						type: "header",
 						css: "activities_header_align"
 					},
 					{
 						view: "textarea",
 						name: "Details",
-						label: "Details",
-						invalidMessage: "Please entry your name"
+						label: _("Details"),
+						invalidMessage: _("Please entry your name")
 					},
 					{
 						view: "combo",
 						name: "TypeID",
-						label: "Type",
-						options: activitytypes,
-						invalidMessage: "Please select a type"
+						label: _("Type"),
+						options: {
+							body: {
+								data: activitytypes,
+								template: "#Value#"
+							}
+						},
+						invalidMessage: _("Please select a type")
 					},
 					{
 						view: "combo",
 						name: "ContactID",
-						label: "Contact",
+						label: _("Contact"),
 						localId: "comboContact",
 						options: contacts,
-						invalidMessage: "Please select a contact"
+						invalidMessage: _("Please select a contact")
 					},
 					{
 						cols: [
 							{
-								view:"datepicker",
+								view: "datepicker",
 								name: "ConvDueDate",
-								label: "Date",
-								invalidMessage: "Please select a date"
+								label: _("Date"),
+								invalidMessage: _("Please select a date")
 							},
 							{
-								view:"datepicker",
+								view: "datepicker",
 								name: "ConvDueTime",
-								format:"%H:%i",
-								label: "Time",
+								format: "%H:%i",
+								label: _("Time"),
 								type: "time",
-								invalidMessage: "Please select any time"
+								invalidMessage: _("Please select any time")
 							}
 						]
 					},
 					{
-						view:"checkbox",
+						view: "checkbox",
 						name: "State",
-						labelRight:"Completed"
+						labelRight: _("Completed"),
+						checkValue: "Close",
+						uncheckValue: "Open"
 					},
 					{cols: [
 						{gravity: 2},
@@ -81,7 +91,7 @@ export default class ActivityWindow extends JetView {
 						},
 						{
 							view: "button",
-							value: "Cancel",
+							value: _("Cancel"),
 							click: () => {
 								this.hideForm();
 								this.setEnable();
@@ -97,41 +107,44 @@ export default class ActivityWindow extends JetView {
 		};
 	}
 
-	init(view){
+	init(view) {
+		const _ = this.app.getService("locale")._;
 		this.form = view.getBody();
 
 		this.on(this.app, "form:fill", (values, flag) => {
-			const check = (flag === "specific") ? true : false;
-			const title = {head: "Edit", button: "Save"};
+			const check = flag === "specific" ? "flag" : "";
+			const title = {head: `${_("Edit")}`, button: `${_("Save")}`};
 			this.showActivityForm(values, title, check);
 		});
 	}
 
 	setEnable() {
-		const comboContact = this.form.elements["ContactID"];
+		const comboContact = this.form.elements.ContactID;
 		if (!comboContact.isEnabled()) {
 			comboContact.enable();
 		}
 	}
 
-	showActivityForm(values, title, check){
+	showActivityForm(values, title, check) {
+		const _ = this.app.getService("locale")._;
 		this.form.setValues(values);
 		this.getRoot().show();
-		this.$$("activityHeader").setValues({value: `${title.head} activity`});
+		this.$$("activityHeader").setValues({value: `${_(title.head)} ${_("activity")}`});
 		this.$$("saveButton").setValue(title.button || title.head);
-		if(check) {
+		if (check) {
 			this.setDisable();
 		}
 	}
 
-	hideForm(){
+	hideForm() {
 		this.getRoot().hide();
 		this.form.clear();
 		this.form.clearValidation();
 	}
 
 	setDisable() {
-		const comboContact = this.form.elements["ContactID"];
+		const comboContact = this.form.elements.ContactID;
 		comboContact.disable();
 	}
 }
+

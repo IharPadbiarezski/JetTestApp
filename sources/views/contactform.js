@@ -4,178 +4,181 @@ import {contacts} from "../models/contactsdata";
 
 export default class ContactForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 
-		const main_info = {
-			margin:10,
-			rows:[
+		const mainInfo = {
+			margin: 10,
+			rows: [
 				{
-					view:"text", name:"FirstName",
-					label:"First name",
+					view: "text",
+					name: "FirstName",
+					label: _("First name"),
 					labelWidth: 90,
-					placeholder:"First name",
-					invalidMessage:"A first name is required"
+					placeholder: _("First name"),
+					invalidMessage: _("A first name is required")
 				},
 				{
-					view:"text", name:"LastName",
-					label:"Last name",
+					view: "text",
+					name: "LastName",
+					label: _("Last name"),
 					labelWidth: 90,
-					placeholder:"Last name",
-					invalidMessage:"A last name is required"
+					placeholder: _("Last name"),
+					invalidMessage: _("A last name is required")
 				},
 				{
-					view:"datepicker",
+					view: "datepicker",
 					name: "StartDate",
-					label: "Joining date",
+					label: _("Joining date"),
 					labelWidth: 90,
-					invalidMessage: "Start Date must be less than current Date"
+					invalidMessage: _("Start Date must be less than current Date")
 				},
 				{
 					view: "combo",
 					name: "StatusID",
-					label: "Status",
+					label: _("Status"),
 					labelWidth: 90,
 					options: statuses,
-					invalidMessage: "Please select a status"
+					invalidMessage: _("Please select a status")
 				},
 				{
-					view:"text",
-					name:"Job",
-					label:"Job",
+					view: "text",
+					name: "Job",
+					label: _("Job"),
 					labelWidth: 90,
-					placeholder:"Job position",
-					invalidMessage:"A job position is required"
+					placeholder: _("Job position"),
+					invalidMessage: _("A job position is required")
 				},
 				{
-					view:"text",
-					name:"Company",
-					label:"Company",
+					view: "text",
+					name: "Company",
+					label: _("Company"),
 					labelWidth: 90,
-					placeholder:"Company",
-					invalidMessage:"A company is required"
+					placeholder: _("Company"),
+					invalidMessage: _("A company is required")
 				},
 				{
-					view:"text",
-					name:"Website",
-					label:"Website",
+					view: "text",
+					name: "Website",
+					label: _("Website"),
 					labelWidth: 90,
-					placeholder:"Website",
-					invalidMessage: "Website must look like https://webix.com"
+					placeholder: _("Website"),
+					invalidMessage: _("Website must look like https://webix.com")
 				},
 				{
-					view:"text",
-					name:"Address",
-					label:"Address",
+					view: "text",
+					name: "Address",
+					label: _("Address"),
 					labelWidth: 90,
-					placeholder:"Address",
-					invalidMessage:"An address is required"
+					placeholder: _("Address"),
+					invalidMessage: _("An address is required")
 				}
 			]
 		};
 
-		const more_info = {
-			margin:10,
+		const moreInfo = {
+			margin: 10,
 			rows: [
 				{
-					view:"text",
-					name:"Email",
-					label:"Email",
+					view: "text",
+					name: "Email",
+					label: _("Email"),
 					labelWidth: 90,
-					placeholder:"Email",
-					invalidMessage:"Email is required"
+					placeholder: _("Email"),
+					invalidMessage: _("Email is required")
 				},
 				{
-					view:"text",
-					name:"Skype",
-					label:"Skype",
+					view: "text",
+					name: "Skype",
+					label: _("Skype"),
 					labelWidth: 90,
-					placeholder:"Skype",
-					invalidMessage:"A skype is required (without spaces)"
+					placeholder: _("Skype"),
+					invalidMessage: _("A skype is required (without spaces)")
 				},
 				{
 					view: "text",
 					name: "Phone",
-					label: "Phone",
+					label: _("Phone"),
 					labelWidth: 90,
-					placeholder: "Phone",
-					pattern: { mask: "###-## #######", allow:/[0-9]/g},
-					invalidMessage: "Sorry, you must type any 12 numbers"
+					placeholder: _("Phone"),
+					pattern: {mask: "###-## #######", allow: /[0-9]/g},
+					invalidMessage: _("Sorry, you must type any 12 numbers")
 				},
 				{
-					view:"datepicker",
+					view: "datepicker",
 					name: "InfoBirthday",
-					label: "Birthday",
+					label: _("Birthday"),
 					labelWidth: 90,
-					invalidMessage: "Start Date must be less than current Date"
+					invalidMessage: _("Start Date must be less than current Date")
 				}
 			]
 		};
 
-		const contact_photo = {
+		const contactPhoto = {
 			view: "template",
 			name: "Photo",
 			borderless: true,
 			localId: "photo",
-			template: obj =>  `
+			template: obj => `
 			        <image class="userphotoform" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
 			    `
 		};
-        
-		const photo_buttons = {
-			margin:10,
-			rows:[
+
+		const photoButtons = {
+			margin: 10,
+			rows: [
 				{},
-				{ 
-					view:"uploader",
-					value:"Change photo",
-					accept:"image/jpeg, image/png",       
-					autosend:false, 
-					multiple:false,
-					on:{        
-						onBeforeFileAdd: (upload) => {        
-							var file = upload.file;
-							var reader = new FileReader();  
+				{
+					view: "uploader",
+					value: _("Change photo"),
+					accept: "image/jpeg, image/png",
+					autosend: false,
+					multiple: false,
+					on: {
+						onBeforeFileAdd: (upload) => {
+							let file = upload.file;
+							let reader = new FileReader();
 							reader.onload = (event) => {
 								const photo = event.target.result;
 								this.$$("photo").setValues({Photo: photo});
-							};           
+							};
 							reader.readAsDataURL(file);
 							return false;
 						}
 					}
 				},
 				{
-					view:"button",
-					value:"Delete photo",
-					tooltip:"Click to delete the photo",
+					view: "button",
+					value: _("Delete photo"),
+					tooltip: _("Click to delete the photo"),
 					click: () => {
 						this.$$("photo").setValues({Photo: ""});
 					}
 				}
 			]
 		};
-		
+
 		const buttons = {
-			margin:10,
-			cols:[
+			margin: 10,
+			cols: [
 				{},
 				{
-					view:"button",
-					value:"Cancel",
+					view: "button",
+					value: _("Cancel"),
 					width: 200,
-					click:() => {
+					click: () => {
 						const id = this.getParam("id", true);
 						this.app.callEvent("contactinfo:show", [id]);
 					},
-					tooltip:"Click to close the form"
+					tooltip: _("Click to close the form")
 				},
 				{
-					view:"button",
+					view: "button",
 					localId: "saveButton",
-					type:"form",
+					type: "form",
 					width: 200,
-					tooltip:"Save changes",
-					click:() => {
-						if (this.form.validate()){
+					tooltip: _("Save changes"),
+					click: () => {
+						if (this.form.validate()) {
 							const values = this.form.getValues();
 							const photo = this.$$("photo").getValues().Photo;
 							values.Photo = photo;
@@ -183,14 +186,13 @@ export default class ContactForm extends JetView {
 							contacts.waitSave(() => {
 								if (id) {
 									contacts.updateItem(id, values);
-								} else {
+								}
+								else {
 									contacts.add(values);
-									
 								}
 							}).then((item) => {
 								this.app.callEvent("contactinfo:show", [item.id]);
 							});
-							
 						}
 					}
 				}
@@ -200,30 +202,30 @@ export default class ContactForm extends JetView {
 		return {
 			rows: [
 				{
-					type:"header",
+					type: "header",
 					localId: "headerForm",
 					template: obj => obj.value,
-					css:"webix_header"
+					css: "webix_header"
 				},
 				{
 					view: "form",
 					localId: "form",
 					rows: [
-						{   margin:10,
+						{margin: 10,
 							cols: [
-								main_info,
+								mainInfo,
 								{
 									margin: 10,
 									rows: [
-										more_info,
+										moreInfo,
 										{
 											margin: 10,
 											cols: [
-												contact_photo,
-												photo_buttons
+												contactPhoto,
+												photoButtons
 											]
 										}
-										
+
 									]
 								}
 							]
@@ -237,21 +239,15 @@ export default class ContactForm extends JetView {
 						StartDate: (date) => {
 							const currentDate = new Date();
 							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
+							if (webix.isDate(date) && date < currentDate) {
 								return true;
 							}
+							return false;
 						},
 						StatusID: webix.rules.isNotEmpty,
 						Job: webix.rules.isNotEmpty,
 						Company: webix.rules.isNotEmpty,
-						Website: (value) => {
-							try {
-								new URL(value);
-								return true;
-							} catch (_) {
-								return false;  
-							}
-						},
+						Website: webix.rules.isNotEmpty,
 						Address: webix.rules.isNotEmpty,
 						Email: webix.rules.isEmail,
 						Skype: (value) => {
@@ -261,9 +257,11 @@ export default class ContactForm extends JetView {
 						InfoBirthday: (date) => {
 							const currentDate = new Date();
 							currentDate.getFullYear();
-							if(webix.isDate(date) && date < currentDate){
+							if (webix.isDate(date) && date < currentDate) {
 								return true;
 							}
+
+							return false;
 						}
 					}
 				}
@@ -272,10 +270,11 @@ export default class ContactForm extends JetView {
 	}
 
 	init() {
-		this.form = this.$$("form");		
+		this.form = this.$$("form");
 	}
 
 	urlChange() {
+		const _ = this.app.getService("locale")._;
 		const id = this.getParam("id", true);
 		webix.promise.all([
 			contacts.waitData,
@@ -287,14 +286,15 @@ export default class ContactForm extends JetView {
 				this.form.setValues(values);
 				photo.setValues({Photo: values.Photo});
 			}
-			if (!id) {		
-				const name = "Add";
-				this.$$("headerForm").setValues({value: `${name} contact`});
+			if (!id) {
+				const name = _("Add");
+				this.$$("headerForm").setValues({value: `${name} ${_("contact")}`});
 				this.$$("form").clear();
 				this.$$("saveButton").setValue(name);
-			} else {
-				this.$$("headerForm").setValues({value: "Edit contact"});
-				this.$$("saveButton").setValue("Save");
+			}
+			else {
+				this.$$("headerForm").setValues({value: _("Edit contact")});
+				this.$$("saveButton").setValue(_("Save"));
 			}
 		});
 	}
