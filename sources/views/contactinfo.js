@@ -128,7 +128,7 @@ export default class ContactInfo extends JetView {
 				let values = webix.copy(contacts.getItem(id));
 				if (values.StatusID) {
 					const status = statuses.getItem(values.StatusID);
-					values.status = status.Value || "";
+					values.status = status.Value ? status.Value : "";
 					const icon = icons.getItem(status.Icon);
 					values.icon = icon.value || "";
 				}
