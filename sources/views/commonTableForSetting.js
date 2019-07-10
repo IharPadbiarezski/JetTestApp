@@ -75,7 +75,8 @@ export default class CommonTableForSettings extends JetView {
 					width: 300,
 					align: "center",
 					click: () => {
-						this._tdata.add({Value: `${this.value}`, Icon: "1"});
+						let values = {Value: `${this.value}`, Icon: "1"};
+						this._tdata.add(values, 0);
 					}
 				},
 				{}

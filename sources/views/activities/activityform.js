@@ -65,7 +65,9 @@ export default class ActivityWindow extends JetView {
 					{
 						view:"checkbox",
 						name: "State",
-						labelRight: _("Completed")
+						labelRight: _("Completed"),
+						checkValue: "Close",
+						uncheckValue: "Open"
 					},
 					{cols: [
 						{gravity: 2},

@@ -130,7 +130,7 @@ export default class ContactInfo extends JetView{
 				// const statusId = values.StatusID ? statuses.getItem(values.StatusID).Icon : "";
 				if(values.StatusID){
 					const status = statuses.getItem(values.StatusID);
-					console.log(status)
+					// console.log(status)
 					values.status = status.Value || "";
 					// console.log(status.Icon);
 					const icon = icons.getItem(status.Icon);
