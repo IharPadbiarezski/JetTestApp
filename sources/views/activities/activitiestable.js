@@ -18,7 +18,15 @@ export default class ActivitiesDataTable extends JetView{
 			localId: "activities",
 			select: true,
 			columns: [
-				{ id:"State", header:"", template:"{common.checkbox()}", width: 40, sort: "string"},
+				{ 
+					id:"State",
+					header:"",
+					template:"{common.checkbox()}",
+					width: 40,
+					checkValue: "Close",
+					uncheckValue: "Open",
+					sort: "string"
+				},
 				{
 					id: "TypeID",
 					header: [ _("Activity type"), { content: "selectFilter" } ],

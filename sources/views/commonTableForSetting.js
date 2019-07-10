@@ -2,10 +2,9 @@ import {JetView} from "webix-jet";
 import {icons} from "../models/icons";
 
 export default class CommonTableForSettings extends JetView {
-	constructor(app, name, data, localId, valHeader, valIcon, label, value ) {
+	constructor(app, name, data, valHeader, valIcon, label, value ) {
 		super(app, name);
 		this._tdata = data;
-		this.localId = localId;
 		this.valHeader = valHeader;
 		this.valIcon = valIcon;
 		this.label = label;
@@ -25,7 +24,6 @@ export default class CommonTableForSettings extends JetView {
         
 		const table = {
 			view: "datatable",
-			localId: this.localId,
 			editable: true,
 			scroll: "auto",
 			editaction: "dblclick",

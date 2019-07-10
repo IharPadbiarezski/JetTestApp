@@ -25,8 +25,8 @@ export default class SettingsView extends JetView {
 				selector,
 				{
 					cols: [
-						{$subview: new CommonTableForSettings(this.app, "", activitytypes, "activityTypesTable", "Activity Types", "Icon", "Add type", "value")},
-						{$subview: new CommonTableForSettings(this.app, "", statuses, "statusesTable", "Status", "Icon", "Add status", "name")}
+						{$subview: new CommonTableForSettings(this.app, "", activitytypes, "Activity Types", "Icon", "Add type", "value")},
+						{$subview: new CommonTableForSettings(this.app, "", statuses, "Status", "Icon", "Add status", "name")}
 					]
 				}
 			]

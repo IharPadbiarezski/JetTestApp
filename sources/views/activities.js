@@ -96,47 +96,39 @@ export default class DataView extends JetView{
 			activities.waitData,
 		]).then(() => {
 			this.filterTableByTabbar(this.table);
-			activities.data.attachEvent("onStoreUpdated", () => {
-				this.table.refreshFilter();
-				let tabValue = this.$$("selector").getValue();
-				if (tabValue !== 1) {
-					this.$$("selector").setValue(1);
-				}
-				this.filterTableByTabbar(this.table);
-			});
 		});
-
 	}
 	
 	filterTableByTabbar(view) {
+		const newDate = new Date();
+		const currentDay = webix.Date.datePart(newDate);
+		const tomorrow = webix.Date.add(currentDay, 1, "day", true);
+		const startCurrentWeek = webix.Date.weekStart(currentDay);
+		const startCurrentMonth = webix.Date.monthStart(currentDay);
+
 		view.registerFilter(
 			this.$$("selector"),
 			{
 				compare: (value, filter, item)	=> {
-					const filterId = Number(filter);
-					const state = Number(item.State);
+					const filterId = parseInt(filter);
+					const state = item.State;
 					const date = item.ConvDueDate;
-					const newDate = new Date();
-					const currentDay = webix.Date.datePart(newDate);
-					const tomorrow = webix.Date.add(currentDay, 1, "day", true);
-					const startCurrentWeek = webix.Date.weekStart(currentDay);
-					const startCurrentMonth = webix.Date.monthStart(currentDay);			
 					const DateDay = webix.Date.datePart(date, true);
 					const startWeek = webix.Date.weekStart(DateDay);
 					const startMonth = webix.Date.monthStart(DateDay);
-
+					
 					if (filterId === 2) {
-						return date < currentDay && state === 0;
+						return date < currentDay && state === "Open";
 					} else if (filterId === 3) {
-						return state === 1;
+						return state === "Close";
 					} else if (filterId == 4) {
-						return webix.Date.equal(currentDay, DateDay) && state === 0;
+						return webix.Date.equal(currentDay, DateDay) && state === "Open";
 					} else if (filterId === 5) {
-						return webix.Date.equal(tomorrow, DateDay) && state === 0;
+						return webix.Date.equal(tomorrow, DateDay) && state === "Open";
 					} else if (filterId === 6) {
-						return webix.Date.equal(startCurrentWeek, startWeek) && state === 0;
+						return webix.Date.equal(startCurrentWeek, startWeek) && state === "Open";
 					} else if (filterId === 7) {
-						return webix.Date.equal(startCurrentMonth, startMonth) && state === 0;
+						return webix.Date.equal(startCurrentMonth, startMonth) && state === "Open";
 					} else {
 						return item;
 					}

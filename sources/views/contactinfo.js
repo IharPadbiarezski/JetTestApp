@@ -19,7 +19,7 @@ export default class ContactInfo extends JetView{
                     <div class="main_info">
                         <h2 class="username">${obj.FirstName  || "-"} ${obj.LastName  || "-"}</h2>
                         <image class="userphoto" src="${obj.Photo || "https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png"}" />
-                        <p class="status"> <span class='webix_icon wxi-${obj.icon || "clock"}'></span> ${obj.status || "-"}</p>
+                        <p class="status"> <span class='webix_icon wxi-${obj.icon}'></span> ${obj.status || "-"}</p>
                     </div>
                     <div class="addition_info">
                         <p><span class="useremail mdi mdi-email"></span> ${_("email")}: ${obj.Email || "-"}</p>
@@ -124,12 +124,21 @@ export default class ContactInfo extends JetView{
 			icons.waitData
 		]).then(() => {
 			const id = this.getParam("id", true);
-			let values = webix.copy(contacts.getItem(id));
 			if (id && contacts.exists(id)) {
-				values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
-				const statusId = values.StatusID ? statuses.getItem(values.StatusID).Icon : "";
-				values.icon = icons.getItem(statusId).Value;
+			let values = webix.copy(contacts.getItem(id));
+				// values.status = values.StatusID ? statuses.getItem(values.StatusID).Value : "";
+				// const statusId = values.StatusID ? statuses.getItem(values.StatusID).Icon : "";
+				if(values.StatusID){
+					const status = statuses.getItem(values.StatusID);
+					console.log(status)
+					values.status = status.Value || "";
+					// console.log(status.Icon);
+					const icon = icons.getItem(status.Icon);
+					values.icon = icon.value || "";
+				
+				// values.icon = icons.getItem(statusId).Value;
 				template.setValues(values);
+			}
 			}
 		});
 	}
